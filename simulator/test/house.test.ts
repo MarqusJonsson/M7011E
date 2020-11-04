@@ -43,3 +43,22 @@ class TestObject{
 		testObject.house.generators.push(testObject.hCoalGenerator);
 	}
 }
+
+describe('house.ts', function(){
+	let testObject = new TestObject;
+	
+	describe('#generateElectricity()', function() {
+		beforeEach('Setup default values for test object',function(){testObject.defaultValues(testObject)});
+		it('Should generate 10 electricity units to battery', function(){
+			testObject.house.calculateProduction(1);
+			testObject.house.generateElectricity(1);
+			expect(testObject.house.battery.buffer).to.equal(10);
+		})
+		it('Should generate 90 electricity units to powerplant',function(){
+			testObject.house.calculateProduction(1);
+			testObject.house.generateElectricity(1);
+			expect(testObject.house.powerPlantParent.battery.buffer).to.equal(90);
+		})
+	})
+})
+	
