@@ -64,6 +64,9 @@ export class House extends BaseBuilding {
 	}
 	
 	public set batteryToPowerPlantRatio(value: number) {
+		if(value > 1 || value < 0) {
+			throw new Error(" value for batteryToPowerPlantRatio is not within range 0 to 1.")
+		}
 		this._batteryToPowerPlantRatio = value;
 	}
 
