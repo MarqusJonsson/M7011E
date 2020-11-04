@@ -9,6 +9,13 @@ export class Prosumer extends BaseUser {
         this._houses = houses;
     }
     
+    public setBatteryToPowerPlantRatio(houseId: number, ratio: number) {
+        let house: House | undefined = this.houses.find(house => house.id === houseId);
+        if (house === undefined) {
+            throw new Error('house with given houseId is not owned by this prosumer');
+        }
+        house.batteryToPowerPlantRatio = ratio;
+    }
     
     public get houses() : House[] {
         return this._houses;
