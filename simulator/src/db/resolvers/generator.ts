@@ -1,4 +1,4 @@
-import { db } from "../connect";
+import { db } from "../connection";
 import { historyResolver } from "./history"; 
 import { BaseWithHistoryResolver } from "./baseWithHistory";
 class GeneratorResolver extends BaseWithHistoryResolver{

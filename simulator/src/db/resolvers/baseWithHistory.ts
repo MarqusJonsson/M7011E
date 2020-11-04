@@ -1,4 +1,4 @@
-import { db } from '../connect';
+import { db } from '../connection';
 import { BaseResolver } from './base';
 import { historyResolver } from './history';
 

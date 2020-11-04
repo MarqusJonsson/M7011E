@@ -1,4 +1,4 @@
-import { db } from '../connect';
+import { db } from '../connection';
 
 abstract class BaseResolver {
 	private _tableName: string;

@@ -1,4 +1,4 @@
-import { db } from './connect';
+import { db } from './connection';
 
 const createTables = `
 	CREATE TABLE history (

@@ -1,4 +1,4 @@
-import { db } from './connect';
+import { db } from './connection';
 
 const recreateEmptySchema = `
 	DROP SCHEMA public CASCADE;
