@@ -3,9 +3,8 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.ts",
-	"type": "module",
 	"scripts": {
-		"start": "ts-node src/index.ts",
+		"start": "ts-node src/index.ts ",
 		"test": "mocha -r ts-node/register test/**/*.test.ts",
 		"coverage": "nyc npm run test",
 		"lint": "eslint . --ext .ts"
