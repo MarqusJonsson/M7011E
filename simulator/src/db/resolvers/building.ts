@@ -14,7 +14,7 @@ class BuildingResolver extends BaseWithHistoryResolver {
 			WHERE id = $1 RETURNING *`;
 		this.queries.updateBatteryBuffer = `
 			UPDATE ${this.tableName} SET battery_buffer = $2 WHERE id = $1 RETURNING *`;
-		this.queries.building_type = () => {
+		this.queries.buildingType = () => {
 			const { buildingTypeResolver } = require('./buildingType');
 			return `
 				SELECT * FROM ${buildingTypeResolver.tableName} WHERE id =
@@ -22,19 +22,19 @@ class BuildingResolver extends BaseWithHistoryResolver {
 		}
 	}
 
-	create = async(batteryBuffer: number, batteryLimit: number, building_types_id_id: number | string, owner_id: string| number): Promise<any> => {
+	create = async(batteryBuffer: number, batteryLimit: number, buildingTypesId: number | string, ownerId: string| number): Promise<any> => {
 		return await db.tx(async (t: ITask<{}>) => {
 			const history = await t.one(historyResolver.queries.create);
-			return await t.oneOrNone(this.queries.create, [batteryBuffer, batteryLimit, building_types_id_id, owner_id, history.id]);
+			return await t.oneOrNone(this.queries.create, [batteryBuffer, batteryLimit, buildingTypesId, ownerId, history.id]);
 		}).catch(err => console.log(err));
 	}
 
-	update = async(id: number | string, batteryBuffer: number, batteryLimit: number, building_types_id_id: number | string, owner_id: number | string): Promise<any> => {
+	update = async(id: number | string, batteryBuffer: number, batteryLimit: number, buildingTypesId: number | string, ownerId: number | string): Promise<any> => {
 		return await db.tx(async (t: ITask<{}>) => {
-			const building = await t.one(this.queries.update, [id, batteryBuffer, batteryLimit, building_types_id_id, owner_id]);
+			const building = await t.one(this.queries.update, [id, batteryBuffer, batteryLimit, buildingTypesId, ownerId]);
 			await t.oneOrNone(historyResolver.queries.update, [building.history_id])
 			return building;
-		}).catch(err => console.log(err));  
+		}).catch(err => console.log(err));
 	}
 
 	updateBatteryBuffer = async(id: number | string, batteryBuffer: number): Promise<any> => {
@@ -45,9 +45,9 @@ class BuildingResolver extends BaseWithHistoryResolver {
 		}).catch(err => console.log(err));
 	}
 
-	building_type = async (id: number | string): Promise<any> => {
+	buildingType = async (id: number | string): Promise<any> => {
 		return db
-			.oneOrNone(this.queries.building_type, [id])
+			.oneOrNone(this.queries.buildingType, [id])
 			.catch(err => console.log(err));
 	}
 }

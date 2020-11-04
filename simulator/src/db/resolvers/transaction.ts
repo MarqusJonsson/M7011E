@@ -14,17 +14,17 @@ class TransactionResolver extends BaseWithHistoryResolver {
 			WHERE id = $1 RETURNING *`;
 	}
 
-	create = async (amount: number, sender_id: number | string, receiver_id: number | string): Promise<any> => {
+	create = async (amount: number, senderId: number | string, receiverId: number | string): Promise<any> => {
 		return await db.tx(async (t: ITask<{}>) => {
 			const history = await t.one(historyResolver.queries.create);
-			return await t.oneOrNone(this.queries.create, [amount, sender_id, receiver_id, history.id]);
+			return await t.oneOrNone(this.queries.create, [amount, senderId, receiverId, history.id]);
 		}).catch(err => console.log(err));
 	}
 
-	update = async (id: number | string, amount: number, sender_id: number | string, receiver_id: number | string): Promise<any> => {
+	update = async (id: number | string, amount: number, senderId: number | string, receiverId: number | string): Promise<any> => {
 		return await db.tx(async (t: ITask<{}>) => {
-			const user = await t.one(this.queries.update, [id, amount, sender_id, receiver_id]);
-			await t.oneOrNone(historyResolver.queries.update, [user.history_id])
+			const user = await t.one(this.queries.update, [id, amount, senderId, receiverId]);
+			await t.oneOrNone(historyResolver.queries.update, [user.historyId])
 			return user;
 		}).catch(err => console.log(err));
 	}
