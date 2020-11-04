@@ -41,6 +41,14 @@ export abstract class BaseGenerator extends Identifiable {
 		this._output = value;
 	}
 
+	public get isBroken(): boolean {
+		return this._isBroken;
+	}
+	
+	public set isBroken(value: boolean) {
+		this._isBroken = value;
+	}
+
 	public get parentBuilding(): BaseBuilding | undefined  {
 		return this._parentBuilding;
 	}
