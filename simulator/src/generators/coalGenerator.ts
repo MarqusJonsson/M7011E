@@ -8,7 +8,8 @@ export class CoalGenerator extends BaseGenerator {
 
     public calculateOutput(): number {
         if (!this.parentBuilding) throw new Error('Can not calculate the output of a generator without a parentBuilding');
-        else if (this.isBroken) return 0;
-        return this.baseOutput;
+		else if (this.isBroken) this.output = 0;
+		else this.output = this.baseOutput;
+        return this.output;
     }
 }
