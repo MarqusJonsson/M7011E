@@ -18,3 +18,47 @@ export class Prosumer extends BaseUser {
         this._houses = houses;
     }
 
+    public buyElectricity(deltaTimeS: number): void {
+        for (const house of this.houses){
+            let payment: number = 0;
+            const houseDemand = house.getDemand(deltaTimeS);
+            const electricityBuyPrice = house.powerPlantParent.electricityBuyPrice;
+            const currencyDifference = this.currency - houseDemand * electricityBuyPrice;
+            const hBattery = house.battery;
+            const pBattery = house.powerPlantParent.battery;
+            //let powerPlantBatteryBuffer = house.powerPlantParent.battery.buffer;
+            if (houseDemand > 0){
+                if (currencyDifference >= 0){
+                    if (houseDemand <= pBattery.buffer){
+                        payment = houseDemand * electricityBuyPrice;
+                        pBattery.buffer -= houseDemand;
+                        hBattery.buffer += houseDemand;
+                    }
+                    else {
+                        payment = pBattery.buffer * electricityBuyPrice;
+                        hBattery.buffer += pBattery.buffer;
+                        pBattery.buffer = 0;
+                    }
+                }
+                else if (currencyDifference < 0){
+                    const maxPossibleElectricity: number = this.currency / electricityBuyPrice;
+                    if (maxPossibleElectricity <= pBattery.buffer){
+                        payment = maxPossibleElectricity * electricityBuyPrice;
+                        hBattery.buffer += maxPossibleElectricity;
+                        pBattery.buffer -= maxPossibleElectricity;
+                    }
+                    else {
+                        payment = pBattery.buffer * electricityBuyPrice;
+                        hBattery.buffer += pBattery.buffer;
+                        pBattery.buffer = 0;
+                    }
+                }
+                house.powerPlantParent.manager.currency += payment;
+                this.currency -= payment;
+            }
+            //else {
+            //    console.log("Demand already satisfied");
+            //}
+        }
+    }
+}
