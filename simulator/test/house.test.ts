@@ -18,29 +18,29 @@ class TestObject{
 	pGenerators!: BaseGenerator[];
 	powerPlants!: BasePowerPlant[];
 	manager!: Manager;
-	coalpowerPlant!: CoalPowerPlant;
+	coalPowerPlant!: CoalPowerPlant;
 	prosumer!: Prosumer;
 	hBattery!: Battery;
 	hGenerators!: BaseGenerator[];
-	hGeodata!: GeoData;
+	hGeoData!: GeoData;
 	house!: House;
 	hCoalGenerator!: CoalGenerator;
 
-	public defaultValues(testObject: any): void {
-		testObject.environment = new Environment(0);
-		testObject.pBattery = new Battery(1000, 0);
-		testObject.pGeoData = new GeoData(100, 10, 10);
-		testObject.pGenerators = [] as BaseGenerator[];
-		testObject.powerPlants = [] as BasePowerPlant[];
-		testObject.manager = new Manager(0, testObject.powerPlants);
-		testObject.coalPowerPlant = new CoalPowerPlant(testObject.pBattery, testObject.pGeoData, testObject.pGenerators, 0, testObject.manager, testObject.environment);
-		testObject.prosumer = new Prosumer();
-		testObject.hBattery = new Battery(100, 0);
-		testObject.hGenerators = [] as BaseGenerator[];
-		testObject.hGeoData = new GeoData(10, 10, 10);
-		testObject.house = new House(testObject.hBattery, testObject.hGeoData, testObject.hGenerators, 1, testObject.coalPowerPlant, testObject.prosumer, testObject.environment, 0.1);
-		testObject.hCoalGenerator = new CoalGenerator(100, false, testObject.house, 0);
-		testObject.house.generators.push(testObject.hCoalGenerator);
+	public defaultValues(): void {
+		this.environment = new Environment(0);
+		this.pBattery = new Battery(2000, 0);
+		this.pGeoData = new GeoData(100, 10, 10);
+		this.pGenerators = [] as BaseGenerator[];
+		this.powerPlants = [] as BasePowerPlant[];
+		this.manager = new Manager(0, this.powerPlants);
+		this.coalPowerPlant = new CoalPowerPlant(this.pBattery, this.pGeoData, this.pGenerators, 0, this.manager, this.environment);
+		this.prosumer = new Prosumer();
+		this.hBattery = new Battery(100, 0);
+		this.hGenerators = [] as BaseGenerator[];
+		this.hGeoData = new GeoData(10, 10, 10);
+		this.house = new House(this.hBattery, this.hGeoData, this.hGenerators, 1, this.coalPowerPlant, this.prosumer, this.environment, 0.1);
+		this.hCoalGenerator = new CoalGenerator(100, false, this.house, 0);
+		this.house.generators.push(this.hCoalGenerator);
 	}
 }
 
@@ -48,17 +48,13 @@ describe('house.ts', function(){
 	let testObject = new TestObject;
 	
 	describe('#generateElectricity()', function() {
-		beforeEach('Setup default values for test object',function(){testObject.defaultValues(testObject)});
-		it('Should generate 10 electricity units to battery', function(){
+		beforeEach('Setup default values for test object.', function() {testObject.defaultValues()});
+		it('Generate 10 electricity units to battery.', function() {
 			testObject.house.calculateProduction(1);
 			testObject.house.generateElectricity(1);
 			expect(testObject.house.battery.buffer).to.equal(10);
-		})
-		it('Should generate 90 electricity units to powerplant',function(){
+		});
+		it('Generate 90 electricity units to power plant.', function() {
 			testObject.house.calculateProduction(1);
 			testObject.house.generateElectricity(1);
 			expect(testObject.house.powerPlantParent.battery.buffer).to.equal(90);
-		})
-	})
-})
-	
