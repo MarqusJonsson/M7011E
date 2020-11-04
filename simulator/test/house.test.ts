@@ -58,3 +58,38 @@ describe('house.ts', function(){
 			testObject.house.calculateProduction(1);
 			testObject.house.generateElectricity(1);
 			expect(testObject.house.powerPlantParent.battery.buffer).to.equal(90);
+		});
+		it('Should not generate electricity because of blackout.', function() {
+			testObject.house.hasBlackout = true;
+			testObject.house.calculateProduction(1);
+			testObject.house.generateElectricity(1);
+			expect(testObject.house.battery.buffer).to.equal(0);
+
+		});
+		it('Generate over house battery capacity and send remainder to power plant.', function() {
+			testObject.house.generators[0].baseOutput = 2000;
+			testObject.house.calculateProduction(1);
+			testObject.house.generateElectricity(1);
+			expect(testObject.house.battery.buffer).to.equal(100);
+			expect(testObject.pBattery.buffer).to.equal(1900);
+		});
+		it('Generate over house battery capacity and power plant capacity.', function() {
+			testObject.pBattery.capacity = 1000;
+			testObject.house.generators[0].baseOutput = 2000;
+			testObject.house.batteryToPowerPlantRatio = 0.6;
+			testObject.house.calculateProduction(1);
+			testObject.house.generateElectricity(1);
+			expect(testObject.pBattery.buffer).to.equal(1000);
+
+		});
+		it('Generate under house battery capacity but over power plant battery capacity. ', function() {
+			testObject.pBattery.capacity = 10;
+			testObject.house.generators[0].baseOutput = 50;
+			testObject.house.batteryToPowerPlantRatio = 0.6;
+			testObject.house.calculateProduction(1);
+			testObject.house.generateElectricity(1);
+			expect(testObject.hBattery.buffer).to.equal(40);
+		});
+	});
+});
+
