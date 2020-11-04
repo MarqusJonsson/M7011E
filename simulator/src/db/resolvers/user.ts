@@ -20,20 +20,20 @@ class UserResolver extends BaseWithHistoryResolver {
 			const { userTypeResolver } = require('./userType');
 			return `
 				SELECT * FROM ${userTypeResolver.tableName} WHERE id =
-				(SELECT userType_id FROM ${this.tableName} WHERE id = $1);`;
+				(SELECT user_types_id FROM ${this.tableName} WHERE id = $1);`;
 		}
 	}
 
-	create = async (email: string, currency: number, user_types_id: number | string): Promise<any> => {
+	create = async (email: string, currency: number, userTypesId: number | string): Promise<any> => {
 		return await db.tx(async (t: ITask<{}>) => {
 			const history = await t.one(historyResolver.queries.create);
-			return await t.oneOrNone(this.queries.create, [email, currency, user_types_id, history.id]);
+			return await t.oneOrNone(this.queries.create, [email, currency, userTypesId, history.id]);
 		}).catch(err => console.log(err));
 	}
 
-	update = async (id: number | string, email: string, currency: number, user_types_id: number | string): Promise<any> => {
+	update = async (id: number | string, email: string, currency: number, userTypesId: number | string): Promise<any> => {
 		return await db.tx(async (t: ITask<{}>) => {
-			const user = await t.one(this.queries.update, [id, email, currency, user_types_id]);
+			const user = await t.one(this.queries.update, [id, email, currency, userTypesId]);
 			await t.oneOrNone(historyResolver.queries.update, [user.history_id])
 			return user;
 		}).catch(err => console.log(err));
