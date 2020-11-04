@@ -47,11 +47,11 @@ export class House extends BaseBuilding {
 				electricitySold = pBattery.buffer - pBattery.capacity;
 				pBattery.buffer = pBattery.capacity;
 				// Since power plant battery was filled, send rest to house battery
-				hBattery.buffer = Math.min(hBattery.capacity, hBattery.buffer + excessElectricity - electricitySold);
+				hBattery.buffer = Math.min(hBattery.capacity, hBattery.buffer + excessElectricity + productionToPowerPlant - electricitySold);
 			}
 			else {
-				electricitySold = excessElectricity;
-				pBattery.buffer += excessElectricity;   
+				electricitySold = excessElectricity + productionToPowerPlant;
+				pBattery.buffer += electricitySold;   
 			}
 		}
 		const payment = this.powerPlantParent.calculateElectricityPrice(electricitySold);
