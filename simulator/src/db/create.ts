@@ -37,7 +37,7 @@ const createTables = `
 		FOREIGN KEY (history_id)
 			REFERENCES history (id)
 	);
-	CREATE TABLE building_type (
+	CREATE TABLE building_types (
 		id		 SERIAL PRIMARY KEY,
 		name	   VARCHAR (255) NOT NULL UNIQUE,
 		history_id INT		   NOT NULL,
@@ -52,13 +52,13 @@ const createTables = `
 		owner_id	   INT  NOT NULL,
 		history_id	 INT  NOT NULL,
 		FOREIGN KEY (type_id)
-			REFERENCES building_type (id),
+			REFERENCES building_types (id),
 		FOREIGN KEY (owner_id)
 			REFERENCES users (id),
 		FOREIGN KEY (history_id)
 			REFERENCES history (id)
 	);
-	CREATE TABLE generator_tpe (
+	CREATE TABLE generator_types (
 		id		 SERIAL PRIMARY KEY,
 		name	   VARCHAR (255) NOT NULL UNIQUE,
 		history_id INT		   NOT NULL,
@@ -73,13 +73,13 @@ const createTables = `
 		buildings_id INT	 NOT NULL,
 		history_id   INT	 NOT NULL,
 		FOREIGN KEY (type_id)
-			REFERENCES generator_type(id),
+			REFERENCES generator_types(id),
 		FOREIGN KEY (buildings_id)
 			REFERENCES buildings(id),
 		FOREIGN KEY (history_id)
 			REFERENCES history (id)
 	);
-	CREATE TABLE generator_history_type (
+	CREATE TABLE generator_history_types (
 		id		 SERIAL PRIMARY KEY,
 		name	   VARCHAR (255) NOT NULL UNIQUE,
 		history_id INT		   NOT NULL,
@@ -87,13 +87,13 @@ const createTables = `
 			REFERENCES history (id)
 	);
 	CREATE TABLE generator_history (
-		id						  SERIAL PRIMARY KEY,
-		amount					  REAL NOT NULL,
-		type_id INT  NOT NULL,
-		generators_id			   INT  NOT NULL,
-		history_id				  INT  NOT NULL,
+		id					  SERIAL PRIMARY KEY,
+		amount				  REAL NOT NULL,
+		type_id				  INT  NOT NULL,
+		generators_id		  INT  NOT NULL,
+		history_id			  INT  NOT NULL,
 		FOREIGN KEY (type_id)
-			REFERENCES generator_history_type (id),
+			REFERENCES generator_history_types (id),
 		FOREIGN KEY (generators_id)
 			REFERENCES generators (id),
 		FOREIGN KEY (history_id)
