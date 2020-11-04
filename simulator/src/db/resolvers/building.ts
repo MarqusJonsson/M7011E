@@ -1,6 +1,6 @@
-import { db } from "../connection";
-import { historyResolver } from "./history"; 
-import { BaseWithHistoryResolver } from "./baseWithHistory";
+import { db } from '../connection';
+import { historyResolver } from './history'; 
+import { BaseWithHistoryResolver } from './baseWithHistory';
 import { ITask } from 'pg-promise';
 
 class BuildingResolver extends BaseWithHistoryResolver {
