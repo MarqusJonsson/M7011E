@@ -15,6 +15,14 @@ export abstract class BaseGenerator extends Identifiable {
 		this._parentBuilding = parentBuilding;
 		this._pollution = pollution;
 	}
+
+	public break(downtime_ms: number) {
+		this.isBroken = true;
+		setTimeout(() => {
+			this.isBroken = false;
+		}, downtime_ms);
+	}
+
 	public abstract calculateOutput(): number;
 
 	public get baseOutput(): number {
