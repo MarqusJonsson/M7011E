@@ -43,7 +43,7 @@ export class House extends BaseBuilding {
 			const excessElectricity: number = hBattery.buffer + productionToBattery - this.battery.capacity;
 			hBattery.buffer = hBattery.capacity;
 			// productionToPowerPlant + excessElectricity to power plant
-			if (pBattery.buffer + excessElectricity >= pBattery.capacity){
+			if (pBattery.buffer + excessElectricity + productionToPowerPlant >= pBattery.capacity){
 				electricitySold = pBattery.buffer - pBattery.capacity;
 				pBattery.buffer = pBattery.capacity;
 				// Since power plant battery was filled, send rest to house battery
