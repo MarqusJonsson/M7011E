@@ -1,8 +1,10 @@
 import { db } from "../connection";
 import { historyResolver } from "./history"; 
 import { BaseWithHistoryResolver } from "./baseWithHistory";
-class GeneratorResolver extends BaseWithHistoryResolver{
-	constructor(tableName: string){
+import { ITask } from 'pg-promise';
+
+class GeneratorResolver extends BaseWithHistoryResolver {
+	constructor(tableName: string) {
 		super(tableName);
 		this.queries.create = `
 			INSERT INTO ${this.tableName}(base_output, is_broken, generator_types_id, buildings_id, history_id) RETURNING *`;
@@ -17,15 +19,15 @@ class GeneratorResolver extends BaseWithHistoryResolver{
 		}
 	}
 
-	create = async(baseOutput: number, isBroken: boolean, generator_types_id: string|number, buildings_id: string|number) =>{
-		return await db.tx(async t => {
+	create = async(baseOutput: number, isBroken: boolean, generator_types_id: string | number, buildings_id: string | number): Promise<any> => {
+		return await db.tx(async (t: ITask<{}>) => {
 			const history = await t.one(historyResolver.queries.create);
 			return await t.oneOrNone(this.queries.create, [baseOutput, isBroken, generator_types_id, buildings_id, history.id]);
 		}).catch(err => console.log(err));
 	}
 
-	update = async (id: string|number, baseOutput: number, isBroken: boolean, generator_types_id: string|number, buildings_id: string|number) => {
-		return await db.tx(async t => {
+	update = async (id: string|number, baseOutput: number, isBroken: boolean, generator_types_id: string | number, buildings_id: string | number): Promise<any> => {
+		return await db.tx(async (t: ITask<{}>) => {
 			const generator = await t.one(this.queries.update, [id, baseOutput, isBroken, generator_types_id, buildings_id]);
 			await t.oneOrNone(historyResolver.queries.update, [generator.history_id])
 			return generator;

@@ -5,4 +5,4 @@ const recreateEmptySchema = `
 	CREATE SCHEMA public;
 `;
 
-export const clear = () => db.none(recreateEmptySchema);
+export const clear = (): Promise<null> => db.none(recreateEmptySchema);

@@ -2,7 +2,7 @@ import { db } from '../connection';
 
 abstract class BaseResolver {
 	private _tableName: string;
-	private _queries: any;
+	private _queries: {[key: string]: string | (() => string)};
 	constructor(tableName: string) {
 		this._tableName = tableName;
 		this._queries = {
@@ -15,19 +15,19 @@ abstract class BaseResolver {
 		};
 	}
 
-	one = async (id: number | string) => {
+	one = async (id: number | string): Promise<any> => {
 		return db
 			.one(this.queries.one, [id])
 			.catch((err: string) => console.log(err));
 	}
 
-	all = async () => {
+	all = async (): Promise<any> => {
 		return db
 			.manyOrNone(this.queries.all)
 			.catch((err: string) => console.log(err));
 	}
 
-	remove = async (id: number | string) => {
+	remove = async (id: number | string): Promise<any> => {
 		return db
 			.one(this.queries.remove, [id])
 			.catch((err: string) => console.log(err));
@@ -37,11 +37,11 @@ abstract class BaseResolver {
 		return this._tableName;
 	}
 
-	public get queries(): any {
+	public get queries(): {[key: string]: string | (() => string)} {
 		return this._queries;
 	}
 
-	public set queries(queries: any) {
+	public set queries(queries: {[key: string]: string | (() => string)}) {
 		this._queries = queries;
 	}
 }

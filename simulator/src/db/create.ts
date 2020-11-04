@@ -100,4 +100,4 @@ const createTables = `
 			REFERENCES history (id)
 );`;
 
-export const create = () => db.none(createTables);
+export const create = (): Promise<null> => db.none(createTables);

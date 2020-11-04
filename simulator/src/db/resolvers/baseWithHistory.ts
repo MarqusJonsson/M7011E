@@ -1,6 +1,7 @@
 import { db } from '../connection';
 import { BaseResolver } from './base';
 import { historyResolver } from './history';
+import { ITask } from 'pg-promise';
 
 class BaseWithHistoryResolver extends BaseResolver {
 	constructor(tableName: string) {
@@ -9,8 +10,8 @@ class BaseWithHistoryResolver extends BaseResolver {
 			DELETE FROM ${this.tableName} WHERE id = $1 RETURNING *`;
 	}
 
-	remove = async (id: number | string) => {
-		return await db.tx(async t => {
+	remove = async (id: number | string): Promise<any> => {
+		return await db.tx(async (t: ITask<{}>) => {
 			const role = await t.one(this.queries.remove, id);
 			await t.oneOrNone(historyResolver.queries.remove, role.history_id);
 			return role;
