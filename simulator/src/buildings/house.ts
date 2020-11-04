@@ -58,3 +58,28 @@ export class House extends BaseBuilding {
 		this.prosumer.currency += payment;
 		this.powerPlantParent.manager.currency -= payment;
 	}
+
+	public get batteryToPowerPlantRatio(): number {
+		return this._batteryToPowerPlantRatio;
+	}
+	
+	public set batteryToPowerPlantRatio(value: number) {
+		this._batteryToPowerPlantRatio = value;
+	}
+
+	public get powerPlantParent(): BasePowerPlant {
+		return this._powerPlantParent;
+	}
+
+	public set powerPlantParent(powerPlantParent: BasePowerPlant) {
+		this._powerPlantParent = powerPlantParent;
+	}
+
+	public get prosumer(): Prosumer {
+		return this._prosumer;
+	}
+
+	public set prosumer(prosumer: Prosumer) {
+		this._prosumer = prosumer;
+	}
+}
