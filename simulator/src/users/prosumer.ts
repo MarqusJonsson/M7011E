@@ -33,7 +33,6 @@ export class Prosumer extends BaseUser {
             const currencyDifference = this.currency - houseDemand * electricityBuyPrice;
             const hBattery = house.battery;
             const pBattery = house.powerPlantParent.battery;
-            //let powerPlantBatteryBuffer = house.powerPlantParent.battery.buffer;
             if (houseDemand > 0){
                 if (currencyDifference >= 0){
                     if (houseDemand <= pBattery.buffer){
