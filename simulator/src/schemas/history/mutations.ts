@@ -12,7 +12,7 @@ const createHistory = {
 
 const removeHistory = {
 	type: HistoryType,
-	description: `Remove an existing ${typeName} with id. Returns the removed ${typeName}.`,
+	description: `Remove an existing ${typeName} with given id. Returns the removed ${typeName}.`,
 	args: {
 		id: { type: new GraphQLNonNull(GraphQLID) }
 	},
@@ -23,7 +23,7 @@ const removeHistory = {
 
 const updateHistory = {
 	type: HistoryType,
-	description: `Update an existing ${typeName} with id. Returns the updated ${typeName}.`,
+	description: `Update an existing ${typeName} with given id. Returns the updated ${typeName}.`,
 	args: {
 		id: { type: new GraphQLNonNull(GraphQLID) }
 	},

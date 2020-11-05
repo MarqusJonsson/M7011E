@@ -23,7 +23,7 @@ const createGenerator = {
 
 const removeGenerator = {
 	type: GeneratorType,
-	description: `Remove an existing ${typeName} with id. Returns the removed ${typeName}.`,
+	description: `Remove an existing ${typeName} with given id. Returns the removed ${typeName}.`,
 	args: {
 		id: { type: new GraphQLNonNull(GraphQLID) }
 	},
@@ -34,7 +34,7 @@ const removeGenerator = {
 
 const updateGenerator = {
 	type: GeneratorType,
-	description: `Update an existing ${typeName} with id. Returns the updated ${typeName}.`,
+	description: `Update an existing ${typeName} with given id. Returns the updated ${typeName}.`,
 	args: {
 		generator: { type: new GraphQLNonNull(GeneratorInputType) },
 	},
