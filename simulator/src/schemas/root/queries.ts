@@ -6,6 +6,7 @@ import { buildings, building } from '../building/queries';
 import { buildingType, buildingTypes } from '../buildingType/queries';
 import { generators, generator } from '../generator/queries';
 import { generatorType, generatorTypes } from '../generatorType/queries';
+import { transactions, transaction } from '../transaction/queries';
 
 const RootQuery = new GraphQLObjectType({
 	name: 'RootQuery',
@@ -23,7 +24,9 @@ const RootQuery = new GraphQLObjectType({
 		generatorTypes: generatorTypes,
 		generatorType: generatorType,
 		generators: generators,
-		generator: generator
+		generator: generator,
+		transactions: transactions,
+		transaction: transaction
 	}
 });
 
