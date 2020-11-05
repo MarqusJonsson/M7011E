@@ -1,4 +1,4 @@
-import { db } from '../connect';
+import { db } from '../connection';
 import { BaseResolver } from './base';
 
 class HistoryResolver extends BaseResolver {
@@ -12,13 +12,13 @@ class HistoryResolver extends BaseResolver {
 			RETURNING *`;
 	}
 
-	create = async () => {
+	create = async (): Promise<any> => {
 		return db
 			.oneOrNone(this.queries.create)
 			.catch(err => console.log(err));
 	}
 
-	update = async (id: number | string) => {
+	update = async (id: number | string): Promise<any> => {
 		const values = [id];
 		return db
 			.oneOrNone(this.queries.update, values)

@@ -1,8 +1,8 @@
-import { db } from './connect';
+import { db } from './connection';
 
 const recreateEmptySchema = `
 	DROP SCHEMA public CASCADE;
 	CREATE SCHEMA public;
 `;
 
-export const clear = () => db.none(recreateEmptySchema);
+export const clear = (): Promise<null> => db.none(recreateEmptySchema);
