@@ -13,7 +13,7 @@ class UserResolver extends BaseWithHistoryResolver {
 			UPDATE ${this.tableName} SET email = $2, currency = $3, user_types_id = $4
 			WHERE id = $1 RETURNING *`;
 		this.queries.updateCurrency = `
-			UPDATE ${this.tableName} SET currency = $2 WHERE id = $1 RETURNING *`;
+			UPDATE ${this.tableName} SET currency = currency + $2 WHERE id = $1 RETURNING *`;
 		this.queries.byUserTypeId = `
 			SELECT * FROM ${this.tableName} WHERE user_types_id = $1`;
 		this.queries.userType = () => {
@@ -39,9 +39,9 @@ class UserResolver extends BaseWithHistoryResolver {
 		}).catch(err => console.log(err));
 	}
 
-	updateCurrency = async (id: number | string, currency: number): Promise<any> => {
+	updateCurrency = async (id: number | string, currencyDelta: number): Promise<any> => {
 		return await db.tx(async (t: ITask<{}>) => {
-			const user = await t.one(this.queries.updateCurrency, [id, currency]);
+			const user = await t.one(this.queries.updateCurrency, [id, currencyDelta]);
 			await t.oneOrNone(historyResolver.queries.update, [user.history_id])
 			return user;
 		}).catch(err => console.log(err));
