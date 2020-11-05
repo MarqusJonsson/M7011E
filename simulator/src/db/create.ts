@@ -17,6 +17,7 @@ const createTables = `
 		id				SERIAL	PRIMARY KEY,
 		email			VARCHAR (255)	NOT NULL	UNIQUE,
 		currency		REAL			NOT NULL,
+		CONSTRAINT currency_non_negative CHECK (currency >= 0),
 		user_types_id	INT				NOT NULL,
 		history_id		INT				NOT NULL,
 		FOREIGN KEY (user_types_id)
