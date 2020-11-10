@@ -5,38 +5,36 @@ import {
 	GraphQLID,
 	GraphQLFloat
 } from 'graphql';
+import { userResolver } from '../../db/resolvers/user';
 import { historyField } from '../history/fields';
+import { UserTypeType } from '../userType/types';
 
 const typeName = 'User';
 
 const UserType = new GraphQLObjectType({
 	name: typeName,
 	description: `An ${typeName} object type.`,
-	fields: () => {
-		const { UserTypeType } = require('../userType/types');
-		const { userResolver } = require('../../db/resolvers/user');
-		return {
-			id: {
-				type: GraphQLID,
-				description: `The id of the ${typeName}.`
-			},
-			email: {
-				type: GraphQLString,
-				description: `The email of the ${typeName}.`
-			},
-			currency: {
-				type: GraphQLFloat,
-				description: `The currency of the ${typeName}. When using UpdateCurrency, currency is instead the difference in currency to be updated.`
-			},
-			user_type: {
-				type: UserTypeType,
-				description: `The userType of the ${typeName}.`,
-				resolve(parent) {
-					return userResolver.userType(parent.id);
-				}
-			},
-			history: historyField(typeName)
-		}
+	fields: {
+		id: {
+			type: GraphQLID,
+			description: `The id of the ${typeName}.`
+		},
+		email: {
+			type: GraphQLString,
+			description: `The email of the ${typeName}.`
+		},
+		currency: {
+			type: GraphQLFloat,
+			description: `The currency of the ${typeName}. When using UpdateCurrency, currency is instead the difference in currency to be updated.`
+		},
+		user_type: {
+			type: UserTypeType,
+			description: `The userType of the ${typeName}.`,
+			resolve(parent) {
+				return userResolver.userType(parent.id);
+			}
+		},
+		history: historyField(typeName)
 	}
 });
 

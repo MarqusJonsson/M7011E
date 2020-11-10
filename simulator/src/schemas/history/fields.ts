@@ -6,7 +6,7 @@ const historyField = (name: string) => {
 		type: HistoryType,
 		description: `The ${typeName} of the ${name}.`,
 		resolve(parent: any) {
-			return historyResolver.one(parent.history_id);
+			return historyResolver.one(parent.histories_id);
 		}
 	}
 };

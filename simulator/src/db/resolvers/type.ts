@@ -7,7 +7,7 @@ abstract class TypeResolver extends BaseWithHistoryResolver {
 	constructor(tableName: string) {
 		super(tableName);
 		this.queries.create = `
-			INSERT INTO ${this.tableName}(name, history_id) VALUES ($1, $2) RETURNING *`;
+			INSERT INTO ${this.tableName}(name, histories_id) VALUES ($1, $2) RETURNING *`;
 		this.queries.update = `
 			UPDATE ${this.tableName} SET name = $2 WHERE id = $1 RETURNING *`;
 	}
@@ -22,7 +22,7 @@ abstract class TypeResolver extends BaseWithHistoryResolver {
 	update = async (id: number | string, name: string): Promise<any> => {
 		return await db.tx(async (t: ITask<{}>) => {
 			const type = await t.one(this.queries.update, [id, name]);
-			await t.oneOrNone(historyResolver.queries.update, [type.history_id]);
+			await t.oneOrNone(historyResolver.queries.update, [type.histories_id]);
 			return type;
 		}).catch(err => console.log(err));
 	}

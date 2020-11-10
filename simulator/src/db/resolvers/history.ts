@@ -26,4 +26,4 @@ class HistoryResolver extends BaseResolver {
 	}
 }
 
-export const historyResolver = new HistoryResolver('history');
+export const historyResolver = new HistoryResolver('histories');

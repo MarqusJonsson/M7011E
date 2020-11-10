@@ -8,44 +8,42 @@ import {
 import { historyField } from '../history/fields';
 import { BuildingType } from '../building/types';
 import { buildingResolver } from '../../db/resolvers/building';
+import { GeneratorTypeType } from '../generatorType/types';
+import { generatorResolver } from '../../db/resolvers/generator';
 
 const typeName = 'Generator';
 
 const GeneratorType = new GraphQLObjectType({
 	name: typeName,
 	description: `A ${typeName} object type.`,
-	fields: () => {
-		const { GeneratorTypeType } = require('../generatorType/types');
-		const { generatorResolver } = require('../../db/resolvers/generator');
-		return {
-			id: {
-				type: GraphQLID,
-				description: `The id of the ${typeName}.`
-			},
-			base_output: {
-				type: GraphQLFloat,
-				description: `The battery buffer of the ${typeName}.`
-			},
-			is_broken: {
-				type: GraphQLBoolean,
-				description: `Whether or not the ${typeName} is broken or not.`
-			},
-			generator_type: {
-				type: GeneratorTypeType,
-				description: `The generatorType of the ${typeName}.`,
-				resolve(parent) {
-					return generatorResolver.generatorType(parent.id);
-				}
-			},
-			building: {
-				type: BuildingType,
-				description: `The building that the ${typeName} belongs to.`,
-				resolve(parent) {
-					return buildingResolver.one(parent.buildings_id);
-				}
-			},
-			history: historyField(typeName)
-		}
+	fields: {
+		id: {
+			type: GraphQLID,
+			description: `The id of the ${typeName}.`
+		},
+		base_output: {
+			type: GraphQLFloat,
+			description: `The battery buffer of the ${typeName}.`
+		},
+		is_broken: {
+			type: GraphQLBoolean,
+			description: `Whether or not the ${typeName} is broken or not.`
+		},
+		generator_type: {
+			type: GeneratorTypeType,
+			description: `The generatorType of the ${typeName}.`,
+			resolve(parent) {
+				return generatorResolver.generatorType(parent.id);
+			}
+		},
+		building: {
+			type: BuildingType,
+			description: `The building that the ${typeName} belongs to.`,
+			resolve(parent) {
+				return buildingResolver.one(parent.buildings_id);
+			}
+		},
+		history: historyField(typeName)
 	}
 });
 
@@ -73,7 +71,7 @@ const GeneratorInputType = new GraphQLInputObjectType({
 			type: GraphQLID,
 			description: `The id of the building that the ${typeName} belongs to.`
 		},
-		history_id: {
+		histories_id: {
 			type: GraphQLID,
 			description: `The history id of the ${typeName}.`
 		}

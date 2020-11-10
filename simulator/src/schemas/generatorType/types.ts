@@ -11,18 +11,16 @@ const typeName = 'GeneratorType';
 const GeneratorTypeType = new GraphQLObjectType({
 	name: typeName,
 	description: `A ${typeName} object type.`,
-	fields: () => {
-		return {
-			id: {
-				type: GraphQLID,
-				description: `The id of the ${typeName}.`
-			},
-			name: {
-				type: GraphQLString,
-				description: `The name of the ${typeName}.`
-			},
-			history: historyField(typeName)
-		}
+	fields: {
+		id: {
+			type: GraphQLID,
+			description: `The id of the ${typeName}.`
+		},
+		name: {
+			type: GraphQLString,
+			description: `The name of the ${typeName}.`
+		},
+		history: historyField(typeName)
 	}
 });
 
@@ -38,7 +36,7 @@ const GeneratorTypeInputType = new GraphQLInputObjectType({
 			type: GraphQLString,
 			description: `The name of the ${typeName}.`
 		},
-		history_id: {
+		histories_id: {
 			type: GraphQLID,
 			description: `The history object of the ${typeName}.`
 		}
