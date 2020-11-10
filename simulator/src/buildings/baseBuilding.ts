@@ -30,7 +30,7 @@ export abstract class BaseBuilding extends Identifiable {
 
 	public abstract generateElectricity(deltaTimeS: number): void;
 
-	public consumeElectricity(deltaTimeS: number) {
+	public consumeElectricity(deltaTimeS: number, environment: Environment) {
 		const remainingElectricity = this.battery.buffer - this.consumption * deltaTimeS;
 		if (!this.hasBlackout) {
 			if (remainingElectricity < 0) {
