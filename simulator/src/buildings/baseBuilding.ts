@@ -28,6 +28,8 @@ export abstract class BaseBuilding extends Identifiable {
 		return this.production * deltaTimeS;
 	}
 
+	public abstract calculateConsumption(deltaTimeS: number, environment: Environment): void;
+
 	public abstract generateElectricity(deltaTimeS: number): void;
 
 	public consumeElectricity(deltaTimeS: number, environment: Environment) {
