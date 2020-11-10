@@ -21,7 +21,7 @@ const createUser = {
 
 const removeUser = {
 	type: UserType,
-	description: `Remove an existing ${typeName} with id. Returns the removed ${typeName}.`,
+	description: `Remove an existing ${typeName} with given id. Returns the removed ${typeName}.`,
 	args: {
 		id: { type: new GraphQLNonNull(GraphQLID) }
 	},
@@ -32,7 +32,7 @@ const removeUser = {
 
 const updateUser = {
 	type: UserType,
-	description: `Update an existing ${typeName} with id. Returns the updated ${typeName}.`,
+	description: `Update an existing ${typeName} with given id. Returns the updated ${typeName}.`,
 	args: {
 		user: { type: new GraphQLNonNull(UserInputType) },
 	},
@@ -47,7 +47,7 @@ const updateUser = {
 
 const updateUserCurrency = {
 	type: UserType,
-	description: `Update the currency of an existing ${typeName} with id. Returns the updated ${typeName}.`,
+	description: `Update the currency of an existing ${typeName} with given id. Returns the updated ${typeName}.`,
 	args: {
 		user: { type: new GraphQLNonNull(UserInputType) },
 	},

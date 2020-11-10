@@ -41,7 +41,7 @@ const GeneratorType = new GraphQLObjectType({
 				type: BuildingType,
 				description: `The building that the ${typeName} belongs to.`,
 				resolve(parent) {
-					return buildingResolver.one(parent.id);
+					return buildingResolver.one(parent.buildings_id);
 				}
 			},
 			history: historyField(typeName)

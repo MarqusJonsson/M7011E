@@ -11,7 +11,7 @@ const typeName = 'User';
 
 const UserType = new GraphQLObjectType({
 	name: typeName,
-	description: `A ${typeName} object type.`,
+	description: `An ${typeName} object type.`,
 	fields: () => {
 		const { UserTypeType } = require('../userType/types');
 		const { userResolver } = require('../../db/resolvers/user');
@@ -26,7 +26,7 @@ const UserType = new GraphQLObjectType({
 			},
 			currency: {
 				type: GraphQLFloat,
-				description: `The currency of the ${typeName}.`
+				description: `The currency of the ${typeName}. When using UpdateCurrency, currency is instead the difference in currency to be updated.`
 			},
 			user_type: {
 				type: UserTypeType,
@@ -54,7 +54,7 @@ const UserInputType = new GraphQLInputObjectType({
 		},
 		currency: {
 			type: GraphQLFloat,
-			description: `The currency of the ${typeName}.`
+			description: `The currency of the ${typeName}. When using UpdateCurrency, currency is instead the difference in currency to be updated.`
 		},
 		user_types_id: {
 			type: GraphQLID,

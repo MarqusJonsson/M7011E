@@ -6,6 +6,7 @@ import { createBuilding, updateBuilding, removeBuilding, updateBatteryBuffer } f
 import { createBuildingType, removeBuildingType, updateBuildingType } from '../buildingType/mutations';
 import { createGenerator, updateGenerator, removeGenerator } from '../generator/mutations';
 import { createGeneratorType, removeGeneratorType, updateGeneratorType } from '../generatorType/mutations';
+import { createTransaction, removeTransaction } from '../transaction/mutations';
 
 const RootMutation = new GraphQLObjectType({
 	name: 'RootMutation',
@@ -33,6 +34,8 @@ const RootMutation = new GraphQLObjectType({
 		createGenerator: createGenerator,
 		removeGenerator: removeGenerator,
 		updateGenerator: updateGenerator,
+		createTransaction: createTransaction,
+		removeTransaction: removeTransaction,
 	}
 });
 
