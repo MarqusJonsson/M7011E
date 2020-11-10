@@ -67,4 +67,13 @@ export class Prosumer extends BaseUser {
             //}
         }
     }
+
+    public sellElectricity(){
+        for (const house of this.houses){
+            const payment = house.powerPlant.calculateElectricityPrice(house.electricityOutput);
+            house.powerPlant.battery.buffer += house.electricityOutput;
+            this.currency += payment;
+            house.powerPlantManager.currency -= payment;
+        }
+    }
 }
