@@ -48,7 +48,7 @@ const UserTypeInputType = new GraphQLInputObjectType({
 			type: GraphQLString,
 			description: `The name of the ${typeName}.`
 		},
-		history_id: {
+		histories_id: {
 			type: GraphQLID,
 			description: `The history object of the ${typeName}.`
 		}

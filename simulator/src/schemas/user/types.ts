@@ -60,7 +60,7 @@ const UserInputType = new GraphQLInputObjectType({
 			type: GraphQLID,
 			description: `The userType of the ${typeName}.`
 		},
-		history_id: {
+		histories_id: {
 			type: GraphQLID,
 			description: `The history object of the ${typeName}.`
 		}

@@ -7,7 +7,7 @@ class GeneratorResolver extends BaseWithHistoryResolver {
 	constructor(tableName: string) {
 		super(tableName);
 		this.queries.create = `
-			INSERT INTO ${this.tableName}(base_output, is_broken, generator_types_id, buildings_id, history_id)
+			INSERT INTO ${this.tableName}(base_output, is_broken, generator_types_id, buildings_id, histories_id)
 			VALUES ($1, $2, $3, $4, $5) RETURNING *`;
 		this.queries.update = `
 			UPDATE ${this.tableName} SET base_output = $2, is_broken = $3, generator_types_id = $4, buildings_id = $5
@@ -30,7 +30,7 @@ class GeneratorResolver extends BaseWithHistoryResolver {
 	update = async (id: string|number, baseOutput: number, isBroken: boolean, generatorTypesId: string | number, buildingsId: string | number): Promise<any> => {
 		return await db.tx(async (t: ITask<{}>) => {
 			const generator = await t.one(this.queries.update, [id, baseOutput, isBroken, generatorTypesId, buildingsId]);
-			await t.oneOrNone(historyResolver.queries.update, [generator.history_id])
+			await t.oneOrNone(historyResolver.queries.update, [generator.histories_id])
 			return generator;
 		}).catch(err => console.log(err));
 	}

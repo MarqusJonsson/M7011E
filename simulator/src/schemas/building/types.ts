@@ -72,7 +72,7 @@ const BuildingInputType = new GraphQLInputObjectType({
 			type: GraphQLID,
 			description: `The owner id of the ${typeName}.`
 		},
-		history_id: {
+		histories_id: {
 			type: GraphQLID,
 			description: `The history id of the ${typeName}.`
 		}

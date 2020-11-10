@@ -7,7 +7,7 @@ class UserResolver extends BaseWithHistoryResolver {
 	constructor(tableName: string) {
 		super(tableName);
 		this.queries.create = `
-			INSERT INTO ${this.tableName}(email, currency, user_types_id, history_id)
+			INSERT INTO ${this.tableName}(email, currency, user_types_id, histories_id)
 			VALUES ($1, $2, $3, $4) RETURNING *`;
 		this.queries.update = `
 			UPDATE ${this.tableName} SET email = $2, currency = $3, user_types_id = $4
@@ -34,7 +34,7 @@ class UserResolver extends BaseWithHistoryResolver {
 	update = async (id: number | string, email: string, currency: number, userTypesId: number | string): Promise<any> => {
 		return await db.tx(async (t: ITask<{}>) => {
 			const user = await t.one(this.queries.update, [id, email, currency, userTypesId]);
-			await t.oneOrNone(historyResolver.queries.update, [user.history_id])
+			await t.oneOrNone(historyResolver.queries.update, [user.histories_id])
 			return user;
 		}).catch(err => console.log(err));
 	}
@@ -42,7 +42,7 @@ class UserResolver extends BaseWithHistoryResolver {
 	updateCurrency = async (id: number | string, currencyDelta: number): Promise<any> => {
 		return await db.tx(async (t: ITask<{}>) => {
 			const user = await t.one(this.queries.updateCurrency, [id, currencyDelta]);
-			await t.oneOrNone(historyResolver.queries.update, [user.history_id])
+			await t.oneOrNone(historyResolver.queries.update, [user.histories_id])
 			return user;
 		}).catch(err => console.log(err));
 	}

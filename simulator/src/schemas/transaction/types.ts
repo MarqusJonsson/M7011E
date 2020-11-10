@@ -63,7 +63,7 @@ const TransactionInputType = new GraphQLInputObjectType({
 			type: GraphQLID,
 			description: `The id of the receiver of the ${typeName}.`
 		},
-		history_id: {
+		histories_id: {
 			type: GraphQLID,
 			description: `The history object of the ${typeName}.`
 		}

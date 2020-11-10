@@ -73,7 +73,7 @@ const GeneratorInputType = new GraphQLInputObjectType({
 			type: GraphQLID,
 			description: `The id of the building that the ${typeName} belongs to.`
 		},
-		history_id: {
+		histories_id: {
 			type: GraphQLID,
 			description: `The history id of the ${typeName}.`
 		}

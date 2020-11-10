@@ -7,7 +7,7 @@ import {
 
 const createGenerator = {
 	type: GeneratorType,
-	description: `Create a new generator given a ${typeName} payload containing id, base_output, is_broken, generator_type_id, buildings_id and history_id. Returns the created ${typeName}.`,
+	description: `Create a new generator given a ${typeName} payload containing id, base_output, is_broken, generator_type_id, buildings_id and histories_id. Returns the created ${typeName}.`,
 	args: {
 		generator: { type: new GraphQLNonNull(GeneratorInputType) }
 	},

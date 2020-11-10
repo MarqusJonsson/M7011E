@@ -13,7 +13,7 @@ class BaseWithHistoryResolver extends BaseResolver {
 	remove = async (id: number | string): Promise<any> => {
 		return await db.tx(async (t: ITask<{}>) => {
 			const role = await t.one(this.queries.remove, id);
-			await t.oneOrNone(historyResolver.queries.remove, role.history_id);
+			await t.oneOrNone(historyResolver.queries.remove, role.histories_id);
 			return role;
 		}).catch(err => console.log(err));
 	}
