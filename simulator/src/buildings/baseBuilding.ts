@@ -3,7 +3,6 @@ import { GeoData } from './components/geoData';
 import { BaseGenerator } from '../generators/baseGenerator';
 import { Identifiable } from '../identifiable';
 import { Environment } from '../environment';
-
 export abstract class BaseBuilding extends Identifiable {
 	private _battery: Battery;
 	private _geoData: GeoData;
@@ -11,29 +10,22 @@ export abstract class BaseBuilding extends Identifiable {
 	private _production: number = 0;
 	private _hasBlackout: boolean = false;
 	private _consumption: number;
-	private _environment: Environment;
+	private _electricityOutput: number = 0;
 
-	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[], consumption: number, environment: Environment) {
+	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[], consumption: number) {
 		super(type);
-		this._environment = environment;
 		this._battery = battery;
 		this._geoData = geoData;
-		this.generators = generators;
+		this._generators = generators;
 		this._consumption = consumption;
 	}
 
-	public calculateProduction(deltaTimeS: number): number {
+	public calculateProduction(deltaTimeS: number, environment: Environment, geoData: GeoData): number {
 		if (this.hasBlackout) return 0;
 		this.production = this.generators.reduce((totalProduction, generator) => {
-			return totalProduction + generator.calculateOutput();
+			return totalProduction + generator.calculateOutput(environment, geoData);
 		}, 0);
 		return this.production * deltaTimeS;
-	}
-
-	private updateGeneratorsParent() {
-		this.generators.forEach((generator) => {
-			generator.parentBuilding = this;
-		});
 	}
 
 	public abstract generateElectricity(deltaTimeS: number): void;
@@ -81,7 +73,6 @@ export abstract class BaseBuilding extends Identifiable {
 
 	public set generators(generators: BaseGenerator[]) {
 		this._generators = generators;
-		this.updateGeneratorsParent();
 	}
 
 	public get production(): number {
@@ -108,11 +99,11 @@ export abstract class BaseBuilding extends Identifiable {
 		this._consumption = value;
 	}
 
-	public get environment(): Environment{
-		return this._environment;
+	public get electricityOutput(): number{
+		return this._electricityOutput;
 	}
 
-	public set environment(environment: Environment){
-		this._environment = environment;
+	public set electricityOutput(value: number){
+		this._electricityOutput = value;
 	}
 }

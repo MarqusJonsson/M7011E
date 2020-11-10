@@ -2,21 +2,16 @@ import {BaseBuilding} from './baseBuilding';
 import {Battery} from './components/battery';
 import {GeoData} from './components/geoData';
 import {BaseGenerator} from '../generators/baseGenerator';
-import { Manager } from '../users/manager';
-import { Environment } from '../environment';
-
 export abstract class BasePowerPlant extends BaseBuilding {
 	private _electricityBuyPrice: number = 0;
 	private _electricitySellPrice: number = 0;
 	private _startUpTime: number = 30;
-	private _manager: Manager;
 	private _productionLowerCutOff: number = 0.2;
 	private _productionUpperCutOff: number = 0.6;
 	private _productionFlag: boolean = true;
 
-	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[], consumption: number, manager: Manager, environment: Environment) {
-		super(type, battery, geoData, generators, consumption, environment);
-		this._manager = manager;
+	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[], consumption: number) {
+		super(type, battery, geoData, generators, consumption);
 	}
 
 	public generateElectricity(deltaTimeS: number): void {
@@ -65,14 +60,6 @@ export abstract class BasePowerPlant extends BaseBuilding {
 
 	public set startUpTime(value: number) {
 		this._startUpTime = value;
-	}
-
-	public get manager(): Manager {
-		return this._manager;
-	}
-
-	public set manager(manager: Manager) {
-		this._manager = manager;
 	}
 
 	public get productionLowerCufOff(): number {
