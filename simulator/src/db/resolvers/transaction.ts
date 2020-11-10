@@ -17,8 +17,8 @@ class TransactionResolver extends BaseWithHistoryResolver {
 		return await db.tx(async (t: ITask<{}>) => {
 			await t.one(userResolver.queries.updateCurrency, [senderUsersId, -currency]);
 			await t.one(userResolver.queries.updateCurrency, [receiverUsersId, currency]);
-			await t.one(buildingResolver.queries.updateBatteryBuffer, [senderBuildingsId, -electricity]);
-			await t.one(buildingResolver.queries.updateBatteryBuffer, [receiverBuildingsId, electricity]);
+			await t.one(buildingResolver.queries.updateBatteryBuffer, [senderBuildingsId, electricity]);
+			await t.one(buildingResolver.queries.updateBatteryBuffer, [receiverBuildingsId, -electricity]);
 			const history = await t.one(historyResolver.queries.create);
 			return await t.one(this.queries.create, [currency, electricity, senderUsersId, receiverUsersId, senderBuildingsId, receiverBuildingsId, history.id]);
 		}).catch(err => console.log(err));
