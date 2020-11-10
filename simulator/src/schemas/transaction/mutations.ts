@@ -13,9 +13,12 @@ const createTransaction = {
 	},
 	resolve(parent: any, args: any) {
 		return transactionResolver.create(
-			args.transaction.amount,
-			args.transaction.sender_id,
-			args.transaction.receiver_id
+			args.transaction.currency,
+			args.transaction.electricity,
+			args.transaction.sender_users_id,
+			args.transaction.receiver_users_id,
+			args.transaction.sender_buildings_id,
+			args.transaction.receiver_buildings_id
 		);
 	}
 };
