@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-//import { BaseUser } from '../../src/users/baseUser';
 import { House } from '../../src/buildings/house';
 import { Prosumer } from "../../src/users/prosumer";
 import { CoalGenerator } from '../../src/generators/coalGenerator';
@@ -34,13 +33,13 @@ class TestObject{
 		this.pGenerators = [] as BaseGenerator[];
 		this.powerPlants = [] as BasePowerPlant[];
 		this.manager = new Manager(0, this.powerPlants);
-		this.coalPowerPlant = new CoalPowerPlant(this.pBattery, this.pGeoData, this.pGenerators, 0, this.manager, this.environment);
+		this.coalPowerPlant = new CoalPowerPlant(this.pBattery, this.pGeoData, this.pGenerators, 0);
 		this.prosumer = new Prosumer();
 		this.hBattery = new Battery(1000, 0);
 		this.hGenerators = [] as BaseGenerator[];
 		this.hGeoData = new GeoData(10, 10, 10);
-		this.house = new House(this.hBattery, this.hGeoData, this.hGenerators, 1, this.coalPowerPlant, this.prosumer, this.environment, 0.1);
-		this.hCoalGenerator = new CoalGenerator(100, false, this.house, 0);
+		this.house = new House(this.hBattery, this.hGeoData, this.hGenerators, 1, this.coalPowerPlant, 0.1, this.manager);
+		this.hCoalGenerator = new CoalGenerator(100, false, 0);
 		this.house.generators.push(this.hCoalGenerator);
 		this.prosumer.houses.push(this.house);
 	}
@@ -54,7 +53,7 @@ describe('prosumer.ts', function() {
 				testObject.pBattery.buffer = 500;
 				testObject.coalPowerPlant.electricityBuyPrice = 10;
 				testObject.house.consumption = 300;
-				testObject.house.calculateProduction(1);
+				testObject.house.calculateProduction(1, testObject.environment, testObject.pGeoData);
 				testObject.prosumer.currency = 2000;
 				testObject.prosumer.buyElectricity(1);
 				expect(testObject.prosumer.currency).to.equal(0);
@@ -64,7 +63,7 @@ describe('prosumer.ts', function() {
 				testObject.pBattery.buffer = 100;
 				testObject.coalPowerPlant.electricityBuyPrice = 10;
 				testObject.house.consumption = 300;
-				testObject.house.calculateProduction(1);
+				testObject.house.calculateProduction(1, testObject.environment, testObject.pGeoData);
 				testObject.prosumer.currency = 2000;
 				testObject.prosumer.buyElectricity(1);
 				expect(testObject.prosumer.currency).to.equal(1000);
@@ -75,7 +74,7 @@ describe('prosumer.ts', function() {
 				testObject.pBattery.buffer = 500;
 				testObject.coalPowerPlant.electricityBuyPrice = 10;
 				testObject.house.consumption = 500;
-				testObject.house.calculateProduction(1);
+				testObject.house.calculateProduction(1, testObject.environment, testObject.pGeoData);
 				testObject.prosumer.currency = 500;
 				testObject.prosumer.buyElectricity(1);
 				expect(testObject.prosumer.currency).to.equal(0);
@@ -86,7 +85,7 @@ describe('prosumer.ts', function() {
 				testObject.pBattery.buffer = 38;
 				testObject.coalPowerPlant.electricityBuyPrice = 10;
 				testObject.house.consumption = 500;
-				testObject.house.calculateProduction(1);
+				testObject.house.calculateProduction(1, testObject.environment, testObject.pGeoData);
 				testObject.prosumer.currency = 390;
 				testObject.prosumer.buyElectricity(1);
 				expect(testObject.prosumer.currency).to.equal(10);

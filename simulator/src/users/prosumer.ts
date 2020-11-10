@@ -29,10 +29,10 @@ export class Prosumer extends BaseUser {
         for (const house of this.houses){
             let payment: number = 0;
             const houseDemand = house.getDemand(deltaTimeS);
-            const electricityBuyPrice = house.powerPlantParent.electricityBuyPrice;
+            const electricityBuyPrice = house.powerPlant.electricityBuyPrice;
             const currencyDifference = this.currency - houseDemand * electricityBuyPrice;
             const hBattery = house.battery;
-            const pBattery = house.powerPlantParent.battery;
+            const pBattery = house.powerPlant.battery;
             if (houseDemand > 0){
                 if (currencyDifference >= 0){
                     if (houseDemand <= pBattery.buffer){
@@ -59,7 +59,7 @@ export class Prosumer extends BaseUser {
                         pBattery.buffer = 0;
                     }
                 }
-                house.powerPlantParent.manager.currency += payment;
+                house.powerPlantManager.currency += payment;
                 this.currency -= payment;
             }
             //else {
