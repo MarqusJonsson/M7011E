@@ -5,16 +5,16 @@ import {
 	GraphQLString,
 	GraphQLID
 } from 'graphql';
+import { userResolver } from '../../db/resolvers/user';
 import { historyField } from '../history/fields';
 
 const typeName = 'UserType';
 
 const UserTypeType = new GraphQLObjectType({
 	name: typeName,
-	description: `A ${typeName} object type.`,
+	description: `An ${typeName} object type.`,
 	fields: () => {
 		const { UserType } = require('../user/types');
-		const { userResolver } = require('../../db/resolvers/user');
 		return {
 			id: {
 				type: GraphQLID,
@@ -48,7 +48,7 @@ const UserTypeInputType = new GraphQLInputObjectType({
 			type: GraphQLString,
 			description: `The name of the ${typeName}.`
 		},
-		histories_id: {
+		history_id: {
 			type: GraphQLID,
 			description: `The history object of the ${typeName}.`
 		}

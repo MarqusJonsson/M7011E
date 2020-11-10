@@ -7,44 +7,42 @@ import {
 import { historyField } from '../history/fields';
 import { UserType } from '../user/types';
 import { userResolver } from '../../db/resolvers/user';
+import { BuildingTypeType } from '../buildingType/types';
+import { buildingResolver } from '../../db/resolvers/building';
 
 const typeName = 'Building';
 
 const BuildingType = new GraphQLObjectType({
 	name: typeName,
 	description: `A ${typeName} object type.`,
-	fields: () => {
-		const { BuildingTypeType } = require('../buildingType/types');
-		const { buildingResolver } = require('../../db/resolvers/building');
-		return {
-			id: {
-				type: GraphQLID,
-				description: `The id of the ${typeName}.`
-			},
-			battery_buffer: {
-				type: GraphQLFloat,
-				description: `The battery buffer of the ${typeName}.`
-			},
-			battery_limit: {
-				type: GraphQLFloat,
-				description: `The battery limit of the ${typeName}.`
-			},
-			building_type: {
-				type: BuildingTypeType,
-				description: `The buildingType of the ${typeName}.`,
-				resolve(parent) {
-					return buildingResolver.buildingType(parent.id);
-				}
-			},
-			owner: {
-				type: UserType,
-				description: `The owner of the ${typeName}.`,
-				resolve(parent) {
-					return userResolver.one(parent.owner_id);
-				}
-			},
-			history: historyField(typeName)
-		}
+	fields: {
+		id: {
+			type: GraphQLID,
+			description: `The id of the ${typeName}.`
+		},
+		battery_buffer: {
+			type: GraphQLFloat,
+			description: `The battery buffer of the ${typeName}.`
+		},
+		battery_limit: {
+			type: GraphQLFloat,
+			description: `The battery limit of the ${typeName}.`
+		},
+		building_type: {
+			type: BuildingTypeType,
+			description: `The buildingType of the ${typeName}.`,
+			resolve(parent) {
+				return buildingResolver.buildingType(parent.id);
+			}
+		},
+		owner: {
+			type: UserType,
+			description: `The owner of the ${typeName}.`,
+			resolve(parent) {
+				return userResolver.one(parent.owner_id);
+			}
+		},
+		history: historyField(typeName)
 	}
 });
 

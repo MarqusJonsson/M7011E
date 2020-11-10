@@ -11,18 +11,16 @@ const typeName = 'GeneratorType';
 const GeneratorTypeType = new GraphQLObjectType({
 	name: typeName,
 	description: `A ${typeName} object type.`,
-	fields: () => {
-		return {
-			id: {
-				type: GraphQLID,
-				description: `The id of the ${typeName}.`
-			},
-			name: {
-				type: GraphQLString,
-				description: `The name of the ${typeName}.`
-			},
-			history: historyField(typeName)
-		}
+	fields: {
+		id: {
+			type: GraphQLID,
+			description: `The id of the ${typeName}.`
+		},
+		name: {
+			type: GraphQLString,
+			description: `The name of the ${typeName}.`
+		},
+		history: historyField(typeName)
 	}
 });
 
