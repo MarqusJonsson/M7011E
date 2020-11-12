@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { House } from '../../src/buildings/house';
-import { Prosumer } from "../../src/users/prosumer";
+import { Prosumer } from '../../src/users/prosumer';
 import { CoalGenerator } from '../../src/generators/coalGenerator';
 import { BaseGenerator } from '../../src/generators/baseGenerator';
 import { GeoData } from '../../src/buildings/components/geoData';

@@ -93,7 +93,7 @@ function populate(users: BaseUser[]) {
 					const prosumer = <Prosumer> user;
 					// Create prosumer users in database
 					userResolver.create(
-						prosumer.type + "_" + prosumer.id,
+						prosumer.type + '_' + prosumer.id,
 						prosumer.currency,
 						prosumerType.id
 					).then((dbProsumer) => {
@@ -126,7 +126,7 @@ function populate(users: BaseUser[]) {
 					const manager = <Manager> user;
 					// Create manager users in database
 					userResolver.create(
-						manager.type + "_" + manager.id,
+						manager.type + '_' + manager.id,
 						manager.currency,
 						managerType.id
 					).then((dbManager) => {

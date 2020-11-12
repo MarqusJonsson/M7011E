@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import { House } from "../../src/buildings/house";
+import { House } from '../../src/buildings/house';
 import { Battery } from '../../src/buildings/components/battery';
 import { GeoData } from '../../src/buildings/components/geoData';
-import { CoalGenerator } from "../../src/generators/coalGenerator";
-import { CoalPowerPlant} from "../../src/buildings/coalPowerPlant";
-import { Manager } from "../../src/users/manager";
+import { CoalGenerator } from '../../src/generators/coalGenerator';
+import { CoalPowerPlant} from '../../src/buildings/coalPowerPlant';
+import { Manager } from '../../src/users/manager';
 import { Environment } from '../../src/environment';
 class TestObject{
 	environment!: Environment;

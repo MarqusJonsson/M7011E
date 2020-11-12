@@ -2,7 +2,7 @@ import { BaseBuilding } from './baseBuilding';
 import { Battery } from './components/battery';
 import { GeoData } from './components/geoData';
 import { BaseGenerator } from '../generators/baseGenerator';
-import { BasePowerPlant } from "./basePowerPlant";
+import { BasePowerPlant } from './basePowerPlant';
 import { Manager } from '../users/manager';
 import { Environment } from '../environment';
 

@@ -1,4 +1,4 @@
-import { Identifiable } from "../../identifiable";
+import { Identifiable } from '../../identifiable';
 
 export class Battery extends Identifiable {
 	private _buffer: number;
@@ -20,10 +20,10 @@ export class Battery extends Identifiable {
 
 	public set buffer(value: number) {
 		if (value > this._capacity) {
-			throw new Error("value cannot be larger than the capacity of " + this._capacity);
+			throw new Error('Value cannot be larger than the capacity of ' + this._capacity);
 		}
 		else if (value < 0){
-			throw new Error("value cannot be smaller than 0");
+			throw new Error('Value cannot be smaller than 0');
 		}
 		this._buffer = value;
 	}
