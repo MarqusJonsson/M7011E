@@ -14,11 +14,34 @@ export class House extends BaseBuilding {
 	private _batteryToPowerPlantRatio: number;
 	private _powerPlant: BasePowerPlant;
 	private _powerPlantManager: Manager;
-	constructor(battery: Battery, geoData: GeoData, generators: BaseGenerator[], consumption: number, powerPlant: BasePowerPlant, batteryToPowerPlantRatio: number, manager: Manager) {
+	constructor(battery: Battery, geoData: GeoData, generators: BaseGenerator[], consumption: number, batteryToPowerPlantRatio: number, managers: Manager[]) {
 		super(House.name, battery, geoData, generators, consumption);
 		this._batteryToPowerPlantRatio = batteryToPowerPlantRatio;
-		this._powerPlant = powerPlant;
-		this._powerPlantManager = manager;
+		const powerPlantManagerTuple = this.findClosestPowerPlant(managers);
+		this._powerPlant = powerPlantManagerTuple[0];
+		this._powerPlantManager = powerPlantManagerTuple[1];
+	}
+	
+	private findClosestPowerPlant(managers: Manager[]): [BasePowerPlant, Manager] {
+		let closestPowerPlant = managers[0].powerPlants[0];
+		let closestManager = managers[0];
+		let closestDistance = Number.MAX_VALUE;
+		for(let i = 0; i < managers.length; i++) {
+			const manager = managers[i];
+			const powerPlants = manager.powerPlants;
+			for(let j = 0; j < powerPlants.length; j++) {
+				const powerPlant = powerPlants[j];
+				if (powerPlant !== closestPowerPlant) {
+					const distance = this.geoData.distance(powerPlant.geoData);
+					if (distance < closestDistance) {
+						closestPowerPlant = powerPlant;
+						closestManager = manager;
+						closestDistance = distance;
+					}
+				}
+			}
+		}
+		return [closestPowerPlant, closestManager]
 	}
 
 	public generateElectricity(deltaTimeS: number) {
@@ -60,7 +83,7 @@ export class House extends BaseBuilding {
 	
 	public set batteryToPowerPlantRatio(value: number) {
 		if(value > 1 || value < 0) {
-			throw new Error(" value for batteryToPowerPlantRatio is not within range 0 to 1.")
+			throw new Error('Value for batteryToPowerPlantRatio is not within range 0 to 1.')
 		}
 		this._batteryToPowerPlantRatio = value;
 	}

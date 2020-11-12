@@ -59,9 +59,8 @@ import { BaseGenerator } from '../generators/baseGenerator'
 								new WindTurbine(houseWindTurbineProductionDistribution.sample())
 							],
 							houseConsumptionDistribution.sample(),
-							powerPlant,
 							0.5,
-							manager
+							[manager]
 						)
 					]
 				)

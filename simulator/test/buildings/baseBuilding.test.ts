@@ -28,7 +28,7 @@ class TestObject{
 		this.hBattery = new Battery(100, 0);
 		this.hGeoData = new GeoData(10, 10, 10);
 		this.hCoalGenerator = new CoalGenerator(100, false, 0);
-		this.house = new House(this.hBattery, this.hGeoData, [this.hCoalGenerator], 40, this.coalPowerPlant, 0.1, this.manager);
+		this.house = new House(this.hBattery, this.hGeoData, [this.hCoalGenerator], 40, 0.1, [this.manager]);
 	}
 }
 

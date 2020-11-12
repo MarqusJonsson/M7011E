@@ -21,12 +21,12 @@ class TestObject{
 		this.pBattery = new Battery(2000, 0);
 		this.pGeoData = new GeoData(100, 10, 10);
 		this.coalPowerPlant = new CoalPowerPlant(this.pBattery, this.pGeoData, [], 0);
-		this.manager = new Manager(0);
+		this.manager = new Manager(0, [this.coalPowerPlant]);
 
 		this.hBattery = new Battery(100, 0);
 		this.hGeoData = new GeoData(10, 10, 10);
 		this.hCoalGenerator = new CoalGenerator(100, false, 0);
-		this.house = new House(this.hBattery, this.hGeoData, [this.hCoalGenerator], 1, this.coalPowerPlant, 0.1, this.manager);
+		this.house = new House(this.hBattery, this.hGeoData, [this.hCoalGenerator], 1, 0.1, [this.manager]);
 	}
 }
 
