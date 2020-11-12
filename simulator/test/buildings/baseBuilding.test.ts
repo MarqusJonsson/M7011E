@@ -38,27 +38,27 @@ describe('baseBuilding.ts', function() {
 		beforeEach('Setup default values for test object.', function() {testObject.defaultValues()});
 		it('Consume insufficient energy and blackout.', function() {
 			testObject.house.battery.buffer = 20;
-			testObject.house.consumeElectricity(1);
+			testObject.house.consumeElectricity(1, testObject.environment);
 			expect(testObject.house.hasBlackout).to.equal(true);
 			expect(testObject.house.battery.buffer).to.equal(0);
 		});
 		it('Consume energy up to demand.', function() {
 			testObject.hBattery.buffer = 50;
-			testObject.house.consumeElectricity(1);
+			testObject.house.consumeElectricity(1, testObject.environment);
 			expect(testObject.house.hasBlackout).to.equal(false);
 			expect(testObject.house.battery.buffer).to.equal(10);
 		});
 		it('Consume energy up to demand and return from blackout.', function() {
 			testObject.house.hasBlackout = true;
 			testObject.hBattery.buffer = 50;
-			testObject.house.consumeElectricity(1);
+			testObject.house.consumeElectricity(1, testObject.environment);
 			expect(testObject.house.hasBlackout).to.equal(false);
 			expect(testObject.house.battery.buffer).to.equal(10);
 		});
 		it('Consume nothing due to not reaching demand and do not return from blackout.', function() {
 			testObject.house.hasBlackout = true;
 			testObject.hBattery.buffer = 20;
-			testObject.house.consumeElectricity(1);
+			testObject.house.consumeElectricity(1, testObject.environment);
 			expect(testObject.house.hasBlackout).to.equal(true);
 			expect(testObject.house.battery.buffer).to.equal(20);
 		});
