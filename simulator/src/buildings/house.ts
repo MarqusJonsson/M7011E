@@ -4,9 +4,13 @@ import { GeoData } from './components/geoData';
 import { BaseGenerator } from '../generators/baseGenerator';
 import { BasePowerPlant } from "./basePowerPlant";
 import { Manager } from '../users/manager';
+import { Environment } from '../environment';
 
 
 export class House extends BaseBuilding {
+	public calculateConsumption(deltaTimeS: number, environment: Environment): void {
+		throw new Error('Method not implemented.');
+	}
 	private _batteryToPowerPlantRatio: number;
 	private _powerPlant: BasePowerPlant;
 	private _powerPlantManager: Manager;
