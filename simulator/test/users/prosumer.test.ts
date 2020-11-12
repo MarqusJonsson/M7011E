@@ -53,7 +53,7 @@ describe('prosumer.ts', function() {
 				testObject.pBattery.buffer = 500;
 				testObject.coalPowerPlant.electricityBuyPrice = 10;
 				testObject.house.consumption = 300;
-				testObject.house.calculateProduction(1, testObject.environment, testObject.pGeoData);
+				testObject.house.calculateProduction(1, testObject.environment);
 				testObject.prosumer.currency = 2000;
 				testObject.prosumer.buyElectricity(1);
 				expect(testObject.prosumer.currency).to.equal(0);
@@ -63,7 +63,7 @@ describe('prosumer.ts', function() {
 				testObject.pBattery.buffer = 100;
 				testObject.coalPowerPlant.electricityBuyPrice = 10;
 				testObject.house.consumption = 300;
-				testObject.house.calculateProduction(1, testObject.environment, testObject.pGeoData);
+				testObject.house.calculateProduction(1, testObject.environment);
 				testObject.prosumer.currency = 2000;
 				testObject.prosumer.buyElectricity(1);
 				expect(testObject.prosumer.currency).to.equal(1000);
@@ -74,18 +74,18 @@ describe('prosumer.ts', function() {
 				testObject.pBattery.buffer = 500;
 				testObject.coalPowerPlant.electricityBuyPrice = 10;
 				testObject.house.consumption = 500;
-				testObject.house.calculateProduction(1, testObject.environment, testObject.pGeoData);
+				testObject.house.calculateProduction(1, testObject.environment);
 				testObject.prosumer.currency = 500;
 				testObject.prosumer.buyElectricity(1);
 				expect(testObject.prosumer.currency).to.equal(0);
 				expect(testObject.hBattery.buffer).to.equal(50);
 				expect(testObject.pBattery.buffer).to.equal(450);
 			});
-			it('Buy all avaliable electricity in power plant battery with currency that is available.', function() {
+			it('Buy all available electricity in power plant battery with currency that is available.', function() {
 				testObject.pBattery.buffer = 38;
 				testObject.coalPowerPlant.electricityBuyPrice = 10;
 				testObject.house.consumption = 500;
-				testObject.house.calculateProduction(1, testObject.environment, testObject.pGeoData);
+				testObject.house.calculateProduction(1, testObject.environment);
 				testObject.prosumer.currency = 390;
 				testObject.prosumer.buyElectricity(1);
 				expect(testObject.prosumer.currency).to.equal(10);
