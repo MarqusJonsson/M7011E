@@ -7,6 +7,7 @@
 		"start": "ts-node src/index.ts ",
 		"server": "ts-node src/server.ts",
 		"resetdb": "ts-node src/db/reset.ts",
+		"populatedb": "ts-node src/db/populate.ts",
 		"test": "mocha -r ts-node/register test/**/*.test.ts",
 		"coverage": "nyc npm run test",
 		"lint": "eslint . --ext .ts"
