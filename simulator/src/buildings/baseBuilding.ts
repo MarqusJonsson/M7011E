@@ -20,10 +20,10 @@ export abstract class BaseBuilding extends Identifiable {
 		this._consumption = consumption;
 	}
 
-	public calculateProduction(deltaTimeS: number, environment: Environment, geoData: GeoData): number {
+	public calculateProduction(deltaTimeS: number, environment: Environment): number {
 		if (this.hasBlackout) return 0;
 		this.production = this.generators.reduce((totalProduction, generator) => {
-			return totalProduction + generator.calculateOutput(environment, geoData);
+			return totalProduction + generator.calculateOutput(environment, this.geoData);
 		}, 0);
 		return this.production * deltaTimeS;
 	}
