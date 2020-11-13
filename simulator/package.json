@@ -2,9 +2,9 @@
 	"name": "simulator",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.ts",
+	"main": "main.ts",
 	"scripts": {
-		"start": "ts-node src/index.ts ",
+		"start": "ts-node src/main.ts ",
 		"server": "ts-node src/server.ts",
 		"resetdb": "ts-node src/db/reset.ts",
 		"populatedb": "ts-node src/db/populate.ts",
