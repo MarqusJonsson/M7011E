@@ -1,5 +1,6 @@
 import { BaseUser } from './baseUser';
 import { BasePowerPlant } from '../buildings/basePowerPlant';
+import { electricityPricePerWattSecond } from '../utils/realLifeData';
 
 export class Manager extends BaseUser {
 	private _powerPlants: BasePowerPlant[];
@@ -17,15 +18,17 @@ export class Manager extends BaseUser {
 		this._powerPlants = value;
 	}
 
+	// Buy price is the price to buy electricity from a manager's power plant
 	public setBuyPrice(powerPlant: BasePowerPlant, price: number) {
 		powerPlant.electricityBuyPrice = price;
 	}
 
+	// Sell price is the price to sell electricity to a manager's power plant
 	public setSellPrice(powerPlant: BasePowerPlant, price: number) {
 		powerPlant.electricitySellPrice = price;
 	}
 
-	public calcSellPrice(demand: number, electricity: number): number {
-		return demand * electricity * 0.000000000394993331282;
+	public calcBuyPrice(averageDemand: number, electricity: number): number {
+		return electricity * electricityPricePerWattSecond(averageDemand);
 	}
 }
