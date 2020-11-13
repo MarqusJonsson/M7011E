@@ -47,7 +47,7 @@ export class House extends BaseBuilding {
 	public generateElectricity(deltaTimeS: number) {
 		const totalProduction = this.production * deltaTimeS;
 		const productionToBattery: number = totalProduction * this.batteryToPowerPlantRatio;
-		const productionToPowerPlant: number = totalProduction * (1 - this.batteryToPowerPlantRatio);
+		const productionToPowerPlant: number = totalProduction - productionToBattery;
 		const hBattery: Battery = this.battery;
 		const pBattery: Battery = this.powerPlant.battery;
 		if (hBattery.buffer + productionToBattery <= hBattery.capacity) {
