@@ -50,7 +50,7 @@ export abstract class BaseBuilding extends Identifiable {
 	}
 
 	public getDemand(deltaTimeS: number): number {
-		return Math.max((this.consumption - this.production) * deltaTimeS - this.battery.buffer, 0);
+		return Math.max(this.consumption * deltaTimeS - this.battery.buffer, 0);
 	}
 
 	public get battery(): Battery {
