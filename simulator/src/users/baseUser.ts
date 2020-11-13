@@ -7,10 +7,6 @@ export abstract class BaseUser extends Identifiable {
 		super(type);
 		this._currency = currency; 
 	}
-
-	protected canAfford(amount: number) {
-		return this.currency >= amount ? true : false;
-	}
 	
 	public get currency() : number {
 		return this._currency;
