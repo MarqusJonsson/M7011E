@@ -47,11 +47,11 @@ export class Prosumer extends BaseUser {
 					}
 				}
 				else if (currencyDifference < 0){
-					const maxPossibleElectricity: number = this.currency / electricityBuyPrice;
-					if (maxPossibleElectricity <= pBattery.buffer){
-						payment = maxPossibleElectricity * electricityBuyPrice;
-						hBattery.buffer += maxPossibleElectricity;
-						pBattery.buffer -= maxPossibleElectricity;
+					const maxAffordableElectricity: number = this.currency / electricityBuyPrice;
+					if (maxAffordableElectricity <= pBattery.buffer){
+						payment = this.currency;
+						hBattery.buffer += maxAffordableElectricity;
+						pBattery.buffer -= maxAffordableElectricity;
 					}
 					else {
 						payment = pBattery.buffer * electricityBuyPrice;
@@ -68,12 +68,30 @@ export class Prosumer extends BaseUser {
 		}
 	}
 
-	public sellElectricity(){
+	public sellElectricity() {
 		for (const house of this.houses){
-			const payment = house.powerPlant.calculateElectricityPrice(house.electricityOutput);
-			house.powerPlant.battery.buffer += house.electricityOutput;
-			this.currency += payment;
-			house.powerPlantManager.currency -= payment;
+			const manager = house.powerPlantManager;
+			const powerPlant = house.powerPlant;
+			if (manager.currency > 0) {
+				const payment = powerPlant.calculateElectricityPrice(house.electricityOutput);
+				if (manager.currency >= payment) {
+					powerPlant.battery.buffer += house.electricityOutput;
+					this.currency += payment;
+					manager.currency -= payment;
+				} else {
+					// The manager could not afford all of the electricity, buy as much is possible
+					const maxAffordableElectricity = manager.currency / powerPlant.electricitySellPrice;
+					const unsoldElectricity = house.electricityOutput - maxAffordableElectricity;
+					powerPlant.battery.buffer += maxAffordableElectricity;
+					this.currency += manager.currency;
+					manager.currency = 0;
+					// Put as much of the unsold the electricity as possible back in the house battery, the rest gets wasted
+					house.battery.buffer = Math.min(house.battery.buffer + unsoldElectricity, house.battery.capacity);
+				}
+			} else {
+				// Put as much of the unsold electricity as possible back in the house battery, the rest gets wasted
+				house.battery.buffer = Math.min(house.battery.buffer + house.electricityOutput, house.battery.capacity);
+			}
 		}
 	}
 }
