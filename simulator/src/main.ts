@@ -41,7 +41,7 @@ for (let i = 0; i < nManagers; i++) {
 }
 // Setup distributions for prosumers
 const prosumerCurrencyDistribution: GaussianDistribution =
-	new GaussianDistribution(20000, 1000);
+	new GaussianDistribution(20000, 4000);
 const houseBatteryDistribution: GaussianDistribution =
 	new GaussianDistribution(
 		AVERAGE_HOUSE_BATTERY_CAPACITY,
@@ -58,7 +58,7 @@ const houseWindTurbineProductionDistribution: GaussianDistribution =
 		AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND * 0.15
 	);
 // Create prosumers with one house each
-const nProsumers = 100;
+const nProsumers = 50;
 for (let i = 0; i < nProsumers; i++) {
 	const currency = prosumerCurrencyDistribution.sample();
 	const batteryCapacity = houseBatteryDistribution.sample();
@@ -75,7 +75,7 @@ for (let i = 0; i < nProsumers; i++) {
 }
 const buildings: BaseBuilding[] = (<BaseBuilding[]><unknown> powerPlants).concat(<BaseBuilding[]><unknown> houses);
 const samplingIntervalMiliSeconds = 100;
-const fixedTimeStep = true;
-const fixedDeltaTime = 3600;
+const fixedTimeStep = false;
+const fixedDeltaTime = 1000 * 3600 * 24 * 1;
 const simulator = new Simulator(environment, managers, prosumers, buildings, samplingIntervalMiliSeconds, fixedTimeStep, fixedDeltaTime);
 simulator.run();
