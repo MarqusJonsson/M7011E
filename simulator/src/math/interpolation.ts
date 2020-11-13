@@ -14,19 +14,20 @@ export function apply1DInterpolation(c: number[], h1:number, h2: number) {
 }
 
 export function bilinearInterpolation(q11_x: number, q11_y: number, h11: number, q21_x: number, q21_y: number, h21: number, q12_x: number, q12_y: number, h12: number, q22_x: number, q22_y: number, h22: number, p_x: number, p_y: number) {
-	const r1c_x = calc1DInterpolationConstants(q11_x, q21_x, p_x);
-	const r1c_y = calc1DInterpolationConstants(q11_y, q12_y, q12_y);
-	const r1h_x = apply1DInterpolation(r1c_x, h11, h21);
-	const r1h_y = apply1DInterpolation(r1c_y, h11, h21);
 
+	const r1c_x = calc1DInterpolationConstants(q11_x, q21_x, p_x);
+	const r1h_x = apply1DInterpolation(r1c_x, h11, h21);
+	const r1h_y = r1h_x;
 	const r2c_x = calc1DInterpolationConstants(q12_x, q22_x, p_x);
-	const r2c_y = calc1DInterpolationConstants(q12_y, q22_y, q12_y);
 	const r2h_x = apply1DInterpolation(r2c_x, h12, h22);
-	const r2h_y = apply1DInterpolation(r2c_y, h12, h22);
+	const r2h_y = r2h_x;
+
 
 	const p_c_y = calc1DInterpolationConstants(q11_y,q12_y,p_y);
+
 	const hp = apply1DInterpolation(p_c_y, r1h_y, r2h_y);
 	return hp;
+}
 
 
 
