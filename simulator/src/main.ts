@@ -12,6 +12,12 @@ import { GaussianDistribution } from './math/gaussianDistribution';
 import { Simulator } from './simulator';
 import { Manager } from './users/manager';
 import { Prosumer } from './users/prosumer';
+import {
+	AVERAGE_POWERPLANT_COAL_GENERATOR_ELECTRICITY_PRODUCTION_PER_SECOND,
+	AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND,
+	AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND,
+	AVERAGE_HOUSE_BATTERY_CAPACITY
+} from './utils/realLifeData';
 
 // Simulate an environment
 const environment: Environment = new Environment(Date.now());
@@ -20,12 +26,12 @@ const powerPlants: BasePowerPlant[] = [];
 const prosumers: Prosumer[] = [];
 const houses: House[] = [];
 
-// Create managers with power plants
+// Create managers with one power plant each
 const nManagers = 5;
 for (let i = 0; i < nManagers; i++) {
 	const battery = new Battery(kWh_to_Ws(1000000), kWh_to_Ws(500000));
 	const geoData = new GeoData();
-	const coalGenerator = new CoalGenerator(kWh_to_Ws(111));
+	const coalGenerator = new CoalGenerator(AVERAGE_POWERPLANT_COAL_GENERATOR_ELECTRICITY_PRODUCTION_PER_SECOND);
 	const consumption = 1000;
 	const powerPlant = new CoalPowerPlant(battery, geoData, [coalGenerator], consumption);
 	powerPlants.push(powerPlant);
@@ -33,12 +39,26 @@ for (let i = 0; i < nManagers; i++) {
 	const manager = new Manager(managerCurrency, [powerPlant]);
 	managers.push(manager);
 }
-// Create prosumers with houses
-const prosumerCurrencyDistribution: GaussianDistribution = new GaussianDistribution(20000, 1000);
-const houseBatteryDistribution: GaussianDistribution = new GaussianDistribution(kWh_to_Ws(200), kWh_to_Ws(2));
-const houseConsumptionDistribution: GaussianDistribution = new GaussianDistribution(2283, 1000);
-const houseWindTurbineProductionDistribution: GaussianDistribution = new GaussianDistribution(1372, 300);
-const nProsumers = 50;
+// Setup distributions for prosumers
+const prosumerCurrencyDistribution: GaussianDistribution =
+	new GaussianDistribution(20000, 1000);
+const houseBatteryDistribution: GaussianDistribution =
+	new GaussianDistribution(
+		AVERAGE_HOUSE_BATTERY_CAPACITY,
+		AVERAGE_HOUSE_BATTERY_CAPACITY * 0.15
+	);
+const houseConsumptionDistribution: GaussianDistribution = 
+	new GaussianDistribution(
+		AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND,
+		AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND * 0.15
+	);
+const houseWindTurbineProductionDistribution: GaussianDistribution =
+	new GaussianDistribution(
+		AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND,
+		AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND * 0.15
+	);
+// Create prosumers with one house each
+const nProsumers = 100;
 for (let i = 0; i < nProsumers; i++) {
 	const currency = prosumerCurrencyDistribution.sample();
 	const batteryCapacity = houseBatteryDistribution.sample();
