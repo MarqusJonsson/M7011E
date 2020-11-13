@@ -2,7 +2,7 @@ export function calc1DInterpolationConstants(x1: number, x2: number, x: number):
 	const dist_x1_x2 = x2 - x1;
 	const dist_x_x2 = x2 - x;
 	if(dist_x_x2 === 0){
-		return [0.5, 0.5];
+		return [0, 1];
 	}
 	const x_x1 = dist_x_x2 / dist_x1_x2;
 	return [x_x1, 1-x_x1];
