@@ -12,7 +12,6 @@ export class WindTurbine extends BaseGenerator {
 		if (windSpeed < 2 || windSpeed > 25) this.output = 0;
 		else if (windSpeed < 14) this.output = 7 * Math.pow(windSpeed, 2) * this.baseOutput / 1372;
 		else this.output = (-70 * windSpeed + 2352) * this.baseOutput / 1372;
-		console.log("WS: " + windSpeed + " WITH BASE: " + this.baseOutput);
 		return this.output;
 	}
 }

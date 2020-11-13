@@ -1,9 +1,9 @@
-import { Battery } from "../../src/buildings/components/battery";
-import { GeoData } from "../../src/buildings//components/geoData";
-import { CoalGenerator } from "../../src/generators/coalGenerator";
-import { CoalPowerPlant } from "../../src/buildings/coalPowerPlant"
-import { Environment } from "../../src/environment";
-import { expect } from "chai";
+import { Battery } from '../../src/buildings/components/battery';
+import { GeoData } from '../../src/buildings//components/geoData';
+import { CoalGenerator } from '../../src/generators/coalGenerator';
+import { CoalPowerPlant } from '../../src/buildings/coalPowerPlant'
+import { Environment } from '../../src/environment';
+import { expect } from 'chai';
 
 class TestObject{
 	environment!: Environment;

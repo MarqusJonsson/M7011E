@@ -1,4 +1,4 @@
-import { Identifiable } from "../identifiable";
+import { Identifiable } from '../identifiable';
 
 export abstract class BaseUser extends Identifiable {
 	private _currency: number;

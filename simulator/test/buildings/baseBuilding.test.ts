@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import { House } from "../../src/buildings/house";
+import { House } from '../../src/buildings/house';
 import { Battery } from '../../src/buildings/components/battery';
 import { GeoData } from '../../src/buildings/components/geoData';
-import { CoalGenerator } from "../../src/generators/coalGenerator";
-import { CoalPowerPlant} from "../../src/buildings/coalPowerPlant";
-import { Manager } from "../../src/users/manager";
+import { CoalGenerator } from '../../src/generators/coalGenerator';
+import { CoalPowerPlant} from '../../src/buildings/coalPowerPlant';
+import { Manager } from '../../src/users/manager';
 import { Environment } from '../../src/environment';
 
 class TestObject{
@@ -28,7 +28,7 @@ class TestObject{
 		this.hBattery = new Battery(100, 0);
 		this.hGeoData = new GeoData(10, 10, 10);
 		this.hCoalGenerator = new CoalGenerator(100, false, 0);
-		this.house = new House(this.hBattery, this.hGeoData, [this.hCoalGenerator], 40, this.coalPowerPlant, 0.1, this.manager);
+		this.house = new House(this.hBattery, this.hGeoData, [this.hCoalGenerator], 40, 0.1, [this.manager]);
 	}
 }
 

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { House } from '../../src/buildings/house';
-import { Prosumer } from "../../src/users/prosumer";
+import { Prosumer } from '../../src/users/prosumer';
 import { CoalGenerator } from '../../src/generators/coalGenerator';
 import { BaseGenerator } from '../../src/generators/baseGenerator';
 import { GeoData } from '../../src/buildings/components/geoData';
@@ -30,15 +30,13 @@ class TestObject{
 		this.environment = new Environment(0);
 		this.pBattery = new Battery(1000, 0);
 		this.pGeoData = new GeoData(100, 10, 10);
-		this.pGenerators = [] as BaseGenerator[];
-		this.powerPlants = [] as BasePowerPlant[];
-		this.manager = new Manager(0, this.powerPlants);
-		this.coalPowerPlant = new CoalPowerPlant(this.pBattery, this.pGeoData, this.pGenerators, 0);
+		this.coalPowerPlant = new CoalPowerPlant(this.pBattery, this.pGeoData, [], 0);
+		this.manager = new Manager(0, [this.coalPowerPlant]);
 		this.prosumer = new Prosumer();
 		this.hBattery = new Battery(1000, 0);
 		this.hGenerators = [] as BaseGenerator[];
 		this.hGeoData = new GeoData(10, 10, 10);
-		this.house = new House(this.hBattery, this.hGeoData, this.hGenerators, 1, this.coalPowerPlant, 0.1, this.manager);
+		this.house = new House(this.hBattery, this.hGeoData, this.hGenerators, 1, 0.1, [this.manager]);
 		this.hCoalGenerator = new CoalGenerator(100, false, 0);
 		this.house.generators.push(this.hCoalGenerator);
 		this.prosumer.houses.push(this.house);
