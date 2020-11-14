@@ -26,3 +26,7 @@ export const electricityPricePerWattSecond = (averageDemand: number) => {
 }
 // Source: https://www.statista.com/statistics/418124/electricity-prices-for-households-in-sweden/
 // Motivation: Made up function to model the electricity price to stay close to 1.8 currency units when expected average demand is met
+
+export const monthMeanTemperatureList = [-11.6, -11.5, -6.4, -0.5, 5.9, 12.6, 15.2, 13,9, 8.7, 2.8, -3.5, -8.3];
+
+// Source: https://sv.climate-data.org/europa/sverige/norrbottens-laen/lulea-496/
