@@ -13,7 +13,7 @@ import { Simulator } from './simulator';
 import { Manager } from './users/manager';
 import { Prosumer } from './users/prosumer';
 import {
-	AVERAGE_POWERPLANT_COAL_GENERATOR_ELECTRICITY_PRODUCTION_PER_SECOND,
+	AVERAGE_POWER_PLANT_COAL_GENERATOR_ELECTRICITY_PRODUCTION_PER_SECOND,
 	AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND,
 	AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND,
 	AVERAGE_HOUSE_BATTERY_CAPACITY
@@ -31,7 +31,7 @@ const nManagers = 5;
 for (let i = 0; i < nManagers; i++) {
 	const battery = new Battery(kWh_to_Ws(1000000), kWh_to_Ws(500000));
 	const geoData = new GeoData();
-	const coalGenerator = new CoalGenerator(AVERAGE_POWERPLANT_COAL_GENERATOR_ELECTRICITY_PRODUCTION_PER_SECOND);
+	const coalGenerator = new CoalGenerator(AVERAGE_POWER_PLANT_COAL_GENERATOR_ELECTRICITY_PRODUCTION_PER_SECOND);
 	const consumption = 1000;
 	const powerPlant = new CoalPowerPlant(battery, geoData, [coalGenerator], consumption);
 	powerPlants.push(powerPlant);
