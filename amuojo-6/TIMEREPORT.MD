@@ -4,4 +4,5 @@
 | 2020-11-05 | 8 | <ul><li>Continued creating resolvers.</li><li>Continued creating schemas.</li></ul> |
 | 2020-11-10 | 8 | <ul><li>Continued creating resolvers.</li><li>Continued creating schemas.</li><li>Created script to populate database given a list of defined users.</li><li>Created a postman collection for testing the GraphQL API.</li></ul> |
 | 2020-11-12 | 6 | <ul><li>Started setting up the simulator, initiating all different objects and created a main loop for running the simulator using either fixed time or real time at specified sampling interval.</li></ul> |
-| 2020-11-13 | 7 | <ul><li>Mostly worked on fixing bugs which appeared when running the simulator and making the simulator itself run properly.</li></ul> |
+| 2020-11-13 | 7 | <ul><li>Worked on fixing bugs which appeared when running the simulator and making the simulator itself run properly.</li></ul> |
+| 2020-11-14 | 5 | <ul><li>Started creating resolvers and schemas for the GraphQL API which other systems can connect to in order to obtain data from the simulator.</li></ul> |
