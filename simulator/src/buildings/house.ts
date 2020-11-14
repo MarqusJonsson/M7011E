@@ -5,11 +5,19 @@ import { BaseGenerator } from '../generators/baseGenerator';
 import { BasePowerPlant } from './basePowerPlant';
 import { Manager } from '../users/manager';
 import { Environment } from '../environment';
-
+import {  AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND } from "../utils/realLifeData";
 
 export class House extends BaseBuilding {
 	public calculateConsumption(deltaTimeS: number, environment: Environment): void {
-		throw new Error('Method not implemented.');
+		const date = new Date();
+		const temperature = environment.sampleTemperature(this.geoData.longitude, this.geoData.latitude, date.getMonth());
+		if ( temperature < 0){
+			this.consumption = AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND * deltaTimeS * (1.05^Math.abs(temperature)); 
+		}
+
+		else{
+			this.consumption = AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND * deltaTimeS;
+		}
 	}
 	private _batteryToPowerPlantRatio: number;
 	private _powerPlant: BasePowerPlant;

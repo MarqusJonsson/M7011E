@@ -19,7 +19,7 @@ export class Environment {
 		return x*(1.0 - prc) + y*prc;
 	}
 
-	public sampleTemperature(longitude: number, latitude: number, month: number = Date.now()): number { 
+	public sampleTemperature(longitude: number, latitude: number, month: number): number { 
 		return this._monthMeanTemperatureDistributions[month].sample();
 	}
 /*
