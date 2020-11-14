@@ -28,6 +28,7 @@ export const electricityPricePerWattSecond = (averageDemand: number) => {
 // Motivation: Made up function to model the electricity price to stay close to 1.8 currency units when expected average demand is met
 
 export const monthMeanTemperatureList = [-11.6, -11.5, -6.4, -0.5, 5.9, 12.6, 15.2, 13,9, 8.7, 2.8, -3.5, -8.3];
+// Source: https://sv.climate-data.org/europa/sverige/norrbottens-laen/lulea-496/
 
 // Warning: This consumption is not based on any real life data
 export const COAL_POWER_PLANT_CONSUMPTION_PER_SECOND = kWh_to_Ws(0.00190128525);
