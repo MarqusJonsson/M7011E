@@ -43,7 +43,7 @@ class TestObject{
 	}
 }
 
-describe('prosumer.ts', function() {
+describe('users/prosumer.ts', function() {
 	let testObject = new TestObject;
 	describe('#buyElectricity()', function() {
 		beforeEach('Setup default values for test object.', function() {testObject.defaultValues()});

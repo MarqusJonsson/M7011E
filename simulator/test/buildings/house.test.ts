@@ -30,7 +30,7 @@ class TestObject{
 	}
 }
 
-describe('house.ts', function(){
+describe('buildings/house.ts', function(){
 	let testObject = new TestObject;
 	
 	describe('#generateElectricity()', function() {
