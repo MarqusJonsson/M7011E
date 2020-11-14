@@ -23,7 +23,7 @@ class TestObject{
 	}
 }
 
-describe('basePowerPlant.ts', function() {
+describe('buildings/basePowerPlant.ts', function() {
 	let testObject = new TestObject();
 	describe('#generateElectricity', function() {
 		beforeEach('Setup default values for test object.', function() {testObject.defaultValues()});

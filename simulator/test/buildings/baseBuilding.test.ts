@@ -32,7 +32,7 @@ class TestObject{
 	}
 }
 
-describe('baseBuilding.ts', function() {
+describe('buildings/baseBuilding.ts', function() {
 	let testObject = new TestObject;
 	describe('#consumeElectricity', function() {
 		beforeEach('Setup default values for test object.', function() {testObject.defaultValues()});

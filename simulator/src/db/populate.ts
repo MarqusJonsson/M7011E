@@ -4,7 +4,6 @@ import { generatorTypeResolver } from './resolvers/generatorType'
 import { userResolver } from './resolvers/user'
 import { buildingResolver } from './resolvers/building'
 import { generatorResolver } from './resolvers/generator'
-import { transactionResolver } from './resolvers/transaction'
 import { Prosumer } from '../users/prosumer';
 import { House } from '../buildings/house'
 import { Battery } from '../buildings/components/battery'
@@ -14,10 +13,8 @@ import { CoalPowerPlant } from '../buildings/coalPowerPlant'
 import { CoalGenerator } from '../generators/coalGenerator'
 import { Environment } from '../environment'
 import { BaseUser } from '../users/baseUser'
-import { BaseBuilding } from '../buildings/baseBuilding'
 import { Manager } from '../users/manager'
 import { GaussianDistribution } from '../math/gaussianDistribution'
-import { BaseGenerator } from '../generators/baseGenerator'
 {
 	// Simulate an environment
 	const environment: Environment = new Environment(Date.now());
@@ -92,7 +89,7 @@ function populate(users: BaseUser[]) {
 					const prosumer = <Prosumer> user;
 					// Create prosumer users in database
 					userResolver.create(
-						prosumer.type + '_' + prosumer.id,
+						prosumer.type + '_' + prosumer.id + '@email.dom',
 						prosumer.currency,
 						prosumerType.id
 					).then((dbProsumer) => {
@@ -125,7 +122,7 @@ function populate(users: BaseUser[]) {
 					const manager = <Manager> user;
 					// Create manager users in database
 					userResolver.create(
-						manager.type + '_' + manager.id,
+						manager.type + '_' + manager.id + '@email.dom',
 						manager.currency,
 						managerType.id
 					).then((dbManager) => {

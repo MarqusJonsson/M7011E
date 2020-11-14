@@ -2,7 +2,7 @@ import { kWh_to_Ws } from "../math/electricity";
 
 // Base unit for electricity is in Ws (Watt-seconds)
 
-export const AVERAGE_POWERPLANT_COAL_GENERATOR_ELECTRICITY_PRODUCTION_PER_SECOND = kWh_to_Ws(110.908307349); 
+export const AVERAGE_POWER_PLANT_COAL_GENERATOR_ELECTRICITY_PRODUCTION_PER_SECOND = kWh_to_Ws(110.908307349); 
 // Source: https://www.mcginley.co.uk/news/how-much-of-each-energy-source-does-it-take-to-power-your-home/bp254/
 // Motivation: 3500000000 kWh per year => 3500000000 / (365.25 * 24 * 3600) = 110.908307349 kWh per second.
 

@@ -43,54 +43,53 @@ class TestObject{
 	}
 }
 
-describe('prosumer.ts', function() {
-		let testObject = new TestObject;
-		describe('#buyElectricity()', function() {
-			beforeEach('Setup default values for test object.', function() {testObject.defaultValues()});
-			it('Buy 200 electricity units for 2000 currency units.', function() {
-				testObject.pBattery.buffer = 500;
-				testObject.coalPowerPlant.electricityBuyPrice = 10;
-				testObject.house.consumption = 300;
-				testObject.house.calculateProduction(1, testObject.environment);
-				testObject.prosumer.currency = 2000;
-				testObject.prosumer.buyElectricity(1);
-				expect(testObject.prosumer.currency).to.equal(0);
-				expect(testObject.hBattery.buffer).to.equal(200);
-			});
-			it('Buy all available electricity in power plant battery.', function() {
-				testObject.pBattery.buffer = 100;
-				testObject.coalPowerPlant.electricityBuyPrice = 10;
-				testObject.house.consumption = 300;
-				testObject.house.calculateProduction(1, testObject.environment);
-				testObject.prosumer.currency = 2000;
-				testObject.prosumer.buyElectricity(1);
-				expect(testObject.prosumer.currency).to.equal(1000);
-				expect(testObject.hBattery.buffer).to.equal(100);
-				expect(testObject.pBattery.buffer).to.equal(0);
-			});
-			it('Buy electricity with currency that is available.', function() {
-				testObject.pBattery.buffer = 500;
-				testObject.coalPowerPlant.electricityBuyPrice = 10;
-				testObject.house.consumption = 500;
-				testObject.house.calculateProduction(1, testObject.environment);
-				testObject.prosumer.currency = 500;
-				testObject.prosumer.buyElectricity(1);
-				expect(testObject.prosumer.currency).to.equal(0);
-				expect(testObject.hBattery.buffer).to.equal(50);
-				expect(testObject.pBattery.buffer).to.equal(450);
-			});
-			it('Buy all available electricity in power plant battery with currency that is available.', function() {
-				testObject.pBattery.buffer = 38;
-				testObject.coalPowerPlant.electricityBuyPrice = 10;
-				testObject.house.consumption = 500;
-				testObject.house.calculateProduction(1, testObject.environment);
-				testObject.prosumer.currency = 390;
-				testObject.prosumer.buyElectricity(1);
-				expect(testObject.prosumer.currency).to.equal(10);
-				expect(testObject.hBattery.buffer).to.equal(38);
-				expect(testObject.pBattery.buffer).to.equal(0);
-			});
+describe('users/prosumer.ts', function() {
+	let testObject = new TestObject;
+	describe('#buyElectricity()', function() {
+		beforeEach('Setup default values for test object.', function() {testObject.defaultValues()});
+		it('Buy 200 electricity units for 2000 currency units.', function() {
+			testObject.pBattery.buffer = 500;
+			testObject.coalPowerPlant.electricityBuyPrice = 10;
+			testObject.house.consumption = 300;
+			testObject.house.calculateProduction(1, testObject.environment);
+			testObject.prosumer.currency = 2000;
+			testObject.prosumer.buyElectricity(1);
+			expect(testObject.prosumer.currency).to.equal(0);
+			expect(testObject.hBattery.buffer).to.equal(200);
 		});
-	}
-);
+		it('Buy all available electricity in power plant battery.', function() {
+			testObject.pBattery.buffer = 100;
+			testObject.coalPowerPlant.electricityBuyPrice = 10;
+			testObject.house.consumption = 300;
+			testObject.house.calculateProduction(1, testObject.environment);
+			testObject.prosumer.currency = 2000;
+			testObject.prosumer.buyElectricity(1);
+			expect(testObject.prosumer.currency).to.equal(1000);
+			expect(testObject.hBattery.buffer).to.equal(100);
+			expect(testObject.pBattery.buffer).to.equal(0);
+		});
+		it('Buy electricity with currency that is available.', function() {
+			testObject.pBattery.buffer = 500;
+			testObject.coalPowerPlant.electricityBuyPrice = 10;
+			testObject.house.consumption = 500;
+			testObject.house.calculateProduction(1, testObject.environment);
+			testObject.prosumer.currency = 500;
+			testObject.prosumer.buyElectricity(1);
+			expect(testObject.prosumer.currency).to.equal(0);
+			expect(testObject.hBattery.buffer).to.equal(50);
+			expect(testObject.pBattery.buffer).to.equal(450);
+		});
+		it('Buy all available electricity in power plant battery with currency that is available.', function() {
+			testObject.pBattery.buffer = 38;
+			testObject.coalPowerPlant.electricityBuyPrice = 10;
+			testObject.house.consumption = 500;
+			testObject.house.calculateProduction(1, testObject.environment);
+			testObject.prosumer.currency = 390;
+			testObject.prosumer.buyElectricity(1);
+			expect(testObject.prosumer.currency).to.equal(10);
+			expect(testObject.hBattery.buffer).to.equal(38);
+			expect(testObject.pBattery.buffer).to.equal(0);
+		});
+	});
+});
  
