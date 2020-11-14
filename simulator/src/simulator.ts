@@ -2,8 +2,8 @@ import { BaseBuilding } from './buildings/baseBuilding';
 import { Prosumer } from './users/prosumer';
 import { Manager } from './users/manager';
 import { Environment } from './environment';
-import { House } from './buildings/house';
 import { BasePowerPlant } from './buildings/basePowerPlant';
+import { ELECTRICITY_SELL_RATIO } from './utils/realLifeData';
 
 export class Simulator {
 	// Time variables
@@ -42,8 +42,8 @@ export class Simulator {
 			manager.powerPlants.forEach((powerPlant) => {
 				logStr += `\t${powerPlant.id}`
 					+ `\t${(powerPlant.battery.buffer / powerPlant.battery.capacity).toFixed(3)}`
-					+ `\t${(powerPlant.consumption).toExponential(3)}`
-					+ `\t${(powerPlant.production).toExponential(3)}`
+					+ `\t${(powerPlant.consumption * this.deltaTimeS).toExponential(3)}`
+					+ `\t${(powerPlant.production * this.deltaTimeS).toExponential(3)}`
 					+ `\t${powerPlant.getDemand(this.deltaTimeS).toExponential(3)}`
 					+ `\t${powerPlant.hasBlackout}\n`;
 			});
@@ -57,8 +57,8 @@ export class Simulator {
 			prosumer.houses.forEach((house) => {
 				logStr += `\t${house.id}`
 					+ `\t${(house.battery.buffer / house.battery.capacity).toFixed(3)}`
-					+ `\t${(house.consumption).toExponential(3)}`
-					+ `\t${(house.production).toExponential(3)}`
+					+ `\t${(house.consumption * this.deltaTimeS).toExponential(3)}`
+					+ `\t${(house.production * this.deltaTimeS).toExponential(3)}`
 					+ `\t${house.getDemand(this.deltaTimeS).toExponential(3)}`
 					+ `\t${house.hasBlackout}\n`;
 			});
@@ -86,24 +86,28 @@ export class Simulator {
 	}
 	
 	private updatePrices() {
-		const demands = new Map<[Manager, BasePowerPlant], number>();
+		const demands = new Map<[Manager, BasePowerPlant], [number, number]>();
 		this._prosumers.forEach((prosumer) => {
 			prosumer.houses.forEach((house) => {
 				const managerPowerPlantTuple: [Manager, BasePowerPlant] = [house.powerPlantManager, house.powerPlant];
-				let previousDemand = demands.get(managerPowerPlantTuple);
-				if (previousDemand === undefined) previousDemand = 0;
+				let nHousesDemandTuple = demands.get(managerPowerPlantTuple);
+				if (nHousesDemandTuple === undefined) nHousesDemandTuple = [0, 0];
+				let nHouses = nHousesDemandTuple[0];
+				let previousDemand = nHousesDemandTuple[1];
 				demands.set(
 					managerPowerPlantTuple,
-					previousDemand + house.getDemand(this.deltaTimeS)
+					[nHouses + 1, previousDemand + house.getDemand(this.deltaTimeS)]
 				);
 			});
 		});
-		demands.forEach((demand, managerPowerPlantTuple) => {
+		demands.forEach((nHousesDemandTuple, managerPowerPlantTuple) => {
+			let nHouses = nHousesDemandTuple[0];
+			let demand = nHousesDemandTuple[1];
 			const manager: Manager = managerPowerPlantTuple[0];
 			const powerPlant: BasePowerPlant = managerPowerPlantTuple[1];
-			const sellPrice: number = manager.calcSellPrice(demand, 1);
-			manager.setSellPrice(powerPlant, sellPrice);
-			manager.setBuyPrice(powerPlant, sellPrice * 2.5); // Hardcoded, buy price is 2.5 times higher than sell price
+			const buyPrice: number = manager.calcBuyPrice(demand / nHouses, 1);
+			manager.setBuyPrice(powerPlant, buyPrice);
+			manager.setSellPrice(powerPlant, buyPrice * ELECTRICITY_SELL_RATIO);
 		});
 	}
 

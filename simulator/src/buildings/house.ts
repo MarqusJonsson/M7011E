@@ -25,7 +25,7 @@ export class House extends BaseBuilding {
 	private findClosestPowerPlant(managers: Manager[]): [BasePowerPlant, Manager] {
 		let closestPowerPlant = managers[0].powerPlants[0];
 		let closestManager = managers[0];
-		let closestDistance = Number.MAX_VALUE;
+		let closestDistance = this.geoData.distance(managers[0].powerPlants[0].geoData);
 		for(let i = 0; i < managers.length; i++) {
 			const manager = managers[i];
 			const powerPlants = manager.powerPlants;
@@ -47,7 +47,7 @@ export class House extends BaseBuilding {
 	public generateElectricity(deltaTimeS: number) {
 		const totalProduction = this.production * deltaTimeS;
 		const productionToBattery: number = totalProduction * this.batteryToPowerPlantRatio;
-		const productionToPowerPlant: number = totalProduction * (1 - this.batteryToPowerPlantRatio);
+		const productionToPowerPlant: number = totalProduction - productionToBattery;
 		const hBattery: Battery = this.battery;
 		const pBattery: Battery = this.powerPlant.battery;
 		if (hBattery.buffer + productionToBattery <= hBattery.capacity) {

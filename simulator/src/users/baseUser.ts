@@ -7,16 +7,15 @@ export abstract class BaseUser extends Identifiable {
 		super(type);
 		this._currency = currency; 
 	}
-
-	protected canAfford(amount: number) {
-		return this.currency >= amount ? true : false;
-	}
 	
 	public get currency() : number {
 		return this._currency;
 	}
 	
 	public set currency(value: number) {
+		if (value < 0) {
+			throw new Error("Value can not be less than 0");
+		}
 		this._currency = value;
 	}
 }
