@@ -16,7 +16,8 @@ import {
 	AVERAGE_POWER_PLANT_COAL_GENERATOR_ELECTRICITY_PRODUCTION_PER_SECOND,
 	AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND,
 	AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND,
-	AVERAGE_HOUSE_BATTERY_CAPACITY
+	AVERAGE_HOUSE_BATTERY_CAPACITY,
+	MONTH_MEAN_TEMPERATURES
 } from './utils/realLifeData';
 
 // Simulate an environment
@@ -25,6 +26,27 @@ const managers: Manager[] = [];
 const powerPlants: BasePowerPlant[] = [];
 const prosumers: Prosumer[] = [];
 const houses: House[] = [];
+
+// Setup distributions for each month mean temperatures
+const meanTempVariance = 10;
+const janDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[0], meanTempVariance);
+const febDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[1], meanTempVariance);
+const marDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[2], meanTempVariance);
+const aprilDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[3], meanTempVariance);
+const mayDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[4], meanTempVariance);
+const juneDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[5], meanTempVariance);
+const juliDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[6], meanTempVariance);
+const augDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[7], meanTempVariance);
+const sepDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[8], meanTempVariance);
+const octDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[9], meanTempVariance);
+const novDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[10], meanTempVariance);
+const decDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[11], meanTempVariance);
+
+const monthMeanTemperatureDistributions: Array<GaussianDistribution> = [
+	janDistribution, febDistribution, marDistribution, aprilDistribution, 
+	mayDistribution, juneDistribution, juliDistribution, augDistribution,
+	sepDistribution, octDistribution, novDistribution, decDistribution];
+environment.monthMeanTemperatureDistributions = monthMeanTemperatureDistributions;
 
 // Create managers with one power plant each
 const nManagers = 5;
@@ -75,7 +97,7 @@ for (let i = 0; i < nProsumers; i++) {
 }
 const buildings: BaseBuilding[] = (<BaseBuilding[]><unknown> powerPlants).concat(<BaseBuilding[]><unknown> houses);
 const samplingIntervalMiliSeconds = 100;
-const fixedTimeStep = false;
+const fixedTimeStep = true;
 const fixedDeltaTime = 1000 * 3600 * 24 * 1;
 const simulator = new Simulator(environment, managers, prosumers, buildings, samplingIntervalMiliSeconds, fixedTimeStep, fixedDeltaTime);
 simulator.run();
