@@ -142,7 +142,7 @@ export class Simulator {
 		});
 	}
 
-	private updateElectricityConsumption() {
+	private updateElectricityConsume() {
 		this._buildings.forEach((building) => {
 			building.consumeElectricity(this.deltaTimeS, this._environment);
 		});
