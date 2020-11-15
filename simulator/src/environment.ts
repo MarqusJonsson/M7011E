@@ -53,4 +53,12 @@ export class Environment {
 	public set time(value: number) {
 		this._time = value;
 	}
+
+	public get monthMeanTemperatureDistributions(): Array<GaussianDistribution> {
+		return this._monthMeanTemperatureDistributions;
+	}
+
+	public set monthMeanTemperatureDistributions(distributions: Array<GaussianDistribution>) {
+		this._monthMeanTemperatureDistributions = distributions;
+	}
 }
