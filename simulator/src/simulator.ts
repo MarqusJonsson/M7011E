@@ -4,6 +4,7 @@ import { Manager } from './users/manager';
 import { Environment } from './environment';
 import { BasePowerPlant } from './buildings/basePowerPlant';
 import { ELECTRICITY_SELL_RATIO } from './utils/realLifeData';
+import { building } from './db/schemas/building/queries';
 
 export class Simulator {
 	// Time variables
@@ -74,12 +75,13 @@ export class Simulator {
 	}
 
 	public update() {
+		this.updateElectricityConsumption();
 		this.updateProductionCalculations();
 		this.updatePrices();
 		this.updateElectricityGeneration();
 		this.sellProsumersElectricity();
 		this.purchaseProsumersElectricity();
-		this.updateElectricityConsumption();
+		this.updateElectricityConsume();
 		this._updateDeltaTime();
 		let logStr = `New time step, time elapsed = ${this.simulationTime} (ms), deltaTimeS = ${this.deltaTimeS}\n`;
 		console.log(logStr + this.tempLog());
@@ -111,6 +113,11 @@ export class Simulator {
 		});
 	}
 
+	private updateElectricityConsumption() {
+		this._buildings.forEach((building) => {
+			building.calculateConsumption(this.deltaTimeS, this._environment, this._simulationTime);
+		});
+	}
 	private updateProductionCalculations() {
 		this._buildings.forEach((building) => {
 			building.calculateProduction(this.deltaTimeS, this._environment);
