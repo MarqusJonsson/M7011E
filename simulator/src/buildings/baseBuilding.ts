@@ -12,12 +12,12 @@ export abstract class BaseBuilding extends Identifiable {
 	private _consumption: number;
 	private _electricityOutput: number = 0;
 
-	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[], consumption: number) {
+	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[]) {
 		super(type);
 		this._battery = battery;
 		this._geoData = geoData;
 		this._generators = generators;
-		this._consumption = consumption;
+		this._consumption = 0;
 	}
 
 	public calculateProduction(deltaTimeS: number, environment: Environment): number {
@@ -30,10 +30,10 @@ export abstract class BaseBuilding extends Identifiable {
 
 	public abstract calculateConsumption(deltaTimeS: number, environment: Environment, simulationTime: number): void;
 
-	public abstract generateElectricity(deltaTimeS: number): void;
+	public abstract generateElectricity(pBattery?: Battery): void;
 
-	public consumeElectricity(deltaTimeS: number, environment: Environment) {
-		const remainingElectricity = this.battery.buffer - this.consumption * deltaTimeS;
+	public consumeElectricity() {
+		const remainingElectricity = this.battery.buffer - this.consumption;
 		if (!this.hasBlackout) {
 			if (remainingElectricity < 0) {
 				this.hasBlackout = true;
@@ -49,8 +49,8 @@ export abstract class BaseBuilding extends Identifiable {
 		}
 	}
 
-	public getDemand(deltaTimeS: number): number {
-		return Math.max(this.consumption * deltaTimeS - this.battery.buffer, 0);
+	public getDemand(): number {
+		return Math.max(this.consumption- this.battery.buffer, 0);
 	}
 
 	public get battery(): Battery {
