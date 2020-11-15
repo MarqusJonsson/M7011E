@@ -6,3 +6,4 @@
 | 2020-11-12 | 6 | <ul><li>Started setting up the simulator, initiating all different objects and created a main loop for running the simulator using either fixed time or real time at specified sampling interval.</li></ul> |
 | 2020-11-13 | 7 | <ul><li>Worked on fixing bugs which appeared when running the simulator and making the simulator itself run properly.</li></ul> |
 | 2020-11-14 | 5 | <ul><li>Started creating resolvers and schemas for the GraphQL API which other systems can connect to in order to obtain data from the simulator.</li></ul> |
+| 2020-11-15 | 5 | <ul><li>Continued with the resolvers.</li><li>Rewrote parts of the simulator to better match the assignment, such as the manager having a list of prosumers instead of each house having a reference to a manager.</li></ul> |
