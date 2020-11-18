@@ -21,8 +21,9 @@ export const ELECTRICITY_SELL_RATIO = 0.67;
 // Source:	https://www.vattenfall.se/solceller/solcellspaket/mikroproduktion-salj-solel/
 //			https://www.vattenfall.se/elavtal/elpriser/timpris-pa-elborsen/
 
-export const electricityPricePerWattSecond = (averageDemand: number) => {
-	return averageDemand * 0.0004 + 1;
+export const electricityPricePerWattSecond = (averageDemand: number, deltaTimeS: number) => {
+	if (deltaTimeS === 0) return averageDemand * 0.00000000017 + 0.5 / 3600000;
+	return averageDemand / deltaTimeS * 0.00000000017 + 0.5 / 3600000;
 }
 // Source: https://www.statista.com/statistics/418124/electricity-prices-for-households-in-sweden/
 // Motivation: Made up function to model the electricity price to stay close to 1.8 currency units when expected average demand is met

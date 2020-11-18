@@ -9,24 +9,16 @@ import { Environment } from '../../src/environment';
 class TestObject{
 	environment!: Environment;
 	pBattery!: Battery;
-	pGeoData!: GeoData;
-	coalPowerPlant!: CoalPowerPlant;
-	manager!: Manager;
 	hBattery!: Battery;
-	hGeoData!: GeoData;
 	house!: House;
-	hCoalGenerator!: CoalGenerator;
 
 	public defaultValues(): void {
 		this.pBattery = new Battery(2000, 0);
-		this.pGeoData = new GeoData(100, 10, 10);
-		this.coalPowerPlant = new CoalPowerPlant(this.pBattery, this.pGeoData, [], 0);
-		this.manager = new Manager(0, [this.coalPowerPlant]);
-
+		
 		this.hBattery = new Battery(100, 0);
-		this.hGeoData = new GeoData(10, 10, 10);
-		this.hCoalGenerator = new CoalGenerator(100, false, 0);
-		this.house = new House(this.hBattery, this.hGeoData, [this.hCoalGenerator], 1, 0.1, [this.manager]);
+		const hGeoData = new GeoData(10, 10, 10);
+		const hCoalGenerator = new CoalGenerator(100, false, 0);
+		this.house = new House(this.hBattery, hGeoData, [hCoalGenerator], 0.1);
 	}
 }
 
@@ -37,25 +29,25 @@ describe('buildings/house.ts', function(){
 		beforeEach('Setup default values for test object.', function() {testObject.defaultValues()});
 		it('Generate 10 electricity units to battery.', function() {
 			testObject.house.calculateProduction(1, testObject.environment);
-			testObject.house.generateElectricity(1);
+			testObject.house.generateElectricity(testObject.pBattery);
 			expect(testObject.house.battery.buffer).to.equal(10);
 		});
 		it('Generate 90 electricity units to power plant.', function() {
 			testObject.house.calculateProduction(1, testObject.environment);
-			testObject.house.generateElectricity(1);
+			testObject.house.generateElectricity(testObject.pBattery);
 			expect(testObject.house.electricityOutput).to.equal(90);
 		});
 		it('Should not generate electricity because of blackout.', function() {
 			testObject.house.hasBlackout = true;
 			testObject.house.calculateProduction(1, testObject.environment);
-			testObject.house.generateElectricity(1);
+			testObject.house.generateElectricity(testObject.pBattery);
 			expect(testObject.house.battery.buffer).to.equal(0);
 
 		});
 		it('Generate over house battery capacity and send remainder to power plant.', function() {
 			testObject.house.generators[0].baseOutput = 2000;
 			testObject.house.calculateProduction(1, testObject.environment);
-			testObject.house.generateElectricity(1);
+			testObject.house.generateElectricity(testObject.pBattery);
 			expect(testObject.house.battery.buffer).to.equal(100);
 			expect(testObject.house.electricityOutput).to.equal(1900);
 		});
@@ -64,7 +56,7 @@ describe('buildings/house.ts', function(){
 			testObject.house.generators[0].baseOutput = 2000;
 			testObject.house.batteryToPowerPlantRatio = 0.6;
 			testObject.house.calculateProduction(1, testObject.environment);
-			testObject.house.generateElectricity(1);
+			testObject.house.generateElectricity(testObject.pBattery);
 			expect(testObject.house.electricityOutput).to.equal(1000);
 
 		});
@@ -73,7 +65,7 @@ describe('buildings/house.ts', function(){
 			testObject.house.generators[0].baseOutput = 50;
 			testObject.house.batteryToPowerPlantRatio = 0.6;
 			testObject.house.calculateProduction(1, testObject.environment);
-			testObject.house.generateElectricity(1);
+			testObject.house.generateElectricity(testObject.pBattery);
 			expect(testObject.hBattery.buffer).to.equal(40);
 		});
 	});

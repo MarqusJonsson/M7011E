@@ -2,9 +2,8 @@ import { BaseBuilding } from './buildings/baseBuilding';
 import { Prosumer } from './users/prosumer';
 import { Manager } from './users/manager';
 import { Environment } from './environment';
-import { BasePowerPlant } from './buildings/basePowerPlant';
 import { ELECTRICITY_SELL_RATIO } from './utils/realLifeData';
-import { building } from './db/schemas/building/queries';
+import { msToYMDHMSM } from './math/time';
 
 export class Simulator {
 	// Time variables
@@ -34,36 +33,40 @@ export class Simulator {
 	}
 
 	private tempLog(): string {
-		let logStr = '';
+		const ymdhmsm = msToYMDHMSM(this.simulationTime);
+		let logStr = `\t\t\t\t  Y: M: D: H: M: S: mS\n`
+			+ `New time step, simulation time = `
+			+ ymdhmsm.years.toString().padStart(2, " ") + ':'
+			+ ymdhmsm.months.toString().padStart(2, " ") + ':'
+			+ ymdhmsm.days.toString().padStart(2, " ") + ':'
+			+ ymdhmsm.hours.toString().padStart(2, " ") + ':'
+			+ ymdhmsm.minutes.toString().padStart(2, " ") + ':'
+			+ ymdhmsm.seconds.toString().padStart(2, " ") + ':'
+			+ ymdhmsm.miliseconds.toString().padStart(2, " ") + ', '
+			+ `deltaTimeS = ${this.deltaTimeS}\n`;
+		logStr += 'User\t\tCurrency\tPlantID\tBuffer%\tConsumption\tProduction\tDemand\t\tBlackout\n';
 		this._managers.forEach((manager) => {
-			logStr += 'User\t\tCurrency\n';
-			logStr += `${manager.type}_${manager.id}\t${manager.currency.toFixed(2)}\n`;
-			logStr += 'Owned buildings:\n';
-			logStr += '\tPlantID\tBuffer%\tConsumption\tProduction\tDemand\t\tBlackout\n';
-			manager.powerPlants.forEach((powerPlant) => {
-				logStr += `\t${powerPlant.id}`
-					+ `\t${(powerPlant.battery.buffer / powerPlant.battery.capacity).toFixed(3)}`
-					+ `\t${(powerPlant.consumption * this.deltaTimeS).toExponential(3)}`
-					+ `\t${(powerPlant.production * this.deltaTimeS).toExponential(3)}`
-					+ `\t${powerPlant.getDemand(this.deltaTimeS).toExponential(3)}`
-					+ `\t${powerPlant.hasBlackout}\n`;
-			});
-			logStr += '\n';
+			const powerPlant = manager.powerPlant;
+			logStr += `${manager.type}_${manager.id}`
+				+ `\t${manager.currency.toExponential(3)}`
+				+ `\t${powerPlant.id}`
+				+ `\t${(powerPlant.battery.buffer / powerPlant.battery.capacity).toFixed(3)}`
+				+ `\t${(powerPlant.consumption).toExponential(3)}`
+				+ `\t${(powerPlant.production).toExponential(3)}`
+				+ `\t${powerPlant.getDemand().toExponential(3)}`
+				+ `\t${powerPlant.hasBlackout}\n`;
 		});
+		logStr += 'User\t\tCurrency\tHouseID\tBuffer%\tConsumption\tProduction\tDemand\t\tBlackout\n';
 		this._prosumers.forEach((prosumer) => {
-			logStr += 'User\t\tCurrency\n';
-			logStr += `${prosumer.type}_${prosumer.id}\t${prosumer.currency.toFixed(2)}\n`;
-			logStr += 'Owned buildings:\n';
-			logStr += '\tHouseID\tBuffer%\tConsumption\tProduction\tDemand\t\tBlackout\n';
-			prosumer.houses.forEach((house) => {
-				logStr += `\t${house.id}`
-					+ `\t${(house.battery.buffer / house.battery.capacity).toFixed(3)}`
-					+ `\t${(house.consumption * this.deltaTimeS).toExponential(3)}`
-					+ `\t${(house.production * this.deltaTimeS).toExponential(3)}`
-					+ `\t${house.getDemand(this.deltaTimeS).toExponential(3)}`
-					+ `\t${house.hasBlackout}\n`;
-			});
-			logStr += '\n';
+			const house = prosumer.house
+			logStr += `${prosumer.type}_${prosumer.id}`
+				+ `\t${prosumer.currency.toExponential(3)}`
+				+ `\t${house.id}`
+				+ `\t${(house.battery.buffer / house.battery.capacity).toFixed(3)}`
+				+ `\t${(house.consumption).toExponential(3)}`
+				+ `\t${(house.production).toExponential(3)}`
+				+ `\t${house.getDemand().toExponential(3)}`
+				+ `\t${house.hasBlackout}\n`;
 		});
 		return logStr;
 	}
@@ -75,76 +78,70 @@ export class Simulator {
 	}
 
 	public update() {
-		this.updateElectricityConsumption();
-		this.updateProductionCalculations();
+		this.updateElectricityConsumptionValues();
+		this.updateElectricityProductionValues();
 		this.updatePrices();
-		this.updateElectricityGeneration();
-		this.sellProsumersElectricity();
-		this.purchaseProsumersElectricity();
-		this.updateElectricityConsume();
+		this.generateElectricity();
+		this.prosumersSellElectricity();
+		this.prosumersBuyElectricity();
+		this.consumeElectricity();
 		this._updateDeltaTime();
-		let logStr = `New time step, time elapsed = ${this.simulationTime} (ms), deltaTimeS = ${this.deltaTimeS}\n`;
-		console.log(logStr + this.tempLog());
+		console.log(this.tempLog());
 	}
 	
 	private updatePrices() {
-		const demands = new Map<[Manager, BasePowerPlant], [number, number]>();
-		this._prosumers.forEach((prosumer) => {
-			prosumer.houses.forEach((house) => {
-				const managerPowerPlantTuple: [Manager, BasePowerPlant] = [house.powerPlantManager, house.powerPlant];
-				let nHousesDemandTuple = demands.get(managerPowerPlantTuple);
-				if (nHousesDemandTuple === undefined) nHousesDemandTuple = [0, 0];
-				let nHouses = nHousesDemandTuple[0];
-				let previousDemand = nHousesDemandTuple[1];
-				demands.set(
-					managerPowerPlantTuple,
-					[nHouses + 1, previousDemand + house.getDemand(this.deltaTimeS)]
-				);
+		this._managers.forEach((manager) => {
+			let demand: number = 0;
+			const prosumers = manager.prosumers;
+			prosumers.forEach((prosumer) => {
+				demand += prosumer.house.getDemand();
 			});
-		});
-		demands.forEach((nHousesDemandTuple, managerPowerPlantTuple) => {
-			let nHouses = nHousesDemandTuple[0];
-			let demand = nHousesDemandTuple[1];
-			const manager: Manager = managerPowerPlantTuple[0];
-			const powerPlant: BasePowerPlant = managerPowerPlantTuple[1];
-			const buyPrice: number = manager.calcBuyPrice(demand / nHouses, 1);
-			manager.setBuyPrice(powerPlant, buyPrice);
-			manager.setSellPrice(powerPlant, buyPrice * ELECTRICITY_SELL_RATIO);
+			const buyPrice: number = manager.calcBuyPrice(1, demand / prosumers.length, this.deltaTimeS);
+			manager.setBuyPrice(buyPrice);
+			manager.setSellPrice(buyPrice * ELECTRICITY_SELL_RATIO);
 		});
 	}
 
-	private updateElectricityConsumption() {
+	private updateElectricityConsumptionValues() {
 		this._buildings.forEach((building) => {
 			building.calculateConsumption(this.deltaTimeS, this._environment, this._simulationTime);
 		});
 	}
-	private updateProductionCalculations() {
+	private updateElectricityProductionValues() {
 		this._buildings.forEach((building) => {
 			building.calculateProduction(this.deltaTimeS, this._environment);
 		});
 	}
 
-	private updateElectricityGeneration() {
+	private generateElectricity() {
+		this._managers.forEach((manager) => {
+			const powerPlant = manager.powerPlant;
+			powerPlant.generateElectricity();
+			manager.prosumers.forEach((prosumer) => {
+				prosumer.house.generateElectricity(powerPlant.battery)
+			});
+		});
+	}
+
+	private prosumersSellElectricity() {
+		this._managers.forEach((manager) => {
+			manager.prosumers.forEach((prosumer) => {
+				prosumer.sellElectricity(manager);
+			});
+		});
+	}
+
+	private prosumersBuyElectricity() {
+		this._managers.forEach((manager) => {
+			manager.prosumers.forEach((prosumer) => {
+				prosumer.buyElectricity(manager);
+			});
+		});
+	}
+
+	private consumeElectricity() {
 		this._buildings.forEach((building) => {
-			building.generateElectricity(this.deltaTimeS);
-		});
-	}
-
-	private sellProsumersElectricity() {
-		this._prosumers.forEach((prosumer) => {
-			prosumer.sellElectricity();
-		});
-	}
-
-	private purchaseProsumersElectricity() {
-		this._prosumers.forEach((prosumer) => {
-			prosumer.buyElectricity(this.deltaTimeS);
-		});
-	}
-
-	private updateElectricityConsume() {
-		this._buildings.forEach((building) => {
-			building.consumeElectricity(this.deltaTimeS, this._environment);
+			building.consumeElectricity();
 		});
 	}
 
@@ -232,5 +229,13 @@ export class Simulator {
 	
 	private set fixedTimeStep(value: boolean) {
 		this._fixedTimeStep = value;
+	}
+
+	public get environment(): Environment {
+		return this._environment;
+	}
+
+	public get buildings(): BaseBuilding[] {
+		return this._buildings;
 	}
 }

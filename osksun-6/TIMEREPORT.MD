@@ -6,3 +6,4 @@
 |2020-11-12| 6 | Started implementing interpolation to be used for having temperatures based on geological data.
 |2020-11-13| 7 | Added bilinear interpolation that will be used for having similar temperatures and wind speeds based on geological data. Made a wrapper where our GeoData class can be used as input to the interpolation function and a test function for the bilinear interpolation. 
 |2020-11-14| 5 | Created function for calculating consumption for buildings taking outside temperatures into consideration.
+|2020-11-15| 5 | Updated the calculation of consumption for buildings and started making a GUI mockup for prosumers.

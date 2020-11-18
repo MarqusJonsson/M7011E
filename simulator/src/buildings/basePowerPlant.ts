@@ -10,14 +10,14 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	private _productionUpperCutOff: number = 0.6;
 	private _productionFlag: boolean = true;
 
-	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[], consumption: number) {
-		super(type, battery, geoData, generators, consumption);
+	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[]) {
+		super(type, battery, geoData, generators);
 	}
 
-	public generateElectricity(deltaTimeS: number): void {
+	public generateElectricity(): void {
 		const battery: Battery = this.battery;
 		if (this.productionFlag) {
-			const batteryElectricityAfterGeneration = battery.buffer + this.production * deltaTimeS;
+			const batteryElectricityAfterGeneration = battery.buffer + this.production;
 			if (batteryElectricityAfterGeneration <= battery.capacity) {
 				battery.buffer = batteryElectricityAfterGeneration;
 				if (battery.buffer > battery.capacity * this.productionUpperCufOff){
