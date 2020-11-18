@@ -3,7 +3,7 @@ import { Battery } from './components/battery';
 import { GeoData } from './components/geoData';
 import { BaseGenerator } from '../generators/baseGenerator';
 import { Environment } from '../environment';
-import {  AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND } from "../utils/realLifeData";
+import { AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND } from "../utils/realLifeData";
 
 export class House extends BaseBuilding {
 	private _batteryToPowerPlantRatio: number;
