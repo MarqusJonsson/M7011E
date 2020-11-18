@@ -1,3 +1,11 @@
+
+# Simulator
+simulator/node_modules
+simulator/package-lock.json
+simulator/.nyc_output
+simulator/rsa/accessToken/public.key
+simulator/.env
+
 # Logs
 logs
 *.log
