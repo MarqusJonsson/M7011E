@@ -1,39 +1,40 @@
 import { Battery } from './components/battery';
 import { GeoData } from './components/geoData';
 import { BaseGenerator } from '../generators/baseGenerator';
-import { Identifiable } from '../identifiable';
-import { Environment } from '../environment';
+import { Identifiable, IMap } from '../identifiable';
+
 export abstract class BaseBuilding extends Identifiable {
 	private _battery: Battery;
 	private _geoData: GeoData;
-	private _generators: BaseGenerator[] = [];
-	private _production: number = 0;
+	private _generators: IMap<BaseGenerator>;
 	private _hasBlackout: boolean = false;
-	private _consumption: number;
+	private _electricityProduction: number = 0;
+	private _electricityConsumption: number = 0;
 	private _electricityOutput: number = 0;
 
-	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[]) {
+	constructor(type: string, battery: Battery, geoData: GeoData, generators: IMap<BaseGenerator>) {
 		super(type);
 		this._battery = battery;
 		this._geoData = geoData;
 		this._generators = generators;
-		this._consumption = 0;
 	}
 
-	public calculateProduction(deltaTimeS: number, environment: Environment): number {
+	public calculateProduction(deltaTimeS: number): number {
 		if (this.hasBlackout) return 0;
-		this.production = this.generators.reduce((totalProduction, generator) => {
-			return totalProduction + generator.calculateOutput(environment, this.geoData);
-		}, 0);
-		return this.production * deltaTimeS;
+		this._electricityProduction = 0;
+		this.generators.forEach((generator) => {
+			this._electricityProduction += generator.calculateOutput(this.geoData);
+		});
+		this._electricityProduction *= deltaTimeS;
+		return this.electricityProduction;
 	}
 
-	public abstract calculateConsumption(deltaTimeS: number, environment: Environment, simulationTime: number): void;
+	public abstract calculateConsumption(deltaTimeS: number): void;
 
 	public abstract generateElectricity(pBattery?: Battery): void;
 
 	public consumeElectricity() {
-		const remainingElectricity = this.battery.buffer - this.consumption;
+		const remainingElectricity = this.battery.buffer - this.electricityConsumption;
 		if (!this.hasBlackout) {
 			if (remainingElectricity < 0) {
 				this.hasBlackout = true;
@@ -50,7 +51,7 @@ export abstract class BaseBuilding extends Identifiable {
 	}
 
 	public getDemand(): number {
-		return Math.max(this.consumption- this.battery.buffer, 0);
+		return Math.max(this.electricityConsumption - this.battery.buffer, 0);
 	}
 
 	public get battery(): Battery {
@@ -69,20 +70,20 @@ export abstract class BaseBuilding extends Identifiable {
 		this._geoData = geoData;
 	}
 
-	public get generators(): BaseGenerator[] {
+	public get generators(): IMap<BaseGenerator> {
 		return this._generators;
 	}
 
-	public set generators(generators: BaseGenerator[]) {
+	public set generators(generators: IMap<BaseGenerator>) {
 		this._generators = generators;
 	}
 
-	public get production(): number {
-		return this._production;
+	public get electricityProduction(): number {
+		return this._electricityProduction;
 	}
 
-	public set production(value: number) {
-		this._production = value;
+	public set electricityProduction(value: number) {
+		this._electricityProduction = value;
 	}
 
 	public get hasBlackout(): boolean {
@@ -93,12 +94,12 @@ export abstract class BaseBuilding extends Identifiable {
 		this._hasBlackout = bool;
 	}
 
-	public get consumption(): number{
-		return this._consumption;
+	public get electricityConsumption(): number{
+		return this._electricityConsumption;
 	}
 
-	public set consumption(value: number){
-		this._consumption = value;
+	public set electricityConsumption(value: number){
+		this._electricityConsumption = value;
 	}
 
 	public get electricityOutput(): number{

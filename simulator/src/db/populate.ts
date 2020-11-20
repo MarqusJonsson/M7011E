@@ -6,68 +6,13 @@ import { buildingResolver } from './resolvers/building'
 import { generatorResolver } from './resolvers/generator'
 import { Prosumer } from '../users/prosumer';
 import { House } from '../buildings/house'
-import { Battery } from '../buildings/components/battery'
-import { GeoData } from '../buildings/components/geoData'
 import { WindTurbine } from '../generators/windTurbine'
 import { CoalPowerPlant } from '../buildings/coalPowerPlant'
 import { CoalGenerator } from '../generators/coalGenerator'
-import { Environment } from '../environment'
 import { BaseUser } from '../users/baseUser'
 import { Manager } from '../users/manager'
-import { GaussianDistribution } from '../math/gaussianDistribution'
-{
-	// Simulate an environment
-	const environment: Environment = new Environment(Date.now());
-	let users: BaseUser[] = [];
-	const prosumerCurrencyDistribution: GaussianDistribution = new GaussianDistribution(20000, 1000);
-	const houseBatteryDistribution: GaussianDistribution = new GaussianDistribution(200, 2);
-	const houseConsumptionDistribution: GaussianDistribution = new GaussianDistribution(2283, 1000);
-	const houseWindTurbineProductionDistribution: GaussianDistribution = new GaussianDistribution(1372, 300);
-	// Create managers with power plants
-	const nManagers = 10;
-	for (let i = 0; i < nManagers; i++) {
-		const powerPlant = new CoalPowerPlant(
-			new Battery(1000000, 500000),
-			new GeoData(),
-			[ // List of owned generators
-				new CoalGenerator(1000)
-			],
-			1000 // Consumption
-		);
-		const manager = new Manager(
-			100000, // Currency
-			[ // List of owned power plants
-				powerPlant
-			]
-		);
-		users.push(manager);
-		// Create prosumers with houses that communicates with the most recently created manager
-		const prosumersPerManager = 5;
-		for (let i = 0; i < prosumersPerManager; i++) {
-			const batteryCapacity = houseBatteryDistribution.sample();
-			users.push(
-				new Prosumer(
-					prosumerCurrencyDistribution.sample(), // Currency
-					[ // List of owned houses
-						new House(
-							new Battery(batteryCapacity, batteryCapacity * 0.5),
-							new GeoData(),
-							[ // List of generators
-								new WindTurbine(houseWindTurbineProductionDistribution.sample())
-							],
-							houseConsumptionDistribution.sample(),
-							0.5,
-							[manager]
-						)
-					]
-				)
-			)
-		}
-	}
-	populate(users);
-}
 
-function populate(users: BaseUser[]) {
+export function populate(users: BaseUser[]) {
 	Promise.all([
 		userTypeResolver.create(Prosumer.name),
 		userTypeResolver.create(Manager.name),
@@ -94,28 +39,24 @@ function populate(users: BaseUser[]) {
 						prosumerType.id
 					).then((dbProsumer) => {
 						// Create prosumer houses in database
-						const houses = prosumer.houses;
-						for (let j = 0; j < houses.length; j++) {
-							const house = houses[j];
-							buildingResolver.create(
-								house.battery.buffer,
-								house.battery.capacity,
-								houseType.id,
-								dbProsumer.id
-							).then((dbHouse) => {
-								// Create prosumer houses generators in database
-								const generators = house.generators;
-								for (let k = 0; k < generators.length; k++) {
-									const generator = generators[k];
-									generatorResolver.create(
-										generator.baseOutput,
-										generator.isBroken,
-										windTurbineType.id,
-										dbHouse.id
-									);
-								}
-							});
-						}
+						const house = prosumer.house;
+						buildingResolver.create(
+							house.battery.buffer,
+							house.battery.capacity,
+							houseType.id,
+							dbProsumer.id
+						).then((dbHouse) => {
+							// Create prosumer houses generators in database
+							const generators = house.generators.values();
+							for (const generator of generators) {
+								generatorResolver.create(
+									generator.baseOutput,
+									generator.isBroken,
+									windTurbineType.id,
+									dbHouse.id
+								);
+							}
+						});
 					});
 					break;
 				case Manager.name:
@@ -127,28 +68,24 @@ function populate(users: BaseUser[]) {
 						managerType.id
 					).then((dbManager) => {
 						// Create manager powerPlants in database
-						const powerPlants = manager.powerPlants;
-						for (let j = 0; j < powerPlants.length; j++) {
-							const powerPlant = powerPlants[j];
-							buildingResolver.create(
-								powerPlant.battery.buffer,
-								powerPlant.battery.capacity,
-								coalPowerPlantType.id,
-								dbManager.id
-							).then((dbPowerPlant) => {
-								// Create manager powerPlants generators in database
-								const generators = powerPlant.generators;
-								for (let k = 0; k < generators.length; k++) {
-									const generator = generators[k];
-									generatorResolver.create(
-										generator.baseOutput,
-										generator.isBroken,
-										coalGeneratorType.id,
-										dbPowerPlant.id
-									);
-								}
-							});
-						}
+						const powerPlant = manager.powerPlant;
+						buildingResolver.create(
+							powerPlant.battery.buffer,
+							powerPlant.battery.capacity,
+							coalPowerPlantType.id,
+							dbManager.id
+						).then((dbPowerPlant) => {
+							// Create manager powerPlants generators in database
+							const generators = powerPlant.generators.values();
+							for (const generator of generators) {
+								generatorResolver.create(
+									generator.baseOutput,
+									generator.isBroken,
+									coalGeneratorType.id,
+									dbPowerPlant.id
+								);
+							}
+						});
 					});
 					break;
 				default:

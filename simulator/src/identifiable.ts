@@ -1,32 +1,57 @@
-﻿export abstract class Identifiable {
-	private readonly _id: number;
-	private readonly _type: string;
+﻿export class Identifier {
+	public type: string;
+	public id: number;
+	
+	constructor(type: string, id: number) {
+		this.type = type;
+		this.id = id;
+	}
+}
+
+export abstract class Identifiable {
 	private static _map: Map<string, number> = new Map<string, number>();
+	private _identifier: Identifier;
 
-	constructor(typeName: string) {
-		let nextId: number | undefined = Identifiable.getNextId(typeName);
-		if (nextId === undefined) {
-			nextId = 1;
+	constructor(type: string) {
+		let id: number | undefined = Identifiable.getNextId(type);
+		if (id === undefined) {
+			id = 1;
 		}
-		this._id = nextId;
-		this._type = typeName;
-		nextId++;
-		Identifiable.setNextId(typeName, nextId)
+		this._identifier = new Identifier(type, id);
+		Identifiable.setNextId(type, id + 1)
 	}
 
-	private static getNextId(typeName: string): number | undefined {
-		return Identifiable._map.get(typeName);
+	private static getNextId(type: string): number | undefined {
+		return Identifiable._map.get(type);
 	}
 
-	private static setNextId(typeName: string, value: number) {
-		Identifiable._map.set(typeName, value);
+	private static setNextId(type: string, value: number) {
+		Identifiable._map.set(type, value);
+	}
+
+	public get identifier() {
+		return this._identifier;
 	}
 
 	public get id() {
-		return this._id;
+		return this._identifier.id;
 	}
 
 	public get type() {
-		return this._type;
+		return this._identifier.type;
+	}
+}
+
+export class IMap<T extends Identifiable> extends Map<number, T> {
+	public iSet(identifiable: T) {
+		return this.set(identifiable.id, identifiable);
+	}
+
+	public iGet(identifiable: T): T | undefined {
+		return this.get(identifiable.id);
+	}
+
+	public uGet(identifier: Identifier): T | undefined {
+		return this.get(identifier.id);
 	}
 }

@@ -24,7 +24,7 @@ export abstract class BaseGenerator extends Identifiable {
 		}, downtime_ms);
 	}
 
-	public abstract calculateOutput(environment: Environment, geoData: GeoData): number;
+	public abstract calculateOutput(geoData: GeoData): number;
 
 	public get baseOutput(): number {
 		return this._baseOutput;
@@ -50,7 +50,7 @@ export abstract class BaseGenerator extends Identifiable {
 		this._isBroken = value;
 	}
 
-	public get pollution(): number  {
+	public get pollution(): number {
 		return this._pollution;
 	}
 	

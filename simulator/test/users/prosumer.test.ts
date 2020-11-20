@@ -2,17 +2,15 @@ import { expect } from 'chai';
 import { House } from '../../src/buildings/house';
 import { Prosumer } from '../../src/users/prosumer';
 import { CoalGenerator } from '../../src/generators/coalGenerator';
-import { BaseGenerator } from '../../src/generators/baseGenerator';
 import { GeoData } from '../../src/buildings/components/geoData';
 import { Battery } from '../../src/buildings/components/battery';
-import { Environment } from '../../src/environment';
-import { BasePowerPlant } from '../../src/buildings/basePowerPlant';
 import { Manager } from '../../src/users/manager';
 import { CoalPowerPlant } from '../../src/buildings/coalPowerPlant';
+import { IMap } from '../../src/identifiable';
+import { BaseGenerator } from '../../src/generators/baseGenerator';
 
 
-class TestObject{
-	environment!: Environment;
+class TestObject {
 	pBattery!: Battery;
 	manager!: Manager;
 	coalPowerPlant!: CoalPowerPlant;
@@ -20,19 +18,19 @@ class TestObject{
 	hBattery!: Battery;
 	house!: House;
 
-	public defaultValues(): void{
-		this.environment = new Environment(0);
+	public defaultValues(): void {
 		this.pBattery = new Battery(1000, 0);
-		const pGeoData = new GeoData(100, 10, 10);
-		this.coalPowerPlant = new CoalPowerPlant(this.pBattery, pGeoData, []);
+		const pGeoData = new GeoData();
+		this.coalPowerPlant = new CoalPowerPlant(this.pBattery, pGeoData, new IMap<BaseGenerator>());
 		this.manager = new Manager(0, this.coalPowerPlant);
+		
 		this.hBattery = new Battery(1000, 0);
 		const hCoalGenerator = new CoalGenerator(100, false, 0);
-		const hGenerators = [hCoalGenerator];
-		const hGeoData = new GeoData(10, 10, 10);
+		const hGenerators = new IMap<BaseGenerator>();
+		hGenerators.iSet(hCoalGenerator);
+		const hGeoData = new GeoData();
 		this.house = new House(this.hBattery, hGeoData, hGenerators, 1);
 		this.prosumer = new Prosumer(0, this.house);
-		this.house.generators.push(hCoalGenerator);
 	}
 }
 
@@ -43,8 +41,8 @@ describe('users/prosumer.ts', function() {
 		it('Buy 200 electricity units for 2000 currency units.', function() {
 			testObject.pBattery.buffer = 500;
 			testObject.coalPowerPlant.electricityBuyPrice = 10;
-			testObject.house.consumption = 300;
-			testObject.house.calculateProduction(1, testObject.environment);
+			testObject.house.electricityConsumption = 300;
+			testObject.house.calculateProduction(1);
 			testObject.prosumer.currency = 2000;
 			testObject.prosumer.buyElectricity(testObject.manager);
 			expect(testObject.prosumer.currency).to.equal(0);
@@ -53,8 +51,8 @@ describe('users/prosumer.ts', function() {
 		it('Buy all available electricity in power plant battery.', function() {
 			testObject.pBattery.buffer = 100;
 			testObject.coalPowerPlant.electricityBuyPrice = 10;
-			testObject.house.consumption = 300;
-			testObject.house.calculateProduction(1, testObject.environment);
+			testObject.house.electricityConsumption = 300;
+			testObject.house.calculateProduction(1);
 			testObject.prosumer.currency = 2000;
 			testObject.prosumer.buyElectricity(testObject.manager);
 			expect(testObject.prosumer.currency).to.equal(1000);
@@ -64,8 +62,8 @@ describe('users/prosumer.ts', function() {
 		it('Buy electricity with currency that is available.', function() {
 			testObject.pBattery.buffer = 500;
 			testObject.coalPowerPlant.electricityBuyPrice = 10;
-			testObject.house.consumption = 500;
-			testObject.house.calculateProduction(1, testObject.environment);
+			testObject.house.electricityConsumption = 500;
+			testObject.house.calculateProduction(1);
 			testObject.prosumer.currency = 500;
 			testObject.prosumer.buyElectricity(testObject.manager);
 			expect(testObject.prosumer.currency).to.equal(0);
@@ -75,8 +73,8 @@ describe('users/prosumer.ts', function() {
 		it('Buy all available electricity in power plant battery with currency that is available.', function() {
 			testObject.pBattery.buffer = 38;
 			testObject.coalPowerPlant.electricityBuyPrice = 10;
-			testObject.house.consumption = 500;
-			testObject.house.calculateProduction(1, testObject.environment);
+			testObject.house.electricityConsumption = 500;
+			testObject.house.calculateProduction(1);
 			testObject.prosumer.currency = 390;
 			testObject.prosumer.buyElectricity(testObject.manager);
 			expect(testObject.prosumer.currency).to.equal(10);

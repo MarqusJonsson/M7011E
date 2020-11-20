@@ -2,7 +2,10 @@ import {BaseBuilding} from './baseBuilding';
 import {Battery} from './components/battery';
 import {GeoData} from './components/geoData';
 import {BaseGenerator} from '../generators/baseGenerator';
+import { IMap } from '../identifiable';
 export abstract class BasePowerPlant extends BaseBuilding {
+	private _modelledElectricityBuyPrice: number = 0;
+	private _modelledElectricitySellPrice: number = 0;
 	private _electricityBuyPrice: number = 0;
 	private _electricitySellPrice: number = 0;
 	private _startUpTime: number = 30;
@@ -10,14 +13,14 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	private _productionUpperCutOff: number = 0.6;
 	private _productionFlag: boolean = true;
 
-	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[]) {
+	constructor(type: string, battery: Battery, geoData: GeoData, generators: IMap<BaseGenerator>) {
 		super(type, battery, geoData, generators);
 	}
 
 	public generateElectricity(): void {
 		const battery: Battery = this.battery;
 		if (this.productionFlag) {
-			const batteryElectricityAfterGeneration = battery.buffer + this.production;
+			const batteryElectricityAfterGeneration = battery.buffer + this.electricityProduction;
 			if (batteryElectricityAfterGeneration <= battery.capacity) {
 				battery.buffer = batteryElectricityAfterGeneration;
 				if (battery.buffer > battery.capacity * this.productionUpperCufOff){
@@ -51,6 +54,22 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	}
 
 	public set electricitySellPrice(value: number){
+		this._electricitySellPrice = value;
+	}
+
+	public get modelledElectricityBuyPrice(): number{
+		return this._electricityBuyPrice;
+	}
+
+	public set modelledElectricityBuyPrice(value: number){
+		this._electricityBuyPrice = value;
+	}
+
+	public get modelledElectricitySellPrice(): number{
+		return this._electricitySellPrice;
+	}
+
+	public set modelledElectricitySellPrice(value: number){
 		this._electricitySellPrice = value;
 	}
 

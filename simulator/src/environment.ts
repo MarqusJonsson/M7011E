@@ -1,16 +1,16 @@
 import { GaussianDistribution } from './math/gaussianDistribution';
 export class Environment {
 	private _time: number;
-	private _dist: GaussianDistribution;
+	private _windSpeedDist: GaussianDistribution;
 	private _monthMeanTemperatureDistributions: Array<GaussianDistribution>;
-	constructor(time: number, windSpeedMean: number = 0, windSpeedVariance: number = 20, monthMeanTemperatureDistributions: Array<GaussianDistribution> = []) {
+	constructor(time: number, windSpeedMean: number = 0, windSpeedVariance: number = 20, monthMeanTemperatureDistributions: GaussianDistribution[] = []) {
 		this._time = time;
-		this._dist = new GaussianDistribution(windSpeedMean, windSpeedVariance);
+		this._windSpeedDist = new GaussianDistribution(windSpeedMean, windSpeedVariance);
 		this._monthMeanTemperatureDistributions = monthMeanTemperatureDistributions;
 	}
 
-   public sampleWindSpeed(longitude: number, latitude: number, time: number = Date.now()): number {
-		return this._dist.sample();
+	public sampleWindSpeed(longitude: number, latitude: number, time: number = Date.now()): number {
+		return this._windSpeedDist.sample();
 	}
 
 	public cosInterpolatation(x: number, y: number, angle: number): number{
