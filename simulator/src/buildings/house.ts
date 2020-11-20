@@ -2,7 +2,7 @@ import { BaseBuilding } from './baseBuilding';
 import { Battery } from './components/battery';
 import { GeoData } from './components/geoData';
 import { BaseGenerator } from '../generators/baseGenerator';
-import { AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND } from "../utils/realLifeData";
+import { AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND } from '../utils/realLifeData';
 import { IMap } from '../identifiable';
 
 export class House extends BaseBuilding {

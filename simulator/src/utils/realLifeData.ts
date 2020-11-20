@@ -1,4 +1,4 @@
-import { kWh_to_Ws } from "../math/electricity";
+import { kWh_to_Ws } from '../math/electricity';
 
 // Base unit for electricity is in Ws (Watt-seconds)
 

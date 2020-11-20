@@ -56,13 +56,13 @@ export class Simulator {
 		const ymdhmsm = msToYMDHMSM(this.simulationTime);
 		let logStr = `\t\t\t\t  Y: M: D: H: M: S: mS\n`
 			+ `New time step, simulation time = `
-			+ ymdhmsm.years.toString().padStart(2, " ") + ':'
-			+ ymdhmsm.months.toString().padStart(2, " ") + ':'
-			+ ymdhmsm.days.toString().padStart(2, " ") + ':'
-			+ ymdhmsm.hours.toString().padStart(2, " ") + ':'
-			+ ymdhmsm.minutes.toString().padStart(2, " ") + ':'
-			+ ymdhmsm.seconds.toString().padStart(2, " ") + ':'
-			+ ymdhmsm.miliseconds.toString().padStart(2, " ") + ', '
+			+ ymdhmsm.years.toString().padStart(2, ' ') + ':'
+			+ ymdhmsm.months.toString().padStart(2, ' ') + ':'
+			+ ymdhmsm.days.toString().padStart(2, ' ') + ':'
+			+ ymdhmsm.hours.toString().padStart(2, ' ') + ':'
+			+ ymdhmsm.minutes.toString().padStart(2, ' ') + ':'
+			+ ymdhmsm.seconds.toString().padStart(2, ' ') + ':'
+			+ ymdhmsm.miliseconds.toString().padStart(2, ' ') + ', '
 			+ `deltaTimeS = ${this.deltaTimeS}\n`;
 		logStr += 'User\t\tCurrency\tPlantID\tBuffer%\tConsumption\tProduction\tDemand\t\tBlackout\n';
 		this._managers.forEach((manager) => {

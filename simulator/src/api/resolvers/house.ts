@@ -1,7 +1,7 @@
-import { GraphQLError } from "graphql";
-import { Prosumer } from "../../users/prosumer";
-import { GraphQLContext } from "../schemas/graphQLContext";
-import { GraphQLErrorName } from "../schemas/graphQLErrors";
+import { GraphQLError } from 'graphql';
+import { Prosumer } from '../../users/prosumer';
+import { GraphQLContext } from '../schemas/graphQLContext';
+import { GraphQLErrorName } from '../schemas/graphQLErrors';
 
 class HouseResolver {
 	one = (context: GraphQLContext) => {

@@ -1,9 +1,9 @@
-import { GraphQLError } from "graphql";
-import { BasePowerPlant } from "../../buildings/basePowerPlant";
-import { Manager } from "../../users/manager";
-import { Prosumer } from "../../users/prosumer";
-import { GraphQLContext } from "../schemas/graphQLContext";
-import { GraphQLErrorName } from "../schemas/graphQLErrors";
+import { GraphQLError } from 'graphql';
+import { BasePowerPlant } from '../../buildings/basePowerPlant';
+import { Manager } from '../../users/manager';
+import { Prosumer } from '../../users/prosumer';
+import { GraphQLContext } from '../schemas/graphQLContext';
+import { GraphQLErrorName } from '../schemas/graphQLErrors';
 
 class PowerPlantResolver {
 	one = (context: GraphQLContext) => {

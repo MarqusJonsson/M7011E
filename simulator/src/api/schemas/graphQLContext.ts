@@ -1,5 +1,5 @@
-import { Identifier } from "../../identifiable";
-import { Simulator } from "../../simulator";
+import { Identifier } from '../../identifiable';
+import { Simulator } from '../../simulator';
 
 export class GraphQLContext {
 	public simulator: Simulator;

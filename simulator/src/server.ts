@@ -10,7 +10,7 @@ import { rootQuery } from './api/schemas/root/queries';
 import { rootMutation } from './api/schemas/root/mutations';
 import { Simulator } from './simulator';
 import { getCode } from './api/schemas/graphQLErrors';
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 import { GraphQLContext } from './api/schemas/graphQLContext';
 import { Identifier } from './identifiable';
 import { IncomingMessage } from 'http';
@@ -49,9 +49,9 @@ export class Server {
 }
 
 function setupGraphQLContext(req: IncomingMessage, simulator: Simulator): GraphQLContext {
-	const userStr = req.headers["user"];
+	const userStr = req.headers['user'];
 	if (userStr === undefined || Array.isArray(userStr)) {
-		throw new Error("No user in header");
+		throw new Error('No user in header');
 	}
 	const user = JSON.parse(userStr);
 	return new GraphQLContext(simulator, new Identifier(user.type, parseInt(user.id)));

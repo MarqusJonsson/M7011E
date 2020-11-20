@@ -1,8 +1,8 @@
-import { GraphQLError } from "graphql";
-import { Manager } from "../../users/manager";
-import { Prosumer } from "../../users/prosumer";
-import { GraphQLContext } from "../schemas/graphQLContext";
-import { GraphQLErrorName } from "../schemas/graphQLErrors";
+import { GraphQLError } from 'graphql';
+import { Manager } from '../../users/manager';
+import { Prosumer } from '../../users/prosumer';
+import { GraphQLContext } from '../schemas/graphQLContext';
+import { GraphQLErrorName } from '../schemas/graphQLErrors';
 
 class GeoDataResolver {
 	one = (context: GraphQLContext) => {
