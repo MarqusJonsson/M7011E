@@ -70,6 +70,14 @@ const HouseType = new GraphQLObjectType({
 				if (context.user.type !== Prosumer.name) throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
 				return generatorResolver.all(context);
 			}
+		},
+		powerPlant: {
+			type: PowerPlantType,
+			description: `The Power plant consumer exchange electricity with.`,
+			resolve(parent: any, args: any, context: GraphQLContext) {
+				if (context.user.type !== Prosumer.name) throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
+				return powerPlantResolver.one(context);
+			}
 		}
 	}
 });
