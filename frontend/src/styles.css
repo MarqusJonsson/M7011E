@@ -14,7 +14,7 @@
 body {
 	background-color:#1d1a1a;
 	color:#fff;
-	margin: 2px 2px 2px 2px;
+	margin: 0;
 	font-size: 0;
 }
 
@@ -25,16 +25,15 @@ div {
 }
 
 .inline-block-container{
-	margin: 0;
+	margin: 0 0 0 4px;
 	display: inline-block;
-	width: 89.5%;
+	width: calc(100% - 65px);
 	height: 100vh;
 	background-color: #1d1a1a;
 }
 
 .inline-block-container > prosumer-page-block:first-of-type > .prosumer-page-block{
 	background-color: chocolate;
-	margin-left: 0;
 }
 
 .inline-block-container > prosumer-page-block:last-of-type{
