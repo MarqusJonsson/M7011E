@@ -8,6 +8,9 @@ import { LoginComponent } from './login/containers/login/login.component';
 import { AlertComponent } from './alert/containers/alert/alert.component';
 import { ProsumerPageComponent } from './users/prosumer/containers/prosumer-page/prosumer-page.component';
 import { AccountSettingsComponent } from './users/shared/containers/account-settings/account-settings.component';
+import { NavBarComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/nav-bar/nav-bar.component';
+import { VisualBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/visual-block/visual-block.component';
+import { PageBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/page-block/page-block.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +18,10 @@ import { AccountSettingsComponent } from './users/shared/containers/account-sett
     LoginComponent,
     AlertComponent,
     ProsumerPageComponent,
-    AccountSettingsComponent
+    AccountSettingsComponent,
+    NavBarComponent,
+    VisualBlockComponent,
+    PageBlockComponent
   ],
   imports: [
     BrowserModule,
