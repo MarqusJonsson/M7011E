@@ -2,12 +2,13 @@ import { BaseUser } from './baseUser';
 import { BasePowerPlant } from '../buildings/basePowerPlant';
 import { electricityPricePerWattSecond } from '../utils/realLifeData';
 import { Prosumer } from './prosumer';
+import { IMap } from '../identifiable';
 
 export class Manager extends BaseUser {
 	private _powerPlant: BasePowerPlant;
-	private _prosumers: Prosumer[];
+	private _prosumers: IMap<Prosumer>;
 
-	constructor(currency: number = 0, powerPlant: BasePowerPlant, prosumers: Prosumer[] = []) {
+	constructor(currency: number = 0, powerPlant: BasePowerPlant, prosumers: IMap<Prosumer> = new IMap<Prosumer>()) {
 		super(Manager.name, currency);
 		this._powerPlant = powerPlant;
 		this._prosumers = prosumers;
@@ -35,11 +36,11 @@ export class Manager extends BaseUser {
 		this._powerPlant = value;
 	}
 
-	public get prosumers() : Prosumer[] {
+	public get prosumers() : IMap<Prosumer> {
 		return this._prosumers;
 	}
 	
-	public set prosumers(value: Prosumer[]) {
+	public set prosumers(value: IMap<Prosumer>) {
 		this._prosumers = value;
 	}
 }

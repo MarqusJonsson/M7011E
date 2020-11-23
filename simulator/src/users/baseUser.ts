@@ -14,7 +14,7 @@ export abstract class BaseUser extends Identifiable {
 	
 	public set currency(value: number) {
 		if (value < 0) {
-			throw new Error("Value can not be less than 0");
+			throw new Error('Value can not be less than 0');
 		}
 		this._currency = value;
 	}

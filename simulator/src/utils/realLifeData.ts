@@ -1,4 +1,4 @@
-import { kWh_to_Ws } from "../math/electricity";
+import { kWh_to_Ws } from '../math/electricity';
 
 // Base unit for electricity is in Ws (Watt-seconds)
 
@@ -32,4 +32,4 @@ export const MONTH_MEAN_TEMPERATURES = [-11.6, -11.5, -6.4, -0.5, 5.9, 12.6, 15.
 // Source: https://sv.climate-data.org/europa/sverige/norrbottens-laen/lulea-496/
 
 // Warning: This consumption is not based on any real life data
-export const COAL_POWER_PLANT_CONSUMPTION_PER_SECOND = kWh_to_Ws(0.00190128525);
+export const COAL_POWER_PLANT_ELECTRICITY_CONSUMPTION_PER_SECOND = kWh_to_Ws(0.00190128525);

@@ -1,4 +1,4 @@
-import { GeoData } from "../buildings/components/geoData";
+import { GeoData } from '../buildings/components/geoData';
 
 export function calc1DInterpolationConstants(x1: number, x2: number, x: number): number[] {
 	const dist_x1_x2 = x2 - x1;

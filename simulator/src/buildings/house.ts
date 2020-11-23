@@ -2,29 +2,29 @@ import { BaseBuilding } from './baseBuilding';
 import { Battery } from './components/battery';
 import { GeoData } from './components/geoData';
 import { BaseGenerator } from '../generators/baseGenerator';
-import { Environment } from '../environment';
-import { AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND } from "../utils/realLifeData";
+import { AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND } from '../utils/realLifeData';
+import { IMap } from '../identifiable';
 
 export class House extends BaseBuilding {
-	private _batteryToPowerPlantRatio: number;
-	constructor(battery: Battery, geoData: GeoData, generators: BaseGenerator[], batteryToPowerPlantRatio: number) {
+	private _batteryToPowerPlantRatio: number; // Ratio of how much goes to house battery (eg. 1.0 = 100% to house battery)
+	constructor(battery: Battery, geoData: GeoData, generators: IMap<BaseGenerator>, batteryToPowerPlantRatio: number) {
 		super(House.name, battery, geoData, generators);
 		this._batteryToPowerPlantRatio = batteryToPowerPlantRatio;
 	}
 
-	public calculateConsumption(deltaTimeS: number, environment: Environment, simulationTime: number): void {
-		const temperature = environment.sampleTemperature(this.geoData.longitude, this.geoData.latitude, new Date(simulationTime).getMonth());
+	public calculateConsumption(deltaTimeS: number): void {
+		const temperature = this.geoData.temperature;
 		// TODO: replace 0.75 factor with something to compensate for the appending on average problem
-		if ( temperature < 0) {
-			this.consumption = AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND * 0.75 * deltaTimeS * Math.pow(1.05, Math.abs(temperature));
+		if (temperature < 0) {
+			this.electricityConsumption = AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND * 0.75 * deltaTimeS * Math.pow(1.05, Math.abs(temperature));
 		}
 		else {
-			this.consumption = AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND * 0.75 * deltaTimeS;
+			this.electricityConsumption = AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND * 0.75 * deltaTimeS;
 		}
 	}
 
 	public generateElectricity(pBattery: Battery) {
-		const totalProduction = this.production;
+		const totalProduction = this.electricityProduction;
 		const productionToBattery: number = totalProduction * this.batteryToPowerPlantRatio;
 		const productionToPowerPlant: number = totalProduction - productionToBattery;
 		const hBattery: Battery = this.battery;
