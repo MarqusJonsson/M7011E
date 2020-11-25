@@ -10,3 +10,4 @@
 |2020-11-18| 10.5 | Continued with making the GUI mockup for prosumers and started working on frontend using Angular. Setup routing, error messages and a login page without authentication.
 |2020-11-19| 11 | Started implementing the GUI for prosumers.
 |2020-11-23| 4.5| Continued with implementing the GUI for prosumers.
+|2020-11-25| 8 | Further continuation of implementing GUI for prosumers where the placements of everything images buttons etc is finished. Started looking into implementing a graph visualisation of energy consumption.
