@@ -11,6 +11,15 @@
 	font-weight:bold;
 }
 
+.button:hover {
+	background-color:#fff;
+	color:#323232;
+}
+
+a > img:hover {
+	filter: invert(1);
+}
+
 body {
 	background-color:#1d1a1a;
 	color:#fff;
@@ -32,9 +41,6 @@ div {
 	background-color: #1d1a1a;
 }
 
-.inline-block-container > prosumer-page-block:first-of-type > .prosumer-page-block{
-	background-color: chocolate;
-}
 
 .inline-block-container > prosumer-page-block:last-of-type{
 	margin-right: 0
