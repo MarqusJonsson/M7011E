@@ -2,7 +2,6 @@
 	display:inline-block;
 	width: calc(100%/4 - 3px);
 	margin: 0 4px 0 0;
-
 }
 
 .prosumer-page-block{
@@ -11,3 +10,14 @@
 	height: 260.5px;
 }
 
+#overproduction-ratio-block:host > .prosumer-page-block {
+	background-color: brown;
+}
+
+#underproduction-ratio-block:host > .prosumer-page-block {
+	background-color: green;
+}
+
+#currency-block:host > .prosumer-page-block {
+	background-color: darksalmon;
+}
