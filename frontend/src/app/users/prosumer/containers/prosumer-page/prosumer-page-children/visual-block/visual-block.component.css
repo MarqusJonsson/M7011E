@@ -73,8 +73,7 @@ p {
 
 }
 
-#graph-block {
-	background-color: blue;
+#graph-container {
 	display: inline-block;
 	width: calc(100% - 800px);
 	height: 100%;
