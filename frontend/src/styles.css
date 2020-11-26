@@ -1,24 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-.button {
-	border:none;
-	text-align:center;
-	cursor:pointer;
-	border-radius:12px;
-	background-color:#353535;
-	color:#fff;
-	text-decoration:none;
-	box-shadow:5px 8px 0 0 #181818;
-	font-weight:bold;
-}
 
-.button:hover {
-	background-color:#fff;
-	color:#323232;
-}
 
-a > img:hover {
-	filter: invert(1);
-}
+
 
 body {
 	background-color:#1d1a1a;
