@@ -58,8 +58,8 @@ p {
 #environment-details {
 	display: inline-block;
 	margin: 0px 4px 4px 4px;
-	width: 160px;
-	height: 100px;
+	width: 180px;
+	height: 120px;
 	vertical-align: top;
 	background-color: rgb(0, 60, 255);
 }
