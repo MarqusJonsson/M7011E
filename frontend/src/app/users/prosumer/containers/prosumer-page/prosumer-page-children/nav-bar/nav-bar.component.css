@@ -7,7 +7,7 @@
 	margin:0 0px 0px 0px;
 }
 
-#navbar-list > li > a > img{
+#navbar-list > li > button > img{
 	margin: 0px;
 }
 
@@ -16,8 +16,10 @@
 	padding: 0;
 }
 
-.nav-bar-anchor {
+.nav-bar-button {
 	margin-top: 10px;
+	height: 50px;
+	width: 50px;
 	border:none;
 	text-align:center;
 	cursor:pointer;
@@ -26,7 +28,7 @@
 	text-decoration:none;
 }
 
-.nav-bar-anchor > img:hover {
+.nav-bar-button:hover {
 	background-color:#fff;
 	color:#323232;
 }
