@@ -7,11 +7,28 @@
 	margin:0 0px 0px 0px;
 }
 
-#navbar-list > li > a > img{
-	margin: 10px;
+#navbar-list > li > button > img{
+	margin: 0px;
 }
 
 
 #navbar-list {
 	padding: 0;
+}
+
+.nav-bar-button {
+	margin-top: 10px;
+	height: 50px;
+	width: 50px;
+	border:none;
+	text-align:center;
+	cursor:pointer;
+	background-color:#353535;
+	color:#fff;
+	text-decoration:none;
+}
+
+.nav-bar-button:hover {
+	background-color:#fff;
+	color:#323232;
 }
