@@ -105,12 +105,17 @@ p {
 
 #house {
 	display: inline-block;
-	margin: 0 4px 4px 0;
+	margin: 0 4px 0px 0;
 }
 
 #house > img {
 	display: inline-block;
 	height: 200px;
 	width: 300px;
+	
+}
+
+#house > img:hover {
+	filter: invert(1);
 }
 
