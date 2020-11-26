@@ -28,6 +28,7 @@ body {
 }
 
 
+
 .inline-block-container{
 	margin: 0 0 0 4px;
 	display: inline-block;
@@ -37,9 +38,11 @@ body {
 }
 
 
-.inline-block-container > prosumer-page-block:last-of-type{
+.inline-block-container > :last-child{
 	margin-right: 0
 }
+
+
 
 .block-container {
 	display: block;
