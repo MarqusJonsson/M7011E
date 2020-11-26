@@ -12,6 +12,11 @@ import { NavBarComponent } from './users/prosumer/containers/prosumer-page/prosu
 import { VisualBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/visual-block/visual-block.component';
 import { PageBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/page-block/page-block.component';
 
+import { PlotlyViaCDNModule } from 'angular-plotly.js';
+import { PlotlyComponent } from './users/shared/containers/plotly/plotly.component';
+PlotlyViaCDNModule.setPlotlyVersion('1.55.2'); // can be `latest` or any version number (i.e.: '1.40.0')
+PlotlyViaCDNModule.setPlotlyBundle('basic'); // optional: can be null (for full) or 'basic', 'cartesian', 'geo', 'gl3d', 'gl2d', 'mapbox' or 'finance'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,12 +26,14 @@ import { PageBlockComponent } from './users/prosumer/containers/prosumer-page/pr
     AccountSettingsComponent,
     NavBarComponent,
     VisualBlockComponent,
-    PageBlockComponent
+    PageBlockComponent,
+    PlotlyComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PlotlyViaCDNModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
