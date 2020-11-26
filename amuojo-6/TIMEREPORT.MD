@@ -9,4 +9,5 @@
 | 2020-11-15 | 5 | <ul><li>Continued with the resolvers.</li><li>Rewrote parts of the simulator to better match the assignment, such as the manager having a list of prosumers instead of each house having a reference to a manager.</li></ul> |
 | 2020-11-18 | 10.5 | <ul><li>Continued working on the API and started making it usable by both prosumers and managers.</li><li>Added errors for debuging purposes as well as errors which will be used when using the API, such as when searching for an object that does not exist.</li></ul> |
 | 2020-11-19 | 11 | <ul><li>Updated the API to a context parameter for storing and later obtaining data to be used for authorization.</li><li>Replaced some of the arrays used in the simulator with maps in order to speed up the lookup process of objects when using the API.</li></ul> |
-| 2020-11-23 | 6 | <ul><li>Started setting up an authorization server together with a POstgreSQL database which will be creating JWTs(JsonWebTokens) used to verify users.</li></ul> |
+| 2020-11-23 | 6 | <ul><li>Started setting up an authorization server together with a PostgreSQL database which will be creating JWTs(JsonWebTokens) used to verify users.</li></ul> |
+| 2020-11-25 | 10 | <ul><li>Started implementing a RESTful API for authentication of users.</li></ul> |
