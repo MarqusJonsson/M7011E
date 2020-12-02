@@ -2,7 +2,7 @@ import { Component, OnInit} from '@angular/core';
 ;
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertService } from "../../../alert/services/alert.service";
+import { AlertService } from "../../../../alert/services/alert.service";
 
 @Component({
   selector: 'app-login',
@@ -30,5 +30,9 @@ export class LoginComponent implements OnInit {
     else{
       this.router.navigateByUrl('prosumerPage');
     }
+  }
+
+  redirectToRegistration() {
+    this.router.navigateByUrl("registration");
   }
 }
