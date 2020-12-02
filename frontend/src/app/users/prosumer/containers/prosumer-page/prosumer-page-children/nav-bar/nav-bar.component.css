@@ -1,25 +1,29 @@
 :host{
-	display:inline-block;
-	vertical-align:top;
-	width:10%;
-	height:100vh;
+	display: inline-block;
+	vertical-align: top;
+	width: 50px;
+	height: 100vh;
 	background-color:#353535;
-	margin:0 4px 2px 2px;
+	margin:0 0px 0px 0px;
 }
 
-#navbar-list > li > a {
-	margin:0px;
-	padding-top:0px;
-	height:100px
+#navbar-list > li > a > img:hover{
+	filter: invert(1);
 }
 
-#navbar-list > li > a > img {
-	display: block;
-	margin:0px;
-	padding-top:0px;
-	height:50px
-}
 
 #navbar-list {
 	padding: 0;
+}
+
+#nav-bar-list > li > a {
+	margin-top: 10px;
+	height: 50px;
+	width: 50px;
+	border:none;
+	text-align:center;
+	cursor:pointer;
+	background-color:#353535;
+	color:#fff;
+	text-decoration:none;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'prosumer-page-block',
@@ -6,10 +6,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./page-block.component.css']
 })
 export class PageBlockComponent implements OnInit {
-
-  constructor() { }
+  @ViewChild('header') header:ElementRef; 
+  constructor(private hostElement: ElementRef) { }
 
   ngOnInit(): void {
+
   }
 
+  ngAfterViewInit() {
+    if(this.hostElement.nativeElement.attributes.getNamedItem("blockName") != null)
+      this.setHeaderValue(this.hostElement.nativeElement.attributes.getNamedItem("blockName").value);
+    else
+    this.setHeaderValue("Undefined");
+ 
+  }
+
+  public setHeaderValue(newValue: string) {
+    this.header.nativeElement.innerText = newValue;
+  }
 }
