@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { request } from 'express';
 // Middleware
 import bodyParser from 'body-parser';
 import { cors } from './middleware/cors';
@@ -14,6 +14,7 @@ import * as dotenv from 'dotenv';
 import { GraphQLContext } from './api/schemas/graphQLContext';
 import { Identifier } from './identifiable';
 import { IncomingMessage } from 'http';
+import { authenticateAccessToken } from './authentication';
 dotenv.config();
 
 export class Server {
@@ -42,6 +43,9 @@ export class Server {
 			},
 			graphiql: true
 		})));
+		this._app.get('/temp', authenticateAccessToken, (request: express.Request, response: express.Response) => {
+			response.json({ "Authenticated user payload": request.payload });
+		});
 		this._app.use(errorHandler);
 		// Start server
 		this._app.listen(PORT, () => console.log(`Simulator server listening on port ${PORT}`));
