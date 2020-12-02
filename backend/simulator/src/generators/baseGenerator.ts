@@ -1,8 +1,5 @@
-import { BaseBuilding } from '../buildings/baseBuilding';
 import { Identifiable } from '../identifiable';
-import { Environment } from '../environment';
 import { GeoData } from '../buildings/components/geoData';
-
 
 export abstract class BaseGenerator extends Identifiable {
 	private _baseOutput: number;

@@ -2,7 +2,7 @@ import {BaseBuilding} from './baseBuilding';
 import {Battery} from './components/battery';
 import {GeoData} from './components/geoData';
 import {BaseGenerator} from '../generators/baseGenerator';
-import { IMap } from '../identifiable';
+
 export abstract class BasePowerPlant extends BaseBuilding {
 	private _modelledElectricityBuyPrice: number = 0;
 	private _modelledElectricitySellPrice: number = 0;
@@ -13,7 +13,7 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	private _productionUpperCutOff: number = 0.6;
 	private _productionFlag: boolean = true;
 
-	constructor(type: string, battery: Battery, geoData: GeoData, generators: IMap<BaseGenerator>) {
+	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[]) {
 		super(type, battery, geoData, generators);
 	}
 

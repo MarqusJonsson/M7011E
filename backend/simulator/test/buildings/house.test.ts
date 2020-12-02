@@ -3,8 +3,6 @@ import { House } from '../../src/buildings/house';
 import { Battery } from '../../src/buildings/components/battery';
 import { GeoData } from '../../src/buildings/components/geoData';
 import { CoalGenerator } from '../../src/generators/coalGenerator';
-import { IMap } from '../../src/identifiable';
-import { BaseGenerator } from '../../src/generators/baseGenerator';
 
 class TestObject {
 	pBattery!: Battery;
@@ -17,8 +15,7 @@ class TestObject {
 		this.hBattery = new Battery(100, 0);
 		const hGeoData = new GeoData();
 		const hCoalGenerator = new CoalGenerator(100, false, 0);
-		const hGenerators = new IMap<BaseGenerator>();
-		hGenerators.iSet(hCoalGenerator);
+		const hGenerators = [hCoalGenerator];
 		this.house = new House(this.hBattery, hGeoData, hGenerators, 0.1);
 	}
 }
@@ -46,7 +43,7 @@ describe('buildings/house.ts', function(){
 
 		});
 		it('Generate over house battery capacity and send remainder to power plant.', function() {
-			testObject.house.generators.values().next().value().baseOutput = 2000;
+			testObject.house.generators[0].baseOutput = 2000;
 			testObject.house.calculateProduction(1);
 			testObject.house.generateElectricity(testObject.pBattery);
 			expect(testObject.house.battery.buffer).to.equal(100);
@@ -54,7 +51,7 @@ describe('buildings/house.ts', function(){
 		});
 		it('Generate over house battery capacity and power plant capacity.', function() {
 			testObject.pBattery.capacity = 1000;
-			testObject.house.generators.values().next().value().baseOutput = 2000;
+			testObject.house.generators[0].baseOutput = 2000;
 			testObject.house.batteryToPowerPlantRatio = 0.6;
 			testObject.house.calculateProduction(1);
 			testObject.house.generateElectricity(testObject.pBattery);
@@ -63,7 +60,7 @@ describe('buildings/house.ts', function(){
 		});
 		it('Generate under house battery capacity but over power plant battery capacity.', function() {
 			testObject.pBattery.capacity = 10;
-			testObject.house.generators.values().next().value().baseOutput = 50;
+			testObject.house.generators[0].baseOutput = 50;
 			testObject.house.batteryToPowerPlantRatio = 0.6;
 			testObject.house.calculateProduction(1);
 			testObject.house.generateElectricity(testObject.pBattery);

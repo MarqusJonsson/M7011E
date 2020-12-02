@@ -71,9 +71,8 @@ for (let i = 0; i < nProsumers; i++) {
 	const batteryBufferStartPercent = 0.0;
 	const battery = new Battery(batteryCapacity, batteryCapacity * batteryBufferStartPercent);
 	const geoData = new GeoData();
-	const generators = new IMap<BaseGenerator>();
 	const windTurbine = new WindTurbine(houseWindTurbineProductionDistribution.sample());
-	generators.iSet(windTurbine);
+	const generators = [windTurbine];
 	const batteryToPowerPlantStartRatio = 0.0;
 	const house = new House(battery, geoData, generators, batteryToPowerPlantStartRatio);
 	houses.iSet(house);
@@ -86,8 +85,7 @@ for (let i = 0; i < nManagers; i++) {
 	const battery = new Battery(kWh_to_Ws(1000000), kWh_to_Ws(500000));
 	const geoData = new GeoData();
 	const coalGenerator = new CoalGenerator(AVERAGE_POWER_PLANT_COAL_GENERATOR_ELECTRICITY_PRODUCTION_PER_SECOND);
-	const generators = new IMap<BaseGenerator>();
-	generators.iSet(coalGenerator);
+	const generators = [coalGenerator]
 	const powerPlant = new CoalPowerPlant(battery, geoData, generators);
 	powerPlants.iSet(powerPlant);
 	const managerCurrency = 100000;
