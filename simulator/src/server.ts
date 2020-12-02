@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { request } from 'express';
 // Middleware
 import bodyParser from 'body-parser';
 import { cors } from './middleware/cors';
@@ -10,10 +10,11 @@ import { rootQuery } from './api/schemas/root/queries';
 import { rootMutation } from './api/schemas/root/mutations';
 import { Simulator } from './simulator';
 import { getCode } from './api/schemas/graphQLErrors';
-import * as dotenv from 'dotenv';
 import { GraphQLContext } from './api/schemas/graphQLContext';
 import { Identifier } from './identifiable';
 import { IncomingMessage } from 'http';
+import { authenticateAccessToken } from './authentication';
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 export class Server {
@@ -24,7 +25,7 @@ export class Server {
 			mutation: rootMutation
 		});
 		// Setup server
-		const PORT = process.env.SIMULATOR_SERVER_PORT;
+		const PORT = process.env.SIMULATOR_SERVER_PORT || 3001;
 		this._app = express();
 		// Setup middleware
 		this._app.use(bodyParser.json());
@@ -42,6 +43,9 @@ export class Server {
 			},
 			graphiql: true
 		})));
+		this._app.get('/temp', authenticateAccessToken, (request: express.Request, response: express.Response) => {
+			response.json({ "Authenticated user payload": request.payload });
+		});
 		this._app.use(errorHandler);
 		// Start server
 		this._app.listen(PORT, () => console.log(`Simulator server listening on port ${PORT}`));
