@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/containers/login/login.component';
+import { LoginComponent } from './users/shared/containers/login//login.component';
 import { AlertComponent } from './alert/containers/alert/alert.component';
 import { ProsumerPageComponent } from './users/prosumer/containers/prosumer-page/prosumer-page.component';
 import { AccountSettingsComponent } from './users/shared/containers/account-settings/account-settings.component';
@@ -13,12 +13,13 @@ import { VisualBlockComponent } from './users/prosumer/containers/prosumer-page/
 import { PageBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/page-block/page-block.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { PlotlyViaCDNModule } from 'angular-plotly.js';
 import { PlotlyComponent } from './users/shared/containers/plotly/plotly.component';
 import { RatioBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/ratio-block/ratio-block.component';
 PlotlyViaCDNModule.setPlotlyVersion('latest'); // can be `latest` or any version number (i.e.: '1.40.0')
 PlotlyViaCDNModule.setPlotlyBundle('basic'); // optional: can be null (for full) or 'basic', 'cartesian', 'geo', 'gl3d', 'gl2d', 'mapbox' or 'finance'
+import { HttpClientModule } from '@angular/common/http';
+import { RegistrationComponent } from './users/shared/containers/registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ PlotlyViaCDNModule.setPlotlyBundle('basic'); // optional: can be null (for full)
     VisualBlockComponent,
     PageBlockComponent,
     PlotlyComponent,
-    RatioBlockComponent
+    RatioBlockComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +42,7 @@ PlotlyViaCDNModule.setPlotlyBundle('basic'); // optional: can be null (for full)
     PlotlyViaCDNModule,
     BrowserAnimationsModule,
     MatSliderModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
