@@ -1,7 +1,6 @@
 
 # Simulator
 *.nyc_output
-simulator/.env
 
 # VSCode
 .vscode
