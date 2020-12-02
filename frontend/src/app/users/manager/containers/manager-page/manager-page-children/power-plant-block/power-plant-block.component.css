@@ -1,0 +1,12 @@
+
+:host {
+	display:inline-flex;
+	width: calc(100%/4 - 3px);
+	height: calc(30vh - 4px);
+	margin: 0 4px 0 0;
+	text-align: center;
+}
+
+.sub-block {
+	background-color: lightseagreen;
+}
