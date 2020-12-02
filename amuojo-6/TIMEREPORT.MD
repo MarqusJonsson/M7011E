@@ -12,3 +12,4 @@
 | 2020-11-23 | 6 | <ul><li>Started setting up an authorization server together with a PostgreSQL database which will be creating JWTs(JsonWebTokens) used to verify users.</li></ul> |
 | 2020-11-25 | 10 | <ul><li>Started implementing a RESTful API for authentication of users.</li></ul> |
 | 2020-11-26 | 8 | <ul><li>Created repositories for users, histories and refresh tokens which will be stored in the authentication servers database.</li><li>Created a parser to read errors and translate them into response messages with apropiate HTTP status codes and messages.</li><li>Started setting up creation and handling of refresh tokens and access tokens on the authentication server.</li></ul> |
+| 2020-12-02 | 10 | <ul><li>Setup endpoints for register, login and logout on the authentication server.</li><li>Setup authentication of access tokens on the simulator server.</li></ul> |
