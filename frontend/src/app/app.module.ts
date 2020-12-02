@@ -37,7 +37,7 @@ import { PowerPlantBlockComponent } from './users/manager/containers/manager-pag
     PageBlockComponent,
     PlotlyComponent,
     RatioBlockComponent,
-    RegistrationComponent
+    RegistrationComponent,
     ManagerPageComponent,
     ManagerNavBarComponent,
     ManagerMainBlockComponent,
