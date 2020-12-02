@@ -3,8 +3,10 @@ import crypto from 'crypto';
 import fs from 'fs';
 import jwt from 'jsonwebtoken';
 import { BadRequest, Unauthorized } from './utils/error';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-const accessPrivateKeyPath = 'accessPrivate.key';
+const accessPrivateKeyPath = process.env.PATH_ACCESS_PRIVATE_KEY || 'accessPrivate.key';
 const signingAlgorithm = 'RS256';
 const accessPrivateKey = loadAccesPrivateKey(accessPrivateKeyPath);
 
@@ -12,7 +14,7 @@ function loadAccesPrivateKey(accessPrivateKeyPath: string) {
 	try {
 		return crypto.createPrivateKey(fs.readFileSync(accessPrivateKeyPath));
 	} catch {
-		throw new Error('Can not find access private key');
+		throw new Error('Can not find access private key at \'' + accessPrivateKeyPath + '\'');
 	}
 };
 

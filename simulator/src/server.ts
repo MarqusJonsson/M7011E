@@ -10,11 +10,11 @@ import { rootQuery } from './api/schemas/root/queries';
 import { rootMutation } from './api/schemas/root/mutations';
 import { Simulator } from './simulator';
 import { getCode } from './api/schemas/graphQLErrors';
-import * as dotenv from 'dotenv';
 import { GraphQLContext } from './api/schemas/graphQLContext';
 import { Identifier } from './identifiable';
 import { IncomingMessage } from 'http';
 import { authenticateAccessToken } from './authentication';
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 export class Server {
