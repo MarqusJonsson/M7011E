@@ -20,6 +20,7 @@ PlotlyViaCDNModule.setPlotlyVersion('latest'); // can be `latest` or any version
 PlotlyViaCDNModule.setPlotlyBundle('basic'); // optional: can be null (for full) or 'basic', 'cartesian', 'geo', 'gl3d', 'gl2d', 'mapbox' or 'finance'
 import { HttpClientModule } from '@angular/common/http';
 import { RegistrationComponent } from './users/shared/containers/registration/registration.component';
+import { ManagerPageComponent } from './users/manager/containers/manager-page/manager-page.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { RegistrationComponent } from './users/shared/containers/registration/re
     PlotlyComponent,
     RatioBlockComponent,
     RegistrationComponent
+    ManagerPageComponent,
   ],
   imports: [
     BrowserModule,
