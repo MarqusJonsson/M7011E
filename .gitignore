@@ -1,9 +1,10 @@
 
 # Simulator
-simulator/node_modules
-simulator/package-lock.json
-simulator/.nyc_output
+*.nyc_output
 simulator/.env
+
+# VSCode
+.vscode
 
 # Private/Public keys
 *.key
@@ -112,4 +113,3 @@ dist
 
 # TernJS port file
 .tern-port
-simulator/.vscode/launch.json
