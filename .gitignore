@@ -1,7 +1,3 @@
-
-# Simulator
-*.nyc_output
-
 # VSCode
 .vscode
 
