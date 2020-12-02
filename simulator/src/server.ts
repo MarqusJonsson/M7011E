@@ -25,7 +25,7 @@ export class Server {
 			mutation: rootMutation
 		});
 		// Setup server
-		const PORT = process.env.SIMULATOR_SERVER_PORT;
+		const PORT = process.env.SIMULATOR_SERVER_PORT || 3001;
 		this._app = express();
 		// Setup middleware
 		this._app.use(bodyParser.json());

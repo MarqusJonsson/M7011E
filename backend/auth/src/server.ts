@@ -13,7 +13,7 @@ dotenv.config();
 
 // Setup server
 console.log('Setting up server...');
-const PORT = process.env.SERVER_PORT;
+const PORT = process.env.SERVER_PORT || 3001;
 const app = express();
 // Create / load crypto key pairs
 const refreshPrivateKeyPath = process.env.PATH_REFRESH_PRIVATE_KEY || 'refreshPrivate.key';
