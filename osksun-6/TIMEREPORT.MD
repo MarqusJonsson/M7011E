@@ -11,3 +11,4 @@
 |2020-11-19| 11 | Started implementing the GUI for prosumers.
 |2020-11-23| 4.5| Continued with implementing the GUI for prosumers.
 |2020-11-25| 8 | Further continuation of implementing GUI for prosumers where the placements of everything images buttons etc is finished. Started looking into implementing a graph visualisation of energy consumption.
+|2020-11-26| 8 | More details added to the prosumer GUI, most notable are blocks with sliders intended for regulating battery to power plant ratio for overproduction and underproduction. Also made a navigation to the settings page for prosumers.
