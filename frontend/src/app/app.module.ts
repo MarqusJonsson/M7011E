@@ -24,6 +24,7 @@ import { ManagerPageComponent } from './users/manager/containers/manager-page/ma
 import { ManagerNavBarComponent } from './users/manager/containers/manager-page/manager-page-children/manager-nav-bar/manager-nav-bar.component';
 import { ManagerMainBlockComponent } from './users/manager/containers/manager-page/manager-page-children/manager-main-block/manager-main-block.component';
 import { PowerPlantBlockComponent } from './users/manager/containers/manager-page/manager-page-children/power-plant-block/power-plant-block.component';
+import { SubBlockComponent } from './users/shared/containers/sub-block/sub-block.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { PowerPlantBlockComponent } from './users/manager/containers/manager-pag
     ManagerPageComponent,
     ManagerNavBarComponent,
     ManagerMainBlockComponent,
-    PowerPlantBlockComponent
+    PowerPlantBlockComponent,
+    SubBlockComponent
   ],
   imports: [
     BrowserModule,
