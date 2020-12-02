@@ -1,5 +1,6 @@
 
 :host {
+	vertical-align: top;
 	display:inline-flex;
 	width: calc(100%/4 - 3px);
 	height: calc(30vh - 4px);
