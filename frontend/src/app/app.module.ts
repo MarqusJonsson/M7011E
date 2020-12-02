@@ -21,6 +21,7 @@ PlotlyViaCDNModule.setPlotlyBundle('basic'); // optional: can be null (for full)
 import { HttpClientModule } from '@angular/common/http';
 import { RegistrationComponent } from './users/shared/containers/registration/registration.component';
 import { ManagerPageComponent } from './users/manager/containers/manager-page/manager-page.component';
+import { ManagerMainBlockComponent } from './users/manager/containers/manager-page/manager-page-children/manager-main-block/manager-main-block.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ManagerPageComponent } from './users/manager/containers/manager-page/ma
     RatioBlockComponent,
     RegistrationComponent
     ManagerPageComponent,
+    ManagerMainBlockComponent,
   ],
   imports: [
     BrowserModule,
