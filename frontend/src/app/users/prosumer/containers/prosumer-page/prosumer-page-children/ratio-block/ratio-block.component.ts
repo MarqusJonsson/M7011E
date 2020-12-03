@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { MatSliderChange } from '@angular/material/slider';
 
 @Component({
   selector: 'ratio-block',
@@ -22,6 +23,9 @@ export class RatioBlockComponent implements OnInit {
 
   public setBlockTitle(newValue: string) {
     this.title.nativeElement.innerText = newValue;
+
+  public onInputChange(event: MatSliderChange) {
+	console.log(event.value, this.hostElement.nativeElement.id);
   }
 
 }
