@@ -25,7 +25,8 @@ import { ManagerNavBarComponent } from './users/manager/containers/manager-page/
 import { ManagerMainBlockComponent } from './users/manager/containers/manager-page/manager-page-children/manager-main-block/manager-main-block.component';
 import { PowerPlantBlockComponent } from './users/manager/containers/manager-page/manager-page-children/power-plant-block/power-plant-block.component';
 import { SubBlockComponent } from './users/shared/containers/sub-block/sub-block.component';
-import { MarketComponent } from './users/manager/containers/manager-page/manager-page-children/market/market.component';
+import { ManagerMarketComponent } from './users/manager/containers/manager-page/manager-page-children/manager-market/manager-market.component';
+import { ProsumerCurrencyBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/prosumer-currency-block/prosumer-currency-block.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { MarketComponent } from './users/manager/containers/manager-page/manager
     ManagerMainBlockComponent,
     PowerPlantBlockComponent,
     SubBlockComponent,
-    MarketComponent
+    ManagerMarketComponent,
+    ProsumerCurrencyBlockComponent
   ],
   imports: [
     BrowserModule,
