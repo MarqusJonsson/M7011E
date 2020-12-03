@@ -16,24 +16,15 @@ export class ProsumerCurrencyBlockComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.setCurrency();
-    this.setMarketPrice();
+
   }
 
-  private setCurrency() {
-    this.currency.nativeElement.innerText = "Currency: " + this.getCurrencyDB();
+  public setCurrency(value: number) {
+    this.currency.nativeElement.innerText = value;
   }
 
-  private setMarketPrice() {
-    this.marketPrice.nativeElement.innerText = "Market price: " + this.getMarketPriceDB();
-  }
-
-  private getCurrencyDB(): string {
-    return "000";
-  }
-
-  private getMarketPriceDB(): string {
-    return "000";
+  public setMarketPrice(value: number) {
+    this.marketPrice.nativeElement.innerText = value;
   }
 
 }
