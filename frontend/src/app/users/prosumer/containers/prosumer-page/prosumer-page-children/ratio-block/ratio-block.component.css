@@ -6,10 +6,6 @@
 	background-color: green;
 }
 
-#currency-block:host > .sub-block {
-	background-color: darksalmon;
-}
-
 .ratio-block > mat-slider {
 	display: block;
 	padding-top: 14px;
