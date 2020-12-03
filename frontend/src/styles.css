@@ -1,16 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
-
-
-
 body {
 	background-color:#1d1a1a;
 	color:#fff;
 	margin: 0;
 	font-size: 0;
 }
-
-
 
 .inline-block-container{
 	margin: 0 0 0 4px;
@@ -20,19 +15,12 @@ body {
 	background-color: #1d1a1a;
 }
 
-
 .inline-block-container > :last-child{
 	margin-right: 0
 }
 
-
-
 .block-container {
 	display: block;
-}
-
-p {
-	font-size: 20px;
 }
 
 .sub-block{
@@ -49,4 +37,3 @@ p {
 	margin: 0 4px 0 0;
 	text-align: center;
 }
-
