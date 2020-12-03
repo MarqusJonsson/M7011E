@@ -109,10 +109,7 @@
 	padding: 0;
 	margin: 0;
 	width: 275px;
-	background-color: burlywood;
+	background-color: rgb(135, 222, 203);
 }
 
-#prosumer-list > li > img {
-	width: 28.15px;
-	height: 28.15px;
-}
+
