@@ -10,7 +10,7 @@ export abstract class BaseRepository<T> {
 		this.tableName = tableName;
 	}
 
-	public abstract createTable(): Promise<null>
+	public abstract createTable(t?: pgPromise.ITask<any>): Promise<null>
 
 	public delete(id: number, t?: pgPromise.ITask<any>): Promise<number> {
 		return new Promise((resolve, reject) => {

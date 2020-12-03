@@ -25,25 +25,27 @@ authentication.createKeyPairs(refreshPrivateKeyPath, refreshPublicKeyPath, acces
 console.log('Finished creating authentication key pairs');
 // Create database tables
 console.log('Creating database tables...')
-database.histories.createTable()
-	.then(() => { return database.users.createTable(); })
-	.then(() => { return database.refreshTokens.createTable(); })
-	.then(() => {
-		console.log('Finished creating database tables')
-		// Setup middleware
-		app.use(bodyParser.json());
-		app.use(bodyParser.urlencoded({extended:true}));
-		app.use(corsHandler(['http://localhost:4200']));
-		// Setup API endpoints
-		POST	('/register', authenticationAPI.register);
-		POST	('/login', authenticationAPI.login);
-		DELETE	('/logout', authenticationAPI.logout);
-		// Setup error handler middleware
-		app.use(errorHandler);
-		// Start server
-		app.listen(PORT, () => console.log(`Auth server listening on port ${PORT}`));
+database.task((t) => {
+	return database.histories.createTable(t).then(() => {
+		return database.users.createTable(t).then(() => {
+			return database.refreshTokens.createTable(t).then(() => {
+				console.log('Finished creating database tables')
+				// Setup middleware
+				app.use(bodyParser.json());
+				app.use(bodyParser.urlencoded({extended:true}));
+				app.use(corsHandler(['http://localhost:4200']));
+				// Setup API endpoints
+				POST	('/register', authenticationAPI.register);
+				POST	('/login', authenticationAPI.login);
+				DELETE	('/logout', authenticationAPI.logout);
+				// Setup error handler middleware
+				app.use(errorHandler);
+				// Start server
+				app.listen(PORT, () => console.log(`Auth server listening on port ${PORT}`));
+			});
+		});
 	});
-
+});
 // Generic GET handler
 function GET(url: string, handler: (request: any, response: any) => Promise<GetResult>) {
 	app.get(url, (request, response, next) => {
