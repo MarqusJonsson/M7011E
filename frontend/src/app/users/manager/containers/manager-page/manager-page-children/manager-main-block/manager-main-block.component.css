@@ -115,6 +115,12 @@ p {
 
 #prosumer-list {
 	display: inline-block;
+	padding: 0;
 	width: 275px;
 	background-color: burlywood;
+}
+
+#prosumer-list > li > img {
+	width: 28.15px;
+	height: 28.15px;
 }
