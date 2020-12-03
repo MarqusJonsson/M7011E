@@ -6,7 +6,11 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./power-plant-block.component.css']
 })
 export class PowerPlantBlockComponent implements OnInit {
-  @ViewChild('header') header:ElementRef; 
+  @ViewChild('production') production:ElementRef;
+  @ViewChild('consumption') consumption:ElementRef;
+  @ViewChild('netProduction') netProduction:ElementRef;
+  @ViewChild('battery') battery:ElementRef;
+  @ViewChild('batteryCapacity') batteryCapacity:ElementRef;
   constructor(private hostElement: ElementRef) { }
 
   ngOnInit(): void {
@@ -14,15 +18,30 @@ export class PowerPlantBlockComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    if(this.hostElement.nativeElement.attributes.getNamedItem("blockName") != null)
-      this.setHeaderValue(this.hostElement.nativeElement.attributes.getNamedItem("blockName").value);
-    else
-    this.setHeaderValue("Undefined");
- 
+
   }
 
-  public setHeaderValue(newValue: string) {
-    this.header.nativeElement.innerText = newValue;
+  public setProduction(value: number) {
+    this.production.nativeElement.innerText = value;
+  }
+
+  public setConsumption(value: number) {
+    this.consumption.nativeElement.innerText = value;
+  }
+
+  public setNetProduction() {
+    let production = parseInt(this.production.nativeElement.innerText);
+    let consumption = parseInt(this.consumption.nativeElement.innerText);
+    let netProduction = production - consumption;
+    this.netProduction.nativeElement.innerText = netProduction;
+  }
+
+  public setBattery(value: number) {
+    this.battery.nativeElement.innerText = value + "/";
+  }
+
+  public setBatteryCapacity(value: number) {
+    this.batteryCapacity.nativeElement.innerText = value + " kwh";
   }
 
 }

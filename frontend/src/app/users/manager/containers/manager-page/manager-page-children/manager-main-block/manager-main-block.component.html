@@ -1,24 +1,5 @@
 <div id ="main-block">
 	<div id = "manager-main-block-left-container">
-		<div id = "electricity-details-container">
-			<div id = "electricity-details-header">
-				<span>Electricity details</span>
-			</div>
-			<div id = "electricity-details">
-				<p>Production:</p>
-				<p>Consumption:</p>
-				<p>Net Production:</p>
-				<p>Battery: 6500/150000 kwh</p>
-			</div>
-		</div>
-		<div id = "environment-details">
-			<ul style = "list-style-type:none" id="environment-list">
-				<span>10 C</span>
-				<img src="/assets/thermometer.svg" alt="Temperature"/>
-				<span>1000 m/s</span>
-				<img src="/assets/weather.svg" alt="Weather"/>
-			</ul>
-		</div>
 		<div id = "prosumer-list-container">
 			<div id="prosumer-list-header"><span>Prosumer list</span></div>
 			<ul style = "list-style-type:none" id="prosumer-list">
@@ -26,6 +7,14 @@
 					<span>Prosumer 1</span> <img src="/assets/thermometer.svg" alt="Blackout"/> 
 					<img src="/assets/thermometer.svg" alt="Delete"/> <br><br>
 				<span>Prosumer 2</span>
+			</ul>
+		</div>
+		<div id = "environment-details">
+			<ul style = "list-style-type:none" id="environment-list">
+				<span #temperature></span>
+				<img src="/assets/thermometer.svg" alt="Temperature"/> <br><br>
+				<span #windSpeed></span>
+				<img src="/assets/weather.svg" alt="Weather"/>
 			</ul>
 		</div>
 	</div>
