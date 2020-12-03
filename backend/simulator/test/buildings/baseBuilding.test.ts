@@ -3,8 +3,6 @@ import { House } from '../../src/buildings/house';
 import { Battery } from '../../src/buildings/components/battery';
 import { GeoData } from '../../src/buildings/components/geoData';
 import { CoalGenerator } from '../../src/generators/coalGenerator';
-import { BaseGenerator } from '../../src/generators/baseGenerator';
-import { IMap } from '../../src/identifiable';
 
 class TestObject {
 	hBattery!: Battery;
@@ -14,8 +12,7 @@ class TestObject {
 		this.hBattery = new Battery(100, 0);
 		const hGeoData = new GeoData();
 		const hCoalGenerator = new CoalGenerator(100, false, 0);
-		const hGenerators = new IMap<BaseGenerator>();
-		hGenerators.iSet(hCoalGenerator);
+		const hGenerators = [hCoalGenerator]
 		this.house = new House(this.hBattery, hGeoData, hGenerators, 0.1);
 	}
 }

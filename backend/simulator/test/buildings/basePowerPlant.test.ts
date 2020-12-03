@@ -3,8 +3,6 @@ import { GeoData } from '../../src/buildings//components/geoData';
 import { CoalGenerator } from '../../src/generators/coalGenerator';
 import { CoalPowerPlant } from '../../src/buildings/coalPowerPlant';
 import { expect } from 'chai';
-import { IMap } from '../../src/identifiable';
-import { BaseGenerator } from '../../src/generators/baseGenerator';
 
 class TestObject {
 	coalPowerPlant!: CoalPowerPlant;
@@ -14,8 +12,7 @@ class TestObject {
 		const pBattery = new Battery(2000, 0);
 		const pGeoData = new GeoData();
 		this.pCoalGenerator = new CoalGenerator(100, false, 0);
-		const pGenerators = new IMap<BaseGenerator>();
-		pGenerators.iSet(this.pCoalGenerator);
+		const pGenerators = [this.pCoalGenerator];
 		this.coalPowerPlant = new CoalPowerPlant(pBattery, pGeoData, pGenerators);
 	}
 }

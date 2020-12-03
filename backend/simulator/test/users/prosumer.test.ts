@@ -6,9 +6,6 @@ import { GeoData } from '../../src/buildings/components/geoData';
 import { Battery } from '../../src/buildings/components/battery';
 import { Manager } from '../../src/users/manager';
 import { CoalPowerPlant } from '../../src/buildings/coalPowerPlant';
-import { IMap } from '../../src/identifiable';
-import { BaseGenerator } from '../../src/generators/baseGenerator';
-
 
 class TestObject {
 	pBattery!: Battery;
@@ -21,14 +18,13 @@ class TestObject {
 	public defaultValues(): void {
 		this.pBattery = new Battery(1000, 0);
 		const pGeoData = new GeoData();
-		this.coalPowerPlant = new CoalPowerPlant(this.pBattery, pGeoData, new IMap<BaseGenerator>());
+		this.coalPowerPlant = new CoalPowerPlant(this.pBattery, pGeoData, []);
 		this.manager = new Manager(0, this.coalPowerPlant);
 		
 		this.hBattery = new Battery(1000, 0);
-		const hCoalGenerator = new CoalGenerator(100, false, 0);
-		const hGenerators = new IMap<BaseGenerator>();
-		hGenerators.iSet(hCoalGenerator);
 		const hGeoData = new GeoData();
+		const hCoalGenerator = new CoalGenerator(100, false, 0);
+		const hGenerators = [hCoalGenerator];
 		this.house = new House(this.hBattery, hGeoData, hGenerators, 1);
 		this.prosumer = new Prosumer(0, this.house);
 	}

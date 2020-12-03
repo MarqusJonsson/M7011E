@@ -1,18 +1,18 @@
 import { Battery } from './components/battery';
 import { GeoData } from './components/geoData';
 import { BaseGenerator } from '../generators/baseGenerator';
-import { Identifiable, IMap } from '../identifiable';
+import { Identifiable } from '../identifiable';
 
 export abstract class BaseBuilding extends Identifiable {
 	private _battery: Battery;
 	private _geoData: GeoData;
-	private _generators: IMap<BaseGenerator>;
+	private _generators: BaseGenerator[];
 	private _hasBlackout: boolean = false;
 	private _electricityProduction: number = 0;
 	private _electricityConsumption: number = 0;
 	private _electricityOutput: number = 0;
 
-	constructor(type: string, battery: Battery, geoData: GeoData, generators: IMap<BaseGenerator>) {
+	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[]) {
 		super(type);
 		this._battery = battery;
 		this._geoData = geoData;
@@ -70,11 +70,11 @@ export abstract class BaseBuilding extends Identifiable {
 		this._geoData = geoData;
 	}
 
-	public get generators(): IMap<BaseGenerator> {
+	public get generators(): BaseGenerator[] {
 		return this._generators;
 	}
 
-	public set generators(generators: IMap<BaseGenerator>) {
+	public set generators(generators: BaseGenerator[]) {
 		this._generators = generators;
 	}
 

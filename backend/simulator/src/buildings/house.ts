@@ -3,11 +3,10 @@ import { Battery } from './components/battery';
 import { GeoData } from './components/geoData';
 import { BaseGenerator } from '../generators/baseGenerator';
 import { AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND } from '../utils/realLifeData';
-import { IMap } from '../identifiable';
 
 export class House extends BaseBuilding {
 	private _batteryToPowerPlantRatio: number; // Ratio of how much goes to house battery (eg. 1.0 = 100% to house battery)
-	constructor(battery: Battery, geoData: GeoData, generators: IMap<BaseGenerator>, batteryToPowerPlantRatio: number) {
+	constructor(battery: Battery, geoData: GeoData, generators: BaseGenerator[], batteryToPowerPlantRatio: number) {
 		super(House.name, battery, geoData, generators);
 		this._batteryToPowerPlantRatio = batteryToPowerPlantRatio;
 	}

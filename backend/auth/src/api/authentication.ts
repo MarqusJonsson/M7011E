@@ -6,6 +6,7 @@ import { PostResult, DeleteResult } from './result';
 import { crypto } from '../utils/crypto';
 import express from 'express';
 import { StatusCode } from '../utils/statusCode';
+import { UsersRepository } from '../database/repositories';
 
 function register(request: express.Request): Promise<PostResult> {
 	return new Promise((resolve, reject) => {
@@ -19,7 +20,8 @@ function register(request: express.Request): Promise<PostResult> {
 						return database.refreshTokens.getNextId(t).then((refreshTokenId) => {
 							const user = {
 								id: userId,
-								email: email
+								email: email,
+								role: UsersRepository.defaultUserType
 							}
 							const accessToken = auth.generateAccessToken({
 								user: user
@@ -57,7 +59,9 @@ function login(request: express.Request): Promise<PostResult> {
 						if (authorized) {
 							return database.refreshTokens.getNextId(t).then((refreshTokenId) => {
 								const user = {
-									id: user_.id
+									id: user_.id,
+									email: email,
+									role: user_.role
 								}
 								const accessToken = auth.generateAccessToken({
 									user: user

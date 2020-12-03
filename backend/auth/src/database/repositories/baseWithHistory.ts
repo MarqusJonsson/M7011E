@@ -2,6 +2,7 @@ import { BaseRepository } from './base';
 import { HistoryRepository } from './history'
 import pgPromise from 'pg-promise';
 import { toResponseError } from '../errorParser';
+
 export abstract class BaseWithHistoryRepository<T> extends BaseRepository<T> {
 	protected historyRepository: HistoryRepository;
 
