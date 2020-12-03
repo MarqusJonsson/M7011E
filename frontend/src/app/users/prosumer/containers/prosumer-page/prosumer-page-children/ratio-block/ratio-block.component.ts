@@ -6,7 +6,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
   styleUrls: ['./ratio-block.component.css']
 })
 export class RatioBlockComponent implements OnInit {
-  @ViewChild('header') header:ElementRef; 
+  @ViewChild('title') title:ElementRef; 
   constructor(private hostElement: ElementRef) { }
 
   ngOnInit(): void {
@@ -14,14 +14,14 @@ export class RatioBlockComponent implements OnInit {
 
   ngAfterViewInit() {
     if(this.hostElement.nativeElement.attributes.getNamedItem("blockName") != null)
-      this.setHeaderValue(this.hostElement.nativeElement.attributes.getNamedItem("blockName").value);
+      this.setBlockTitle(this.hostElement.nativeElement.attributes.getNamedItem("blockName").value);
     else
-    this.setHeaderValue("Undefined");
+    this.setBlockTitle("Undefined");
  
   }
 
-  public setHeaderValue(newValue: string) {
-    this.header.nativeElement.innerText = newValue;
+  public setBlockTitle(newValue: string) {
+    this.title.nativeElement.innerText = newValue;
   }
 
 }
