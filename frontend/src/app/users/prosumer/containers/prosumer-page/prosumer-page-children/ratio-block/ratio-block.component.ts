@@ -24,9 +24,9 @@ export class RatioBlockComponent implements OnInit {
   public setBlockTitle(newValue: string) {
     this.title.nativeElement.innerText = newValue;
   }
-  
+
   public onInputChange(event: MatSliderChange) {
-	console.log(event.value, this.hostElement.nativeElement.id);
+	  console.log(event.value, this.hostElement.nativeElement.id);
   }
 
 }
