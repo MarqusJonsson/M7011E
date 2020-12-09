@@ -101,8 +101,30 @@ function logout(request: express.Request): Promise<DeleteResult> {
 	});
 }
 
+function refreshAccessToken(request: express.Request): Promise<PostResult> {
+	return new Promise((resolve, reject) => {
+		const { refreshToken } = request.body;
+		if (!validation.validateRefreshToken(refreshToken)) {
+			reject(new ResponseError('Malformed input', StatusCode.BAD_REQUEST));
+		} else {
+			auth.verifyRefreshToken(refreshToken, (error, payload) => {
+				if (error) reject(new ResponseError('Invalid refresh token', StatusCode.UNAUTHORIZED));
+				const refreshTokenPayload = <RefreshTokenPayload><unknown> payload;
+				const accessToken = auth.generateAccessToken({
+					user: refreshTokenPayload.user
+				});
+				resolve(new PostResult({
+					accessToken: accessToken,
+					refreshToken: refreshToken
+				}, `/users/${refreshTokenPayload.user.id}`));
+			});
+		}
+	});
+}
+
 export const authentication = {
 	register: register,
 	login: login,
-	logout: logout
+	logout: logout,
+	refreshAccessToken: refreshAccessToken
 }
