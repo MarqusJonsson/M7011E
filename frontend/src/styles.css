@@ -38,7 +38,7 @@ body {
 	text-align: center;
 }
 
-/* Suppost to be in manager-main-block css but does not work there, likely bug */
+/* Suppost to be in manager-main-block css but does not work there */
 .p-list > *:hover {
 	filter: invert(1);
 	
