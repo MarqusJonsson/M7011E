@@ -37,6 +37,7 @@ database.task((t) => {
 				// Setup API endpoints
 				POST	('/register', authenticationAPI.register);
 				POST	('/login', authenticationAPI.login);
+				POST	('/refresh-access-token', authenticationAPI.refreshAccessToken);
 				DELETE	('/logout', authenticationAPI.logout);
 				// Setup error handler middleware
 				app.use(errorHandler);
@@ -53,7 +54,7 @@ function GET(url: string, handler: (request: any, response: any) => Promise<GetR
 			response.status(StatusCode.OK);
 			response.json({
 				success: true,
-				data: result.data
+				body: result.body
 			});
 		}).catch((error: any) => { next(error); });
 	});
@@ -66,7 +67,7 @@ function POST(url: string, handler: (request: any, response: any) => Promise<Pos
 			response.setHeader('Location', result.location);
 			response.json({
 				success: true,
-				data: result.data
+				body: result.body
 			});
 		}).catch((error: any) => { next(error); });
 	});
@@ -76,11 +77,11 @@ function PUT(url: string, handler: (request: any, response: any) => Promise<PutR
 	app.put(url, (request, response, next) => {
 		handler(request, response).then((result) => {
 			const responseObject: any = {success: true};
-			if (result.data === null) {
+			if (result.body === null) {
 				response.status(StatusCode.NO_CONTENT);
 			} else {
 				response.status(StatusCode.OK);
-				responseObject.data = result.data;
+				responseObject.data = result.body;
 			}
 			response.json(responseObject);
 		}).catch((error: any) => { next(error); });
@@ -91,11 +92,11 @@ function DELETE(url: string, handler: (request: any, response: any) => Promise<D
 	app.delete(url, (request, response, next) => {
 		handler(request, response).then((result) => {
 			const responseObject: any = {success: true};
-			if (result.data === null) {
+			if (result.body === null) {
 				response.status(StatusCode.NO_CONTENT);
 			} else {
 				response.status(StatusCode.OK);
-				responseObject.data = result.data;
+				responseObject.body = result.body;
 			}
 			response.json(responseObject);
 		}).catch((error: any) => { next(error); });
