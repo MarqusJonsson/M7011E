@@ -1,15 +1,17 @@
-const URL_APP_SERVER = 'http://localhost:3000';
+const URL_SIMULATOR_SERVER = 'http://localhost:3002';
 const URL_AUTH_SERVER = 'http://localhost:3001';
 
 export const config = {
-  // API servers
-  URL_APP_SERVER: URL_APP_SERVER,
-  URL_AUTH_SERVER: URL_AUTH_SERVER,
-  // Auth URLs
-  URL_GRAPHQL: `${URL_APP_SERVER}/graphql`,
-  URL_LOGIN: `${URL_AUTH_SERVER}/login`,
-  URL_LOGOUT: `${URL_AUTH_SERVER}/logout`,
-  URL_REFRESH_TOKEN: `${URL_AUTH_SERVER}/refresh-token`,
-  // App URLs
-  URL_AUTH_CHECK: `${URL_APP_SERVER}/auth-check`
-}
+	// API servers
+	URL_SIMULATOR_SERVER: `${URL_SIMULATOR_SERVER}`,
+	URL_AUTH_SERVER: `${URL_AUTH_SERVER}`,
+	// Auth API URLs
+	URL_LOGIN: `${URL_AUTH_SERVER}/login`,
+	URL_LOGOUT: `${URL_AUTH_SERVER}/logout`,
+	URL_REGISTER: `${URL_AUTH_SERVER}/register`,
+	URL_REFRESH_ACCESS_TOKEN: `${URL_AUTH_SERVER}/refresh-access-token`,
+	// Simulator API URLs
+	URL_GRAPHQL: `${URL_SIMULATOR_SERVER}/graphql`,
+	URL_AUTH_CHECK: `${URL_SIMULATOR_SERVER}/auth-check`,
+	URL_TEMP: `${URL_SIMULATOR_SERVER}/temp`
+};
