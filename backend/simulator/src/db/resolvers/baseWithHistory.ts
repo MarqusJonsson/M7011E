@@ -15,7 +15,7 @@ class BaseWithHistoryResolver extends BaseResolver {
 			const role = await t.one(this.queries.remove, id);
 			await t.oneOrNone(historyResolver.queries.remove, role.histories_id);
 			return role;
-		}).catch(err => console.log(err));
+		}).catch(error => console.error(error));
 	}
 }
 

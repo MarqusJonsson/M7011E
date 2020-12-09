@@ -28,7 +28,7 @@ class UserResolver extends BaseWithHistoryResolver {
 		return await db.tx(async (t: ITask<{}>) => {
 			const history = await t.one(historyResolver.queries.create);
 			return await t.oneOrNone(this.queries.create, [email, currency, userTypesId, history.id]);
-		}).catch(err => console.log(err));
+		}).catch(error => console.error(error));
 	}
 
 	update = async (id: number | string, email: string, currency: number, userTypesId: number | string): Promise<any> => {
@@ -36,7 +36,7 @@ class UserResolver extends BaseWithHistoryResolver {
 			const user = await t.one(this.queries.update, [id, email, currency, userTypesId]);
 			await t.oneOrNone(historyResolver.queries.update, [user.histories_id])
 			return user;
-		}).catch(err => console.log(err));
+		}).catch(error => console.error(error));
 	}
 
 	updateCurrency = async (id: number | string, currencyDelta: number): Promise<any> => {
@@ -44,19 +44,19 @@ class UserResolver extends BaseWithHistoryResolver {
 			const user = await t.one(this.queries.updateCurrency, [id, currencyDelta]);
 			await t.oneOrNone(historyResolver.queries.update, [user.histories_id])
 			return user;
-		}).catch(err => console.log(err));
+		}).catch(error => console.error(error));
 	}
 
 	byUserTypeId = async (userTypeId: number | string): Promise<any> => {
 		return db
 			.manyOrNone(this.queries.byUserTypeId, [userTypeId])
-			.catch(err => console.log(err));
+			.catch(error => console.error(error));
 	}
 
 	userType = async (id: number | string): Promise<any> => {
 		return db
 			.oneOrNone(this.queries.userType, [id])
-			.catch(err => console.log(err));
+			.catch(error => console.error(error));
 	}
 }
 

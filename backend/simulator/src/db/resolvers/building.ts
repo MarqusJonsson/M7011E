@@ -26,7 +26,7 @@ class BuildingResolver extends BaseWithHistoryResolver {
 		return await db.tx(async (t: ITask<{}>) => {
 			const history = await t.one(historyResolver.queries.create);
 			return await t.oneOrNone(this.queries.create, [batteryBuffer, batteryLimit, buildingTypesId, ownerId, history.id]);
-		}).catch(err => console.log(err));
+		}).catch(error => console.error(error));
 	}
 
 	update = async(id: number | string, batteryBuffer: number, batteryLimit: number, buildingTypesId: number | string, ownerId: number | string): Promise<any> => {
@@ -34,7 +34,7 @@ class BuildingResolver extends BaseWithHistoryResolver {
 			const building = await t.one(this.queries.update, [id, batteryBuffer, batteryLimit, buildingTypesId, ownerId]);
 			await t.oneOrNone(historyResolver.queries.update, [building.histories_id])
 			return building;
-		}).catch(err => console.log(err));
+		}).catch(error => console.error(error));
 	}
 
 	updateBatteryBuffer = async(id: number | string, batteryBuffer: number): Promise<any> => {
@@ -42,13 +42,13 @@ class BuildingResolver extends BaseWithHistoryResolver {
 			const building = await t.one(this.queries.updateBatteryBuffer, [id, batteryBuffer]);
 			await t.oneOrNone(historyResolver.queries.update, [building.histories_id])
 			return building;
-		}).catch(err => console.log(err));
+		}).catch(error => console.error(error));
 	}
 
 	buildingType = async (id: number | string): Promise<any> => {
 		return db
 			.oneOrNone(this.queries.buildingType, [id])
-			.catch(err => console.log(err));
+			.catch(error => console.error(error));
 	}
 }
 

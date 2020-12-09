@@ -15,14 +15,14 @@ class HistoryResolver extends BaseResolver {
 	create = async (): Promise<any> => {
 		return db
 			.oneOrNone(this.queries.create)
-			.catch(err => console.log(err));
+			.catch(error => console.error(error));
 	}
 
 	update = async (id: number | string): Promise<any> => {
 		const values = [id];
 		return db
 			.oneOrNone(this.queries.update, values)
-			.catch(err => console.log(err));
+			.catch(error => console.error(error));
 	}
 }
 

@@ -24,7 +24,7 @@ class GeneratorResolver extends BaseWithHistoryResolver {
 		return await db.tx(async (t: ITask<{}>) => {
 			const history = await t.one(historyResolver.queries.create);
 			return await t.oneOrNone(this.queries.create, [baseOutput, isBroken, generatorTypesId, buildingsId, history.id]);
-		}).catch(err => console.log(err));
+		}).catch(error => console.error(error));
 	}
 
 	update = async (id: string|number, baseOutput: number, isBroken: boolean, generatorTypesId: string | number, buildingsId: string | number): Promise<any> => {
@@ -32,13 +32,13 @@ class GeneratorResolver extends BaseWithHistoryResolver {
 			const generator = await t.one(this.queries.update, [id, baseOutput, isBroken, generatorTypesId, buildingsId]);
 			await t.oneOrNone(historyResolver.queries.update, [generator.histories_id])
 			return generator;
-		}).catch(err => console.log(err));
+		}).catch(error => console.error(error));
 	}
 
 	generatorType = async (id: number | string): Promise<any> => {
 		return db
 			.oneOrNone(this.queries.generatorType, [id])
-			.catch(err => console.log(err));
+			.catch(error => console.error(error));
 	}
 }
 

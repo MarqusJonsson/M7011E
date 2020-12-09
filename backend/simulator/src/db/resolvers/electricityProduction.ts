@@ -17,7 +17,7 @@ class ElectricityProductionResolver extends BaseWithHistoryResolver {
 			await t.one(buildingResolver.queries.updateBatteryBuffer, [buildingsId, amount]);
 			const history = await t.one(historyResolver.queries.create);
 			return await t.one(this.queries.create, [amount, generatorsId, buildingsId, history.id]);
-		}).catch(err => console.log(err));
+		}).catch(error => console.error(error));
 	}
 }
 

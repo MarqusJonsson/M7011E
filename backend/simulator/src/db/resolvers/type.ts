@@ -16,7 +16,7 @@ abstract class TypeResolver extends BaseWithHistoryResolver {
 		return await db.tx(async (t: ITask<{}>) => {
 			const history = await t.one(historyResolver.queries.create);
 			return await t.oneOrNone(this.queries.create, [name, history.id]);
-		}).catch(err => console.log(err));
+		}).catch(error => console.error(error));
 	}
 
 	update = async (id: number | string, name: string): Promise<any> => {
@@ -24,7 +24,7 @@ abstract class TypeResolver extends BaseWithHistoryResolver {
 			const type = await t.one(this.queries.update, [id, name]);
 			await t.oneOrNone(historyResolver.queries.update, [type.histories_id]);
 			return type;
-		}).catch(err => console.log(err));
+		}).catch(error => console.error(error));
 	}
 }
 

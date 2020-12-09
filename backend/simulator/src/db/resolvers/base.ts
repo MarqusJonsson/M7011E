@@ -18,19 +18,19 @@ abstract class BaseResolver {
 	one = async (id: number | string): Promise<any> => {
 		return db
 			.one(this.queries.one, [id])
-			.catch((err: string) => console.log(err));
+			.catch((error: string) => console.error(error));
 	}
 
 	all = async (): Promise<any> => {
 		return db
 			.manyOrNone(this.queries.all)
-			.catch((err: string) => console.log(err));
+			.catch((error: string) => console.error(error));
 	}
 
 	remove = async (id: number | string): Promise<any> => {
 		return db
 			.one(this.queries.remove, [id])
-			.catch((err: string) => console.log(err));
+			.catch((error: string) => console.error(error));
 	}
 
 	public get tableName(): string {
