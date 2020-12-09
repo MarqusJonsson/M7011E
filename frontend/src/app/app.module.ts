@@ -30,6 +30,7 @@ import { ProsumerCurrencyBlockComponent } from './users/prosumer/containers/pros
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthService } from './auth/services/auth.service';
 import JwtInterceptor from './api/interceptors/jwt.interceptor';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
 	declarations: [
@@ -60,11 +61,12 @@ import JwtInterceptor from './api/interceptors/jwt.interceptor';
 		MatSliderModule,
 		HttpClientModule,
 		JwtModule.forRoot({
-		config: {
-			tokenGetter: AuthService.getAccessToken,
-			allowedDomains: ['localhost:4200']
-		}
-		})
+      config: {
+        tokenGetter: AuthService.getAccessToken,
+        allowedDomains: ['localhost:4200']
+      }
+    }),
+    GraphQLModule
 	],
 	providers: [{
 		provide: HTTP_INTERCEPTORS,
