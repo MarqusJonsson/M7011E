@@ -5,6 +5,16 @@
 			<ul style = "list-style-type:none" id="prosumer-list" #prosumerList>
 			</ul>
 		</div>
+
+		<div #prosumerInfoContainer id ="prosumer-info-container">
+			<img src ="/assets/x-mark.svg" alt="exit"> <br><br>
+			<h2 #prosumerInfoHeader></h2>
+			<span>Battery: </span><span #prosumerInfoBattery></span> <br><br>
+			<span>Capacity: </span><span #prosumerInfoCapacity></span> <br><br>
+			<span>Production: </span><span #prosumerInfoProduction></span> <br><br>
+			<span>Consumption: </span><span #prosumerInfoConsumption></span>
+		</div>
+
 		<div id = "environment-details">
 			<ul style = "list-style-type:none" id="environment-list">
 				<span #temperature></span>

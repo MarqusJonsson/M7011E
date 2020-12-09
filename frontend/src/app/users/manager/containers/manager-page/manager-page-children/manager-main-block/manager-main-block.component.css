@@ -112,4 +112,11 @@
 	background-color: rgb(135, 222, 203);
 }
 
+#prosumer-info-container {
+	vertical-align: top;;
+	display: inline-block;
+	background-color: crimson;
+}
+
+
 
