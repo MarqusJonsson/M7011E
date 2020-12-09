@@ -43,9 +43,6 @@ export class Server {
 			},
 			graphiql: true
 		})));
-		this._app.get('/temp', authenticateAccessToken, (request: express.Request, response: express.Response) => {
-			response.json({ "Authenticated user payload": request.payload });
-		});
 		this._app.use(errorHandler);
 		// Start server
 		this._app.listen(PORT, () => console.log(`Simulator server listening on port ${PORT}`));
