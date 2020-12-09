@@ -10,7 +10,7 @@ import { UsersRepository } from '../database/repositories';
 
 function register(request: express.Request): Promise<PostResult> {
 	return new Promise((resolve, reject) => {
-		const { email, password } = request.body;
+        const { email, password } = request.body;
 		if (!validation.validateEmail(email) || !validation.validatePassword(password)) {
 			reject(new ResponseError('Malformed input', StatusCode.BAD_REQUEST));
 		} else {
@@ -21,7 +21,7 @@ function register(request: express.Request): Promise<PostResult> {
 							const user = {
 								id: userId,
 								email: email,
-								role: UsersRepository.defaultUserType
+								role: UsersRepository.defaultUserRole
 							}
 							const accessToken = auth.generateAccessToken({
 								user: user
@@ -33,7 +33,6 @@ function register(request: express.Request): Promise<PostResult> {
 							return crypto.hash(refreshToken).then((hashedRefreshToken) => {
 								return database.refreshTokens.insert(refreshTokenId, hashedRefreshToken, userId, t).then((refreshTokenId) => {
 									resolve(new PostResult({
-										user: user,
 										accessToken: accessToken,
 										refreshToken: refreshToken
 									}, `/users/${user.id}`));
@@ -73,7 +72,6 @@ function login(request: express.Request): Promise<PostResult> {
 								return crypto.hash(refreshToken).then((hashedRefreshToken) => {
 									return database.refreshTokens.insert(refreshTokenId, hashedRefreshToken, user.id, t).then((insertedRefreshTokenId) => {
 										resolve(new PostResult({
-											user: user,
 											accessToken: accessToken,
 											refreshToken: refreshToken
 										}, `/users/${user.id}`));

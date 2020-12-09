@@ -6,14 +6,14 @@ import { User } from '../models/user';
 import { BaseWithHistoryRepository } from './baseWithHistory';
 import { HistoryRepository } from './history';
 
-const tableName = "users";
+const tableName = 'users';
 
 export class UsersRepository extends BaseWithHistoryRepository<User> {
-	public static readonly userType = {
+	public static readonly userRole = {
 		PROSUMER: 0,
 		MANAGER: 1
 	};
-	public static readonly defaultUserType = UsersRepository.userType.PROSUMER;
+	public static readonly defaultUserRole = UsersRepository.userRole.PROSUMER;
 
 	constructor(database: pgPromise.IDatabase<any>, historyRepository: HistoryRepository) {
 		super(database, tableName, historyRepository);
@@ -27,7 +27,7 @@ export class UsersRepository extends BaseWithHistoryRepository<User> {
 					id SERIAL PRIMARY KEY,
 					email VARCHAR (255)	NOT NULL UNIQUE,
 					password VARCHAR (60) NOT NULL,
-					role SMALLINT default '${UsersRepository.defaultUserType}',
+					role SMALLINT default '${UsersRepository.defaultUserRole}',
 					histories_id INT NOT NULL REFERENCES histories (id)
 				)`
 			).then(() => {
