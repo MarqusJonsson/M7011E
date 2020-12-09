@@ -1,79 +1,147 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap, catchError } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { config } from './../../config';
 import { Tokens } from './../models/tokens';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { throwError } from 'rxjs';
+import { StatusCode } from 'src/app/api/statusCode';
+import { AuthError } from '../models/authError';
 
 const ACCESS_TOKEN = 'access_token';
 const REFRESH_TOKEN = 'refresh_token';
 
+export enum UserRole {
+	PROSUMER = 0,
+	MANAGER = 1
+}
+
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class AuthService {
+	public static getAccessToken() {
+		return localStorage.getItem(ACCESS_TOKEN);
+	}
 
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {}
+	public static getRefreshToken() {
+		return localStorage.getItem(REFRESH_TOKEN);
+	}
 
-  public login(email: string, password: string) {
-    return this.http.post<any>(config.URL_LOGIN, { email, password })
-      .pipe(tap(res => this.setSession(res)));
-  }
+	private static setSession(data: Tokens) {
+		AuthService.setAccessToken(data.accessToken);
+		AuthService.setRefreshToken(data.refreshToken);
+	}
 
-  public logout() {
-    return this.http.post(config.URL_LOGOUT, { "refreshToken": AuthService.getRefreshToken() })
-      .pipe(tap(() => this.removeSession()));
-  }
+	private static removeSession() {
+		localStorage.removeItem(ACCESS_TOKEN);
+		localStorage.removeItem(REFRESH_TOKEN);
+	}
 
-  public refreshToken() {
-    return this.http.post(config.URL_REFRESH_TOKEN, { 'refreshToken': AuthService.getRefreshToken() });
-  }
+	private static setRefreshToken(value: string) {
+		localStorage.setItem(REFRESH_TOKEN, value);
+	}
 
-  private setSession(tokens: Tokens) {
-    this.setAccessToken(tokens.accessToken);
-    localStorage.setItem(REFRESH_TOKEN, tokens.refreshToken);
-  }
+	public static setAccessToken(value: string) {
+		localStorage.setItem(ACCESS_TOKEN, value);
+	}
 
-  private removeSession() {
-    localStorage.removeItem(ACCESS_TOKEN);
-    localStorage.removeItem(REFRESH_TOKEN);
-  }
+	constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {}
 
-  public setAccessToken(value: string) {
-    localStorage.setItem(ACCESS_TOKEN, value);
-  }
+	public register(email: string, password: string) {
+		return this.http.post<any>(config.URL_REGISTER, { email, password })
+		.pipe(
+			map((response) => {
+				if (response.status === StatusCode.CREATED) {
+					console.error(response);
+					throw new AuthError();
+				}
+				AuthService.setSession(response.body);
+				return response.success;
+			}),
+			catchError((response) => {
+				if (response instanceof AuthError) {
+					return throwError(response);
+				}
+				return throwError(new AuthError(response.error.message));
+		}));
+	}
 
-  public static getAccessToken() {
-    return localStorage.getItem(ACCESS_TOKEN);
-  }
+	public login(email: string, password: string) {
+		return this.http.post<any>(config.URL_LOGIN, { email, password })
+		.pipe(
+			map((response) => {
+				if (response.status === StatusCode.CREATED) {
+					console.error(response);
+					throw new AuthError();
+				}
+				AuthService.setSession(response.body);
+				return response.success;
+			}),
+			catchError((response) => {
+				if (response instanceof AuthError) {
+					return throwError(response);
+				}
+				return throwError(new AuthError(response.error.message));
+			})
+		);
+	}
 
-  public static getRefreshToken() {
-    return localStorage.getItem(REFRESH_TOKEN);
-  }
+	public logout() {
+		return this.http.post(config.URL_LOGOUT, { refreshToken: AuthService.getRefreshToken() })
+			.pipe(
+				tap(() => {
+					AuthService.removeSession();
+				}));
+	}
 
-  public getEmail(): string {
-    const payload = this.jwtHelper.decodeToken(AuthService.getRefreshToken());
-    if (payload) {
-      return payload.user.email;
-    }
-    return "UNKNOWN";
-  }
+	public refreshAccessToken() {
+		return this.http.post<any>(config.URL_REFRESH_ACCESS_TOKEN, { refreshToken: AuthService.getRefreshToken() })
+			.pipe(tap((response) => {
+				AuthService.setAccessToken(response.body.accessToken);
+			}));
+	}
 
-  public getRole(): string {
-    const payload = this.jwtHelper.decodeToken(AuthService.getRefreshToken());
-    if (payload) {
-      return payload.user.role.name;
-    }
-    return "UNKNOWN";
-  }
+	private getEmail(): string {
+		const payload = this.jwtHelper.decodeToken(AuthService.getRefreshToken());
+		if (payload) {
+			return payload.user.email;
+		}
+		return 'UNKNOWN';
+	}
 
-  public authCheck(): boolean {
-    const accessExpired: boolean = this.jwtHelper.isTokenExpired(AuthService.getAccessToken());
-    const refreshExpired: boolean = this.jwtHelper.isTokenExpired(AuthService.getRefreshToken());
-    if (refreshExpired && accessExpired) {
-      return false;
-    }
-    return true;
-  }
+	public getRole(): number {
+		const payload = this.jwtHelper.decodeToken(AuthService.getRefreshToken());
+		if (payload) {
+			return payload.user.role;
+		}
+		return -1;
+	}
+
+	public authorizedProsumer(): boolean {
+		return this.authorizeRole(UserRole.PROSUMER);
+	}
+
+	public authorizedManager(): boolean {
+		return this.authorizeRole(UserRole.MANAGER);
+	}
+
+	private authorizeRole(role: number) {
+		const userRole = this.getRole();
+		if (userRole === role) {
+			if (this.authorizeTokens()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private authorizeTokens(): boolean {
+		const accessExpired: boolean = this.jwtHelper.isTokenExpired(AuthService.getAccessToken());
+		const refreshExpired: boolean = this.jwtHelper.isTokenExpired(AuthService.getRefreshToken());
+		if (refreshExpired && accessExpired) {
+			return false;
+		}
+		return true;
+	}
 }
