@@ -4,8 +4,8 @@ import * as dotenv from 'dotenv';
 import crypto from 'crypto';
 dotenv.config();
 
-const refreshTokenExpireTime = '10min';
-const accessTokenExpireTime = '10min';
+const refreshTokenExpireTime = '14d';
+const accessTokenExpireTime = '10m';
 const signingAlgorithm = 'RS256';
 
 let refreshKeyPair: KeyPair | undefined;
