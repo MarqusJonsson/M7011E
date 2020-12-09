@@ -7,7 +7,7 @@
 	margin:0 0px 0px 0px;
 }
 
-#navbar-list > li > a > img:hover{
+#navbar-list > li > a > img:hover {
 	filter: invert(1);
 }
 

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageBlockComponent } from './page-block.component';
+import { ManagerMarketComponent } from './manager-market.component';
 
-describe('PageBlockComponent', () => {
-  let component: PageBlockComponent;
-  let fixture: ComponentFixture<PageBlockComponent>;
+describe('ManagerMarketComponent', () => {
+  let component: ManagerMarketComponent;
+  let fixture: ComponentFixture<ManagerMarketComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageBlockComponent ]
+      declarations: [ ManagerMarketComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PageBlockComponent);
+    fixture = TestBed.createComponent(ManagerMarketComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

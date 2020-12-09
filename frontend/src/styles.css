@@ -1,16 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
-
-
-
 body {
 	background-color:#1d1a1a;
 	color:#fff;
 	margin: 0;
 	font-size: 0;
 }
-
-
 
 .inline-block-container{
 	margin: 0 0 0 4px;
@@ -20,19 +15,12 @@ body {
 	background-color: #1d1a1a;
 }
 
-
 .inline-block-container > :last-child{
 	margin-right: 0
 }
 
-
-
 .block-container {
 	display: block;
-}
-
-p {
-	font-size: 20px;
 }
 
 .sub-block{
@@ -41,3 +29,17 @@ p {
 	height: 100%;
 }
 
+.sub-block-container {
+	vertical-align: top;
+	display:inline-flex;
+	width: calc(100%/4 - 3px);
+	height: calc(30vh - 4px);
+	margin: 0 4px 0 0;
+	text-align: center;
+}
+
+/* Suppost to be in manager-main-block css but does not work there */
+.p-list > *:hover {
+	filter: invert(1);
+	
+}

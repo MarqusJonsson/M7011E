@@ -9,14 +9,15 @@ import { ProsumerPageComponent } from './users/prosumer/containers/prosumer-page
 import { AccountSettingsComponent } from './users/shared/containers/account-settings/account-settings.component';
 import { NavBarComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/nav-bar/nav-bar.component';
 import { VisualBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/visual-block/visual-block.component';
-import { PageBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/page-block/page-block.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PlotlyViaCDNModule } from 'angular-plotly.js';
 import { PlotlyComponent } from './users/shared/containers/plotly/plotly.component';
 import { RatioBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/ratio-block/ratio-block.component';
-PlotlyViaCDNModule.setPlotlyVersion('latest'); // can be `latest` or any version number (i.e.: '1.40.0')
-PlotlyViaCDNModule.setPlotlyBundle('basic'); // optional: can be null (for full) or 'basic', 'cartesian', 'geo', 'gl3d', 'gl2d', 'mapbox' or 'finance'
+// can be `latest` or any version number (i.e.: '1.40.0')
+PlotlyViaCDNModule.setPlotlyVersion('latest');
+// optional: can be null (for full) or 'basic', 'cartesian', 'geo', 'gl3d', 'gl2d', 'mapbox' or 'finance'
+PlotlyViaCDNModule.setPlotlyBundle('basic');
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegisterComponent } from './auth/containers/register/register.component';
 import { ManagerPageComponent } from './users/manager/containers/manager-page/manager-page.component';
@@ -24,7 +25,8 @@ import { ManagerNavBarComponent } from './users/manager/containers/manager-page/
 import { ManagerMainBlockComponent } from './users/manager/containers/manager-page/manager-page-children/manager-main-block/manager-main-block.component';
 import { PowerPlantBlockComponent } from './users/manager/containers/manager-page/manager-page-children/power-plant-block/power-plant-block.component';
 import { SubBlockComponent } from './users/shared/containers/sub-block/sub-block.component';
-import { MarketComponent } from './users/manager/containers/manager-page/manager-page-children/market/market.component';
+import { ManagerMarketComponent } from './users/manager/containers/manager-page/manager-page-children/manager-market/manager-market.component';
+import { ProsumerCurrencyBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/prosumer-currency-block/prosumer-currency-block.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthService } from './auth/services/auth.service';
 import JwtInterceptor from './api/interceptors/jwt.interceptor';
@@ -38,7 +40,6 @@ import JwtInterceptor from './api/interceptors/jwt.interceptor';
 		AccountSettingsComponent,
 		NavBarComponent,
 		VisualBlockComponent,
-		PageBlockComponent,
 		PlotlyComponent,
 		RatioBlockComponent,
 		RegisterComponent,
@@ -47,7 +48,8 @@ import JwtInterceptor from './api/interceptors/jwt.interceptor';
 		ManagerMainBlockComponent,
 		PowerPlantBlockComponent,
 		SubBlockComponent,
-		MarketComponent
+		ManagerMarketComponent,
+		ProsumerCurrencyBlockComponent
 	],
 	imports: [
 		BrowserModule,

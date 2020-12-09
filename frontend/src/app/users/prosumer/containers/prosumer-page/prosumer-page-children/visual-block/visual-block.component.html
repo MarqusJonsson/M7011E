@@ -8,22 +8,22 @@
 				<span>Electricity details</span>
 			</div>
 			<div id = "electricity-details">
-				<p>Production:</p>
-				<p>Consumption:</p>
-				<p>Net Production:</p>
+				<span>Production: </span><span #production></span><br><br>
+				<span>Consumption: </span><span #consumption></span><br><br>
+				<span>Net production: </span> <span #netProduction></span> <br><br>
 			</div>
 		</div>		
 		<div id = "environment-details">
 			<ul style = "list-style-type:none" id="environment-list">
-				<span>10 C</span>
-				<img src="/assets/thermometer.svg" alt="Temperature"/>
-				<span>1000 m/s</span>
+				<span #temperature></span>
+				<img src="/assets/thermometer.svg" alt="Temperature"/> <br><br>
+				<span #windSpeed></span>
 				<img src="/assets/weather.svg" alt="Weather"/>
 
 			</ul>
 		</div>
 		<div id = "battery-details">
-			<p>Battery: 6500/12000 kwh</p>
+			<span>Battery: </span> <span #battery></span> <span #batteryCapacity></span>
 		</div>
 	</div>
 	<div id = "graph-container">

@@ -1,30 +1,27 @@
 <div id ="main-block">
 	<div id = "manager-main-block-left-container">
-		<div id = "electricity-details-container">
-			<div id = "electricity-details-header">
-				<span>Electricity details</span>
-			</div>
-			<div id = "electricity-details">
-				<p>Production:</p>
-				<p>Consumption:</p>
-				<p>Net Production:</p>
-				<p>Battery: 6500/150000 kwh</p>
-			</div>
-		</div>
-		<div id = "environment-details">
-			<ul style = "list-style-type:none" id="environment-list">
-				<span>10 C</span>
-				<img src="/assets/thermometer.svg" alt="Temperature"/>
-				<span>1000 m/s</span>
-				<img src="/assets/weather.svg" alt="Weather"/>
-			</ul>
-		</div>
 		<div id = "prosumer-list-container">
 			<div id="prosumer-list-header"><span>Prosumer list</span></div>
-			<div id="prosumer-list">
-				<p>Prosumer 1</p>
-				<p>Prosumer 2</p>
-			</div>
+			<ul style = "list-style-type:none" id="prosumer-list" #prosumerList>
+			</ul>
+		</div>
+
+		<div #prosumerInfoContainer id ="prosumer-info-container">
+			<img src ="/assets/x-mark.svg" alt="exit"> <br><br>
+			<h2 #prosumerInfoHeader></h2>
+			<span>Battery: </span><span #prosumerInfoBattery></span> <br><br>
+			<span>Capacity: </span><span #prosumerInfoCapacity></span> <br><br>
+			<span>Production: </span><span #prosumerInfoProduction></span> <br><br>
+			<span>Consumption: </span><span #prosumerInfoConsumption></span>
+		</div>
+
+		<div id = "environment-details">
+			<ul style = "list-style-type:none" id="environment-list">
+				<span #temperature></span>
+				<img src="/assets/thermometer.svg" alt="Temperature"/> <br><br>
+				<span #windSpeed></span>
+				<img src="/assets/weather.svg" alt="Weather"/>
+			</ul>
 		</div>
 	</div>
 	<div id = "graph-container">
