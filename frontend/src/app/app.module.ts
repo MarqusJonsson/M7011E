@@ -30,6 +30,7 @@ import { ProsumerCurrencyBlockComponent } from './users/prosumer/containers/pros
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthService } from './auth/services/auth.service';
 import JwtInterceptor from './api/interceptors/jwt.interceptor';
+import UserDataInterceptor from './api/interceptors/user-data.interceptor';
 import { GraphQLModule } from './graphql.module';
 
 @NgModule({
@@ -68,11 +69,17 @@ import { GraphQLModule } from './graphql.module';
 		}),
 		GraphQLModule
 	],
-	providers: [{
-		provide: HTTP_INTERCEPTORS,
-		useClass: JwtInterceptor,
-		multi: true
-	}],
+	providers: [
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: JwtInterceptor,
+			multi: true
+		}, {
+			provide: HTTP_INTERCEPTORS,
+			useClass: UserDataInterceptor,
+			multi: true
+		}
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule {}
