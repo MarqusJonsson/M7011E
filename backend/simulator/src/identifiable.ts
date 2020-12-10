@@ -12,13 +12,15 @@ export abstract class Identifiable {
 	private static _map: Map<string, number> = new Map<string, number>();
 	private _identifier: Identifier;
 
-	constructor(type: string) {
-		let id: number | undefined = Identifiable.getNextId(type);
+	constructor(type: string, id?: number) {
 		if (id === undefined) {
-			id = 1;
+			id = Identifiable.getNextId(type);
+			if (id === undefined) {
+				id = -1;
+			}
 		}
 		this._identifier = new Identifier(type, id);
-		Identifiable.setNextId(type, id + 1)
+		Identifiable.setNextId(type, id - 1)
 	}
 
 	private static getNextId(type: string): number | undefined {
