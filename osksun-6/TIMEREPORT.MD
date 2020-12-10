@@ -15,3 +15,4 @@
 |2020-12-02| 9.5 | Added a registration section and settings section where you currently can only see the preview of an image you are trying to upload. Also started working on the manager GUI page.
 |2020-12-03| 10 | Worked on GUI for manager and prosumer. Added functions for setting values on information to be displayed such as electricity price, battery capacity etc. Also made the prosumer list where the goal is to have icons for removing the selected prosumer, blocking the selected and information about the selected prosumer.
 |2020-12-09| 6 | Continued working on GUI for manager. Created a prosumer list where managers can see info about specific prosumers and in the future be able to block and delete prosumers.
+|2020-12-10| 4.5 | Starting working on setting up graphql queries from frontend.
