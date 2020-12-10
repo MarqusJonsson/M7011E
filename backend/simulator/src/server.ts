@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import { cors } from './middleware/cors';
 import { errorHandler } from './middleware/errorHandler';
 // GraphQL
-import { formatError, GraphQLSchema } from 'graphql';
+import { formatError, GraphQLError, GraphQLSchema } from 'graphql';
 import { graphqlHTTP } from 'express-graphql';
 import { rootQuery } from './api/schemas/root/queries';
 import { rootMutation } from './api/schemas/root/mutations';
@@ -15,6 +15,10 @@ import { Identifier } from './identifiable';
 import { IncomingMessage } from 'http';
 import { authenticateAccessToken } from './authentication';
 import * as dotenv from 'dotenv';
+import { Prosumer } from './users/prosumer';
+import { Manager } from './users/manager';
+import { faker } from './utils/faker';
+import { UserRole } from './userRole';
 dotenv.config();
 
 export class Server {
@@ -52,8 +56,39 @@ export class Server {
 function setupGraphQLContext(req: IncomingMessage, simulator: Simulator): GraphQLContext {
 	const userStr = req.headers['user'];
 	if (userStr === undefined || Array.isArray(userStr)) {
-		throw new Error('No user in header');
+		throw new Error('Request is missing user in header');
 	}
 	const user = JSON.parse(userStr);
-	return new GraphQLContext(simulator, new Identifier(user.type, parseInt(user.id)));
+	const id = parseInt(user.id);
+	if (isNaN(id) && id >= 0) {
+		throw new GraphQLError('The value \'id\' of the header \'user\' in the request must be a positive integer');
+	}
+	const role = parseInt(user.role);
+	if (isNaN(role)) {
+		throw new GraphQLError('The value \'role\' of the header \'user\' in the request must be a valid role');
+	}
+	let userIdentifier;
+	switch (role) {
+		case UserRole.PROSUMER:
+			let prosumer = simulator.prosumers.uGet(new Identifier(Prosumer.name, id));
+			if (prosumer === undefined) {
+				// Prosumer whom sent the request does not exist in the simulator
+				prosumer = faker.createProsumer(id);
+				simulator.addProsumer(prosumer);
+			}
+			userIdentifier = prosumer.identifier;
+			break;
+		case UserRole.MANAGER:
+			let manager = simulator.managers.uGet(new Identifier(Manager.name, id));
+			if (manager === undefined) {
+				// Manager whom sent the request does not exist in the simulator
+				manager = faker.createManager(id);
+				simulator.addManager(manager);
+			}
+			userIdentifier = manager.identifier
+			break;
+		default:
+			throw new GraphQLError('The value \'role\' of the header \'user\' in the request must be a valid role');
+	}
+	return new GraphQLContext(simulator, userIdentifier);
 }
