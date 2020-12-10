@@ -88,7 +88,6 @@ function updatePassword(request: express.Request): Promise<PostResult> {
 	});
 }
 
-
 export const users = {
 	getAll: getAll,
 	find: find,
