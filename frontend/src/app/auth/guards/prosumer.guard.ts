@@ -10,9 +10,9 @@ export class ProsumerGuard implements CanActivate {
 
 	canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		if (this.authService.authorizedProsumer()) {
-		return true;
+			return true;
 		} else {
-		return this.router.parseUrl('/401');
+			return this.router.parseUrl('/401');
 		}
 	}
 }

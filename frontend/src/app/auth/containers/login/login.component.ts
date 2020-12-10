@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 		private router: Router,
 		private authService: AuthService,
 		private alertService: AlertService
-	) {	 }
+	) {}
 
 	ngOnInit(): void {
 		this.form = this.formBuilder.group({
@@ -46,14 +46,14 @@ export class LoginComponent implements OnInit {
 		this.authService.login(this.form.value.email, this.form.value.password).subscribe(
 		(success) => {
 			if (success === true) {
-			this.alertService.success('Login successful', { autoClose: true, keepAfterRouteChange: true });
-			switch (this.authService.getRole()) {
-				case UserRole.MANAGER:
-					this.router.navigateByUrl('manager-page');
-					break;
-				case UserRole.PROSUMER:
-					this.router.navigateByUrl('prosumer-page');
-				}
+				this.alertService.success('Login successful', { autoClose: true, keepAfterRouteChange: true });
+				switch (this.authService.getRole()) {
+					case UserRole.MANAGER:
+						this.router.navigateByUrl('manager-page');
+						break;
+					case UserRole.PROSUMER:
+						this.router.navigateByUrl('prosumer-page');
+					}
 			} else {
 				throw new Error('Unknown error');
 			}

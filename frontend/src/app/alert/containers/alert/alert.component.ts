@@ -21,29 +21,29 @@ export class AlertComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		// subscribe to alert notifications
 		this.alertSubscription = this.alertService.onAlert(this.id).subscribe(alert => {
-		if (!alert.message) {
-			// clear alerts then an empty alert is received
-			this.alerts = this.alerts.filter(x => x.keepAfterRouteChange);
+			if (!alert.message) {
+				// clear alerts then an empty alert is received
+				this.alerts = this.alerts.filter(x => x.keepAfterRouteChange);
 
-			// remove 'keepAfterRouteChange' flag on the rest
-			this.alerts.forEach(x => delete x.keepAfterRouteChange);
-			return;
-		}
+				// remove 'keepAfterRouteChange' flag on the rest
+				this.alerts.forEach(x => delete x.keepAfterRouteChange);
+				return;
+			}
 
-		// add alert to array
-		this.alerts.push(alert);
+			// add alert to array
+			this.alerts.push(alert);
 
-		// auto close alert if required
-		if (alert.autoClose) {
-			setTimeout(() => this.removeAlert(alert), 6000);
+			// auto close alert if required
+			if (alert.autoClose) {
+				setTimeout(() => this.removeAlert(alert), 6000);
 			}
 		});
 
 		// clear alerts on location change
 		this.routeSubscription = this.router.events.subscribe(event => {
-		if (event instanceof NavigationStart) {
-			this.alertService.clear(this.id);
-		}
+			if (event instanceof NavigationStart) {
+				this.alertService.clear(this.id);
+			}
 		});
 	}
 
@@ -60,7 +60,7 @@ export class AlertComponent implements OnInit, OnDestroy {
 
 			// remove alert after faded out
 			setTimeout(() => {
-			this.alerts = this.alerts.filter(x => x !== alert);
+				this.alerts = this.alerts.filter(x => x !== alert);
 			}, 250);
 		}
 		else {

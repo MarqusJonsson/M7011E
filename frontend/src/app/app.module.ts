@@ -61,12 +61,12 @@ import { GraphQLModule } from './graphql.module';
 		MatSliderModule,
 		HttpClientModule,
 		JwtModule.forRoot({
-      config: {
-        tokenGetter: AuthService.getAccessToken,
-        allowedDomains: ['localhost:4200']
-      }
-    }),
-    GraphQLModule
+			config: {
+			tokenGetter: AuthService.getAccessToken,
+			allowedDomains: ['localhost:4200']
+			}
+		}),
+		GraphQLModule
 	],
 	providers: [{
 		provide: HTTP_INTERCEPTORS,
@@ -75,4 +75,4 @@ import { GraphQLModule } from './graphql.module';
 	}],
 	bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
