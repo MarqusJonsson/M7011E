@@ -48,13 +48,13 @@ export default class JwtInterceptor implements HttpInterceptor {
 		if (!this.isRefreshing) {
 			this.isRefreshing = true;
 			this.refreshTokenSubject.next(null);
-		return this.authService.refreshAccessToken().pipe(
-			switchMap((response) => {
-				const accessToken = response.body.accessToken;
-				this.isRefreshing = false;
-				this.refreshTokenSubject.next(accessToken);
-				return next.handle(this.addAccessToken(request, accessToken));
-			}));
+			return this.authService.refreshAccessToken().pipe(
+				switchMap((response) => {
+					const accessToken = response.body.accessToken;
+					this.isRefreshing = false;
+					this.refreshTokenSubject.next(accessToken);
+					return next.handle(this.addAccessToken(request, accessToken));
+				}));
 		} else {
 			return this.refreshTokenSubject.pipe(
 				filter((response) => response != null),
