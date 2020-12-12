@@ -11,7 +11,7 @@ export const config = {
 	URL_REGISTER: `${URL_AUTH_SERVER}/register`,
 	URL_REFRESH_ACCESS_TOKEN: `${URL_AUTH_SERVER}/refresh-access-token`,
 	// Simulator API URLs
-	URL_GRAPHQL: `${URL_SIMULATOR_SERVER}/graphql`,
+	URL_GRAPHQL: `${URL_SIMULATOR_SERVER}/graphiql`,
 	URL_AUTH_CHECK: `${URL_SIMULATOR_SERVER}/auth-check`,
 	URL_TEMP: `${URL_SIMULATOR_SERVER}/temp`
 };

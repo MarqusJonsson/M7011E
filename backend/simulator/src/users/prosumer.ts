@@ -5,8 +5,8 @@ import { Manager } from './manager';
 export class Prosumer extends BaseUser {
 	private _house: House;
 
-	constructor(currency: number = 0, house: House) {
-		super(Prosumer.name, currency);
+	constructor(currency: number = 0, house: House, id?: number) {
+		super(Prosumer.name, currency, id);
 		this._house = house;
 	}
 	

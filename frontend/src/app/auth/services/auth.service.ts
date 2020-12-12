@@ -46,6 +46,14 @@ export class AuthService {
 		localStorage.setItem(ACCESS_TOKEN, value);
 	}
 
+	public getUser() {
+		const payload = this.jwtHelper.decodeToken(AuthService.getRefreshToken());
+		if (payload) {
+			return payload.user;
+		}
+		return null;
+	}
+
 	constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {}
 
 	public register(email: string, password: string) {

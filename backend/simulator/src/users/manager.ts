@@ -8,8 +8,8 @@ export class Manager extends BaseUser {
 	private _powerPlant: BasePowerPlant;
 	private _prosumers: IMap<Prosumer>;
 
-	constructor(currency: number = 0, powerPlant: BasePowerPlant, prosumers: IMap<Prosumer> = new IMap<Prosumer>()) {
-		super(Manager.name, currency);
+	constructor(currency: number = 0, powerPlant: BasePowerPlant, id?: number, prosumers: IMap<Prosumer> = new IMap<Prosumer>()) {
+		super(Manager.name, currency, id);
 		this._powerPlant = powerPlant;
 		this._prosumers = prosumers;
 	}

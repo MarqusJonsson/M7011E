@@ -15,3 +15,4 @@
 | 2020-12-02 | 10 | <ul><li>Setup endpoints for register, login and logout on the authentication server.</li><li>Setup authentication of access tokens on the simulator server.</li></ul> |
 | 2020-12-03 | 8 | <ul><li>Added roles to users on the authentication servers database.</li><li>Started adding styling and functionality to the register page.</li></ul> |
 | 2020-12-09 | 10 | <ul><li>Added functionality and styling to the login page.</li><li>Created an interceptor for handling JWT tokens when sending requests from a client.</li><li>Added guards for the prosumer page aswell as the manager page to prevent an unauthorized user to view the pages.</li></ul> |
+| 2020-12-10 | 5 | <ul><li>Created a faker for the simulator to create random prosumers and managers.</li><li>Created an interceptor for the frontend client to add user data to all request send to the simulator server.</li><li>Made it possible to add users to the simulator during runtime.</li></ul> |
