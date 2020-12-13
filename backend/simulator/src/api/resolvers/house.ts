@@ -1,8 +1,6 @@
 import { GraphQLError } from 'graphql';
-import { House } from '../../buildings/house';
 import { Identifier } from '../../identifiable';
 import { Simulator } from '../../simulator';
-import { Manager } from '../../users/manager';
 import { Prosumer } from '../../users/prosumer';
 import { GraphQLErrorName } from '../schemas/graphQLErrors';
 
