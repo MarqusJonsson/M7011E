@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-
+import { GraphqlService } from 'src/app/api/services/graphql.service';
+import { displayValuePrecision } from 'src/app/users/shared/pageConstants';
+import { Ws_to_kWh } from 'src/app/utils/electricity';
 @Component({
   selector: 'manager-main-block',
   templateUrl: './manager-main-block.component.html',
@@ -15,7 +17,7 @@ export class ManagerMainBlockComponent implements OnInit {
   @ViewChild('prosumerInfoCapacity') prosumerInfoCapacity:ElementRef;
   @ViewChild('prosumerInfoProduction') prosumerInfoProduction:ElementRef;
   @ViewChild('prosumerInfoConsumption') prosumerInfoConsumption:ElementRef;
-	constructor() {
+	constructor(private graphqlService: GraphqlService) {
 
 	}
 
@@ -23,10 +25,12 @@ export class ManagerMainBlockComponent implements OnInit {
 	}
 
 	ngAfterViewInit() {
-		this.prosumerInfoHeader.nativeElement.innerText = "test";
+		this.prosumerInfoHeader.nativeElement.innerText = "TODO";
 		this.createProsumerList([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19])
-		this.prosumerInfoBattery.nativeElement.innerText = "1000 kwh";
+		this.prosumerInfoBattery.nativeElement.innerText = "TODO kwh";
+		this.graphqlService.addSubscriberCallBack(this.onUpdate);
 		this.prosumerInfoContainer.nativeElement.onclick = () => {this.hideElement(this.prosumerInfoContainer.nativeElement.id);};
+
 	}
 
 	public createProsumerList(prosumers): void {
@@ -63,44 +67,47 @@ export class ManagerMainBlockComponent implements OnInit {
 		}
 	}
 
-
 	public setProsumerInfoHeader(value: string) {
 		this.prosumerInfoHeader.nativeElement.innerText = value;
 	}
 
 	public setProsumerInfoBattery(value: number) {
-		this.prosumerInfoBattery.nativeElement.innerText = value + " kwh";
+		this.prosumerInfoBattery.nativeElement.innerText =  Ws_to_kWh(value).toFixed(displayValuePrecision) + " kWh";
 	}	
 
 	public setProsumerInfoCapacity(value: number) {
-		this.prosumerInfoCapacity.nativeElement.innerText = value + " kwh";
+		this.prosumerInfoCapacity.nativeElement.innerText =  Ws_to_kWh(value).toFixed(displayValuePrecision) + " kWh";
 	}
 
 	public setProsumerInfoProduction(value: number) {
-		this.prosumerInfoProduction.nativeElement.innerText = value + " kwh";
+		this.prosumerInfoProduction.nativeElement.innerText = Ws_to_kWh(value).toFixed(displayValuePrecision) + " kWh";
 	}
 
 	public setProsumerInfoConsumption(value: number) {
-		this.prosumerInfoConsumption.nativeElement.innerText = value + " kwh";
+		this.prosumerInfoConsumption.nativeElement.innerText =  Ws_to_kWh(value).toFixed(displayValuePrecision) + " kWh";
 	}
 
 	public setTemperature(value: number) {
-		this.temperature.nativeElement.innerText = value + " C";
+		this.temperature.nativeElement.innerText = value.toFixed(displayValuePrecision) + " C";
 	}
 
 	public setWindSpeed(value: number) {
-		this.windSpeed.nativeElement.innerText = value + " m/s";
+		this.windSpeed.nativeElement.innerText = value.toFixed(displayValuePrecision) + " m/s";
 	}
 
 	public hideElement(elementId: string) {
 		let element = document.getElementById(elementId);
 		element.style.display = "none";
-		
 	}
 
 	public showElement(elementId: string) {
 		let element = document.getElementById(elementId);
 		element.style.display = "inline-block";
+	}
+
+	public onUpdate = (data: any) => {
+		this.setTemperature(data.powerPlant.geoData.temperature);
+		this.setWindSpeed(data.powerPlant.geoData.windSpeed);
 
 	}
 
