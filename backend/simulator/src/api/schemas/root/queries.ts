@@ -11,6 +11,7 @@ const rootQuery = new GraphQLObjectType({
 	name: 'RootQuery',
 	fields: {
 		prosumer: prosumer,
+		manager: manager,
 		house: house,
 		powerPlant: powerPlant,
 		battery: battery,
