@@ -20,7 +20,6 @@ function register(request: express.Request): Promise<PostResult> {
 						return database.refreshTokens.getNextId(t).then((refreshTokenId) => {
 							const user = {
 								id: userId,
-								email: email,
 								role: UsersRepository.defaultUserRole
 							}
 							const accessToken = auth.generateAccessToken({
@@ -59,7 +58,6 @@ function login(request: express.Request): Promise<PostResult> {
 							return database.refreshTokens.getNextId(t).then((refreshTokenId) => {
 								const user = {
 									id: user_.id,
-									email: email,
 									role: user_.role
 								}
 								const accessToken = auth.generateAccessToken({
