@@ -44,16 +44,16 @@ export abstract class Identifiable {
 	}
 }
 
-export class IMap<T extends Identifiable> extends Map<number, T> {
+export class IMap<T extends Identifiable> extends Map<string, T> {
 	public iSet(identifiable: T) {
-		return this.set(identifiable.id, identifiable);
+		return this.set(identifiable.type + identifiable.id, identifiable);
 	}
 
 	public iGet(identifiable: T): T | undefined {
-		return this.get(identifiable.id);
+		return this.get(identifiable.type + identifiable.id);
 	}
 
 	public uGet(identifier: Identifier): T | undefined {
-		return this.get(identifier.id);
+		return this.get(identifier.type + identifier.id);
 	}
 }

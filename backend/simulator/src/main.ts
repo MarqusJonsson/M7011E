@@ -1,15 +1,13 @@
-import { Server } from './server';
-import { BasePowerPlant } from './buildings/basePowerPlant';
-import { House } from './buildings/house';
+
 import { Environment } from './environment';
 import { GaussianDistribution } from './math/gaussianDistribution';
 import { Simulator } from './simulator';
-import { BaseUser } from './users/baseUser';
 import { Manager } from './users/manager';
 import { Prosumer } from './users/prosumer';
 import { MONTH_MEAN_TEMPERATURES } from './utils/realLifeData';
 import { IMap } from './identifiable';
 import { faker } from './utils/faker';
+import { Server } from './server';
 
 // Simulate an environment
 const environment: Environment = new Environment(Date.now());
@@ -35,16 +33,16 @@ const monthMeanTemperatureDistributions: GaussianDistribution[] = [
 	sepDistribution, octDistribution, novDistribution, decDistribution];
 environment.monthMeanTemperatureDistributions = monthMeanTemperatureDistributions;
 
-const users: BaseUser[] = [];
+const users: IMap<Manager | Prosumer> = new IMap<Manager | Prosumer>();
 // Create prosumers with one house each
 const nProsumers = 0;
 for (let i = 0; i < nProsumers; i++) {
-	users.push(faker.createProsumer());
+	users.iSet(faker.createProsumer());
 }
 // Create managers with one power plant each
 const nManagers = 1;
 for (let i = 0; i < nManagers; i++) {
-	users.push(faker.createManager());
+	users.iSet(faker.createManager());
 }
 const samplingIntervalMiliSeconds = 1000;
 const fixedTimeStep = false;

@@ -1,4 +1,3 @@
-
 import { Prosumer } from './users/prosumer';
 import { Manager } from './users/manager';
 import { Environment } from './environment';
@@ -6,6 +5,9 @@ import { ELECTRICITY_SELL_RATIO } from './utils/realLifeData';
 import { msToYMDHMSM } from './math/time';
 import { BaseUser } from './users/baseUser';
 import { IMap } from './identifiable';
+import { BasePowerPlant } from './buildings/basePowerPlant';
+import { House } from './buildings/house';
+import { BaseBuilding } from './buildings/baseBuilding';
 
 export class Simulator {
 	// Time variables
@@ -21,14 +23,15 @@ export class Simulator {
 	private _updateDeltaTime: Function = this.updateDeltaTimeUsingRealTime;
 	// Environment variables
 	private _environment: Environment;
+	private _users: IMap<Manager | Prosumer>;
 	private _managers: IMap<Manager> = new IMap<Manager>();
 	private _prosumers: IMap<Prosumer> = new IMap<Prosumer>();
 	private _newProsumers: Prosumer[] = [];
 	private _newMangers: Manager[] = [];
 
-
-	constructor(environment: Environment, users: BaseUser[], samplingIntervalMiliSeconds: number, fixedTimeStep: boolean = false, fixedDeltaTime: number = 1000) {
+	constructor(environment: Environment, users: IMap<Manager | Prosumer>, samplingIntervalMiliSeconds: number, fixedTimeStep: boolean = false, fixedDeltaTime: number = 1000) {
 		this._environment = environment;
+		this._users = users;
 		users.forEach((user) => {
 			switch (user.type) {
 				case Prosumer.name:
@@ -59,7 +62,7 @@ export class Simulator {
 			+ `deltaTimeS = ${this.deltaTimeS}\n`;
 		logStr += 'User\t\tCurrency\tPlantID\tBuffer%\tConsumption\tProduction\tDemand\t\tBlackout\n';
 		this._managers.forEach((manager) => {
-			const powerPlant = manager.powerPlant;
+			const powerPlant = manager.building;
 			logStr += `${manager.type}_${manager.id}`
 				+ `\t${manager.currency.toExponential(3)}`
 				+ `\t${powerPlant.id}`
@@ -71,7 +74,7 @@ export class Simulator {
 		});
 		logStr += 'User\t\tCurrency\tHouseID\tBuffer%\tConsumption\tProduction\tDemand\t\tBlackout\n';
 		this._prosumers.forEach((prosumer) => {
-			const house = prosumer.house
+			const house = prosumer.building
 			logStr += `${prosumer.type}_${prosumer.id}`
 				+ `\t${prosumer.currency.toExponential(3)}`
 				+ `\t${house.id}`
@@ -105,40 +108,32 @@ export class Simulator {
 	}
 
 	private updateEnvironmentVariables() {
-		this.prosumers.forEach((prosumer) => {
-			prosumer.house.geoData.sampleEnviornmentVariables(this.environment, this.simulationTime);
-		});
-		this.managers.forEach((manager) => {
-			manager.powerPlant.geoData.sampleEnviornmentVariables(this.environment, this.simulationTime);
+		this._users.forEach((user) => {
+			user.building.geoData.sampleEnviornmentVariables(this.environment, this.simulationTime);
 		});
 	}
 
 	private updateElectricityConsumptionValues() {
-		this.prosumers.forEach((prosumer) => {
-			prosumer.house.calculateConsumption(this.deltaTimeS);
-		});
-		this.managers.forEach((manager) => {
-			manager.powerPlant.calculateConsumption(this.deltaTimeS);
+		this._users.forEach((user) => {
+			user.building.calculateConsumption(this.deltaTimeS);
 		});
 	}
+
 	private updateElectricityProductionValues() {
-		this.prosumers.forEach((prosumer) => {
-			prosumer.house.calculateProduction(this.deltaTimeS);
-		});
-		this.managers.forEach((manager) => {
-			manager.powerPlant.calculateProduction(this.deltaTimeS);
+		this._users.forEach((user) => {
+			user.building.calculateProduction(this.deltaTimeS);
 		});
 	}
 
 	private updatePrices() {
-		this._managers.forEach((manager) => {
+		this.managers.forEach((manager) => {
 			let demand: number = 0;
 			const prosumers = manager.prosumers;
 			prosumers.forEach((prosumer) => {
-				demand += prosumer.house.getDemand();
+				demand += prosumer.building.getDemand();
 			});
 			const modelledBuyPrice: number = manager.calcBuyPrice(1, demand / Math.max(prosumers.size, 1), this.deltaTimeS);
-			const powerPlant = manager.powerPlant;
+			const powerPlant = manager.building;
 			powerPlant.modelledElectricityBuyPrice = modelledBuyPrice;
 			powerPlant.modelledElectricitySellPrice = modelledBuyPrice * ELECTRICITY_SELL_RATIO;
 			// TODO: use manager provided prices instead of modelled prices
@@ -148,17 +143,17 @@ export class Simulator {
 	}
 
 	private generateElectricity() {
-		this._managers.forEach((manager) => {
-			const powerPlant = manager.powerPlant;
+		this.managers.forEach((manager) => {
+			const powerPlant = manager.building;
 			powerPlant.generateElectricity();
 			manager.prosumers.forEach((prosumer) => {
-				prosumer.house.generateElectricity(powerPlant.battery)
+				prosumer.building.generateElectricity(powerPlant.battery)
 			});
 		});
 	}
 
 	private prosumersSellElectricity() {
-		this._managers.forEach((manager) => {
+		this.managers.forEach((manager) => {
 			manager.prosumers.forEach((prosumer) => {
 				prosumer.sellElectricity(manager);
 			});
@@ -166,7 +161,7 @@ export class Simulator {
 	}
 
 	private prosumersBuyElectricity() {
-		this._managers.forEach((manager) => {
+		this.managers.forEach((manager) => {
 			manager.prosumers.forEach((prosumer) => {
 				prosumer.buyElectricity(manager);
 			});
@@ -175,10 +170,10 @@ export class Simulator {
 
 	private consumeElectricity() {
 		this.prosumers.forEach((prosumer) => {
-			prosumer.house.consumeElectricity()
+			prosumer.building.consumeElectricity()
 		});
 		this.managers.forEach((manager) => {
-			manager.powerPlant.consumeElectricity()
+			manager.building.consumeElectricity()
 		});
 	}
 
@@ -217,23 +212,25 @@ export class Simulator {
 	// Adds a prosumer to the simulator
 	public addProsumer(prosumer: Prosumer) {
 		this.prosumers.iSet(prosumer);
+		this.users.iSet(prosumer);
 		this.connectProsumerToManger(prosumer);
 	}
 
 	// Adds a manager to the simulator
 	public addManager(manager: Manager) {
 		this.managers.iSet(manager);
+		this.users.iSet(manager);
 		this.refreshProsumerManagerConnections();
 	}
 
 	// Connects given prosumer to the geographically closest manager
 	private connectProsumerToManger(prosumer: Prosumer) {
-		const houseGeoData = prosumer.house.geoData;
+		const houseGeoData = prosumer.building.geoData;
 		const managersIterable: IterableIterator<Manager> = this.managers.values();
 		let closestManager: Manager = managersIterable.next().value;
-		let closestPowerPlantDistance: number = houseGeoData.distance(closestManager.powerPlant.geoData);
+		let closestPowerPlantDistance: number = houseGeoData.distance(closestManager.building.geoData);
 		for (const manager of managersIterable) {
-			const distance = houseGeoData.distance(manager.powerPlant.geoData);
+			const distance = houseGeoData.distance(manager.building.geoData);
 			if (distance < closestPowerPlantDistance) {
 				closestManager = manager;
 				closestPowerPlantDistance = distance;
@@ -317,6 +314,10 @@ export class Simulator {
 
 	public get environment(): Environment {
 		return this._environment;
+	}
+
+	public get users(): IMap<Manager | Prosumer> {
+		return this._users;
 	}
 
 	public get managers(): IMap<Manager> {

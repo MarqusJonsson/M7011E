@@ -10,7 +10,7 @@ import { UsersRepository } from '../database/repositories';
 
 function register(request: express.Request): Promise<PostResult> {
 	return new Promise((resolve, reject) => {
-        const { email, password } = request.body;
+		const { email, password } = request.body;
 		if (!validation.validateEmail(email) || !validation.validatePassword(password)) {
 			reject(new ResponseError('Malformed input', StatusCode.BAD_REQUEST));
 		} else {

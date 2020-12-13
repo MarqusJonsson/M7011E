@@ -7,6 +7,8 @@ import {
 	GraphQLList,
 	GraphQLError
 } from 'graphql';
+import { Identifier } from '../../../identifiable';
+import { Manager } from '../../../users/manager';
 import { Prosumer } from '../../../users/prosumer';
 import { batteryResolver } from '../../resolvers/battery';
 import { generatorResolver } from '../../resolvers/generator';
@@ -40,8 +42,8 @@ const HouseType = new GraphQLObjectType({
 		batteryToPowerPlantRatio: {
 			type: GraphQLFloat,
 			description: `The ratio describing how big of an portion of the produced `
-			+ `electricity should be sent to the battery of the ${typeName}, the remaining `
-			+ `portion gets sold to the power plant. The ratio is in a sacle from 0 to 1.`
+				+ `electricity should be sent to the battery of the ${typeName}, the remaining `
+				+ `portion gets sold to the power plant. The ratio is in a sacle from 0 to 1.`
 		},
 		hasBlackout: {
 			type: GraphQLBoolean,
@@ -51,32 +53,54 @@ const HouseType = new GraphQLObjectType({
 			type: BatteryType,
 			description: `The battery of the ${typeName}.`,
 			resolve(parent: any, args: any, context: GraphQLContext) {
-				if (context.user.type !== Prosumer.name) throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
-				return batteryResolver.one(context);
+				switch (context.user.type) {
+					case Prosumer.name:
+						return batteryResolver.findByUser(context.simulator, context.user);
+					case Manager.name:
+						return batteryResolver.findByHouse(context.simulator, new Identifier(Prosumer.name, parent.id));
+					default:
+						throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
+				}
 			}
 		},
 		geoData: {
 			type: GeoDataType,
 			description: `The geo data of correlated with the ${typeName}.`,
 			resolve(parent: any, args: any, context: GraphQLContext) {
-				if (context.user.type !== Prosumer.name) throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
-				return geoDataResolver.one(context);
+				switch (context.user.type) {
+					case Prosumer.name:
+						return geoDataResolver.findByUser(context.simulator, context.user);
+					case Manager.name:
+						return geoDataResolver.findByHouse(context.simulator, new Identifier(Prosumer.name, parent.id));
+					default:
+						throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
+				}
 			}
 		},
 		generators: {
 			type: new GraphQLList(GeneratorType),
 			description: `List of the generators in the ${typeName}.`,
 			resolve(parent: any, args: any, context: GraphQLContext) {
-				if (context.user.type !== Prosumer.name) throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
-				return generatorResolver.all(context);
+				switch (context.user.type) {
+					case Prosumer.name:
+						return generatorResolver.findByUser(context.simulator, context.user);
+					case Manager.name:
+						return generatorResolver.findByHouse(context.simulator, new Identifier(Prosumer.name, parent.id));
+					default:
+						throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
+				}
 			}
 		},
 		powerPlant: {
 			type: PowerPlantType,
 			description: `The Power plant consumer exchange electricity with.`,
 			resolve(parent: any, args: any, context: GraphQLContext) {
-				if (context.user.type !== Prosumer.name) throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
-				return powerPlantResolver.one(context);
+				switch (context.user.type) {
+					case Prosumer.name:
+						return powerPlantResolver.findByUser(context.simulator, context.user);
+					default:
+						throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
+				}
 			}
 		}
 	}
@@ -93,8 +117,8 @@ const UpdateHouseBatteryToPowerPlantRatioInputType = new GraphQLInputObjectType(
 		batteryToPowerPlantRatio: {
 			type: GraphQLFloat,
 			description: `The ratio describing how big of an portion of the produced `
-			+ `electricity should be sent to the battery of the ${typeName}, the remaining `
-			+ `portion gets sold to the power plant. The ratio is in a sacle from 0 to 1.`
+				+ `electricity should be sent to the battery of the ${typeName}, the remaining `
+				+ `portion gets sold to the power plant. The ratio is in a sacle from 0 to 1.`
 		}
 	}
 });

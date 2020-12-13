@@ -1,44 +1,37 @@
 import { GraphQLError } from 'graphql';
+import { House } from '../../buildings/house';
+import { Identifier } from '../../identifiable';
+import { Simulator } from '../../simulator';
+import { Manager } from '../../users/manager';
 import { Prosumer } from '../../users/prosumer';
-import { GraphQLContext } from '../schemas/graphQLContext';
 import { GraphQLErrorName } from '../schemas/graphQLErrors';
 
 class HouseResolver {
-	one = (context: GraphQLContext) => {
-		switch (context.user.type) {
-			case Prosumer.name:
-				const prosumer: Prosumer | undefined = context.simulator.prosumers.uGet(context.user);
-				if (prosumer === undefined) throw new GraphQLError(GraphQLErrorName.PROSUMER_NOT_FOUND);
-				const house = prosumer.house;
-				return {
-					id: house.id,
-					electricityConsumption: house.electricityConsumption,
-					electricityProduction: house.electricityProduction,
-					batteryToPowerPlantRatio: house.batteryToPowerPlantRatio,
-					hasBlackout: house.hasBlackout
-				}
-			default:
-				throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
+	findByUser = (simulator: Simulator, userIdentifier: Identifier) => {
+		const prosumer: Prosumer | undefined = simulator.prosumers.uGet(userIdentifier);
+		if (prosumer === undefined) throw new GraphQLError(GraphQLErrorName.USER_NOT_FOUND);
+		const house = prosumer.building;
+		return {
+			id: house.id,
+			electricityConsumption: house.electricityConsumption,
+			electricityProduction: house.electricityProduction,
+			batteryToPowerPlantRatio: house.batteryToPowerPlantRatio,
+			hasBlackout: house.hasBlackout
 		}
 	}
 
-	updateBatteryToPowerPlantRatio = (ratio: number, context: GraphQLContext) => {
+	updateBatteryToPowerPlantRatio = (simulator: Simulator, userIdentifier: Identifier, ratio: number) => {
 		if (ratio < 0 || ratio > 1) throw new GraphQLError(GraphQLErrorName.INVALID_RATIO);
-		switch (context.user.type) {
-			case Prosumer.name:
-				const prosumer: Prosumer | undefined = context.simulator.prosumers.uGet(context.user);
-				if (prosumer === undefined) throw new GraphQLError(GraphQLErrorName.PROSUMER_NOT_FOUND);
-				prosumer.setBatteryToPowerPlantRatio(ratio);
-				const house = prosumer.house;
-				return {
-					id: house.id,
-					electricityConsumption: house.electricityConsumption,
-					electricityProduction: house.electricityProduction,
-					batteryToPowerPlantRatio: house.batteryToPowerPlantRatio,
-					hasBlackout: house.hasBlackout
-				}
-			default:
-				throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
+		const prosumer: Prosumer | undefined = simulator.prosumers.uGet(userIdentifier);
+		if (prosumer === undefined) throw new GraphQLError(GraphQLErrorName.USER_NOT_FOUND);
+		prosumer.setBatteryToPowerPlantRatio(ratio);
+		const house = prosumer.building;
+		return {
+			id: house.id,
+			electricityConsumption: house.electricityConsumption,
+			electricityProduction: house.electricityProduction,
+			batteryToPowerPlantRatio: house.batteryToPowerPlantRatio,
+			hasBlackout: house.hasBlackout
 		}
 	}
 }

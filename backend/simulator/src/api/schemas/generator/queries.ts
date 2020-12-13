@@ -9,7 +9,7 @@ const generators = {
 	type: new GraphQLList(GeneratorType),
 	description: `Returns a ${typeName} with matching id and prosumer id.`,
 	resolve(parent: any, args: any, context: GraphQLContext) {
-		return generatorResolver.all(context);
+		return generatorResolver.findByUser(context.simulator, context.user);
 	}
 };
 
