@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { managerQuery } from 'src/app/api/models/managerContent';
+import { GraphqlService } from 'src/app/api/services/graphql.service';
 
 @Component({
   selector: 'manager-page',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ManagerPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private graphqlService: GraphqlService) { }
 
   ngOnInit(): void {
   }
+
+  ngAfterViewInit() {
+	setInterval(this.fetchManagerData, 1000);
+  }
+
+	public fetchManagerData = () => {
+		this.graphqlService.query(managerQuery).subscribe((data: any) => {
+			console.log("in fetch", data.manager.powerPlant.electricityConsumption);
+		});
+	}
 
 }
