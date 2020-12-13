@@ -1,14 +1,17 @@
+import { BaseBuilding } from '../buildings/baseBuilding';
 import { Identifiable } from '../identifiable';
 
-export abstract class BaseUser extends Identifiable {
+export abstract class BaseUser<Building extends BaseBuilding> extends Identifiable {
 	private _currency: number;
+	private _building: Building;
 	
-	constructor(type: string, currency: number = 0, id?: number) {
+	constructor(type: string, currency: number = 0, building: Building, id?: number) {
 		super(type, id);
-		this._currency = currency; 
+		this._currency = currency;
+		this._building = building;
 	}
 	
-	public get currency() : number {
+	public get currency(): number {
 		return this._currency;
 	}
 	
@@ -17,5 +20,9 @@ export abstract class BaseUser extends Identifiable {
 			throw new Error('Value can not be less than 0');
 		}
 		this._currency = value;
+	}
+
+	public get building(): Building {
+		return this._building;
 	}
 }
