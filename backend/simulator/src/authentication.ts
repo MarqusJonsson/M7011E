@@ -28,7 +28,7 @@ function verifyAccessToken(token: string, callback: jwt.VerifyCallback) {
 export function authenticateAccessToken(request: express.Request, response: express.Response, next: express.NextFunction) {
 	const authHeader = request.headers['authorization'];
 	const accessToken = authHeader && authHeader.split(' ')[1];
-	if (accessToken == null) throw new BadRequest('The request contains an invalid required field: authorization');
+	if (accessToken == null) throw new BadRequest('The request contains a malformed required header: authorization');
 	verifyAccessToken(accessToken, (error, payload) => {
 		if (error) next(new Unauthorized(error.message)); // TODO use error parser instead
 		request.payload = payload;

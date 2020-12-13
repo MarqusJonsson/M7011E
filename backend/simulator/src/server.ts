@@ -34,7 +34,7 @@ export class Server {
 		// Setup middleware
 		this._app.use(bodyParser.json());
 		this._app.use(cors(['http://localhost:3002', 'http://localhost:4200']));
-		this._app.use('/graphiql', graphqlHTTP((req, res) => ({
+		this._app.use('/graphiql', authenticateAccessToken, graphqlHTTP((req, res) => ({
 			schema: schema,
 			context: setupGraphQLContext(req, simulator),
 			customFormatErrorFn: (error) => {
@@ -53,36 +53,24 @@ export class Server {
 	}
 }
 
-function setupGraphQLContext(req: IncomingMessage, simulator: Simulator): GraphQLContext {
-	const userStr = req.headers['user'];
-	if (userStr === undefined || Array.isArray(userStr)) {
-		throw new Error('Request is missing user in header');
-	}
-	const user = JSON.parse(userStr);
-	const id = parseInt(user.id);
-	if (isNaN(id) && id >= 0) {
-		throw new GraphQLError('The value \'id\' of the header \'user\' in the request must be a positive integer');
-	}
-	const role = parseInt(user.role);
-	if (isNaN(role)) {
-		throw new GraphQLError('The value \'role\' of the header \'user\' in the request must be a valid role');
-	}
+function setupGraphQLContext(request: IncomingMessage, simulator: Simulator): GraphQLContext {
+	const user = (<any> request).payload.user;
 	let userIdentifier;
-	switch (role) {
+	switch (user.role) {
 		case UserRole.PROSUMER:
-			let prosumer = simulator.prosumers.uGet(new Identifier(Prosumer.name, id));
+			let prosumer = simulator.prosumers.uGet(new Identifier(Prosumer.name, user.id));
 			if (prosumer === undefined) {
 				// Prosumer whom sent the request does not exist in the simulator
-				prosumer = faker.createProsumer(id);
+				prosumer = faker.createProsumer(user.id);
 				simulator.addProsumer(prosumer);
 			}
 			userIdentifier = prosumer.identifier;
 			break;
 		case UserRole.MANAGER:
-			let manager = simulator.managers.uGet(new Identifier(Manager.name, id));
+			let manager = simulator.managers.uGet(new Identifier(Manager.name, user.id));
 			if (manager === undefined) {
 				// Manager whom sent the request does not exist in the simulator
-				manager = faker.createManager(id);
+				manager = faker.createManager(user.id);
 				simulator.addManager(manager);
 			}
 			userIdentifier = manager.identifier
