@@ -13,9 +13,10 @@ const updatePowerPlantElectricityPrice = {
 	},
 	resolve(parent: any, args: any, context: GraphQLContext) {
 		return powerPlantResolver.updateElectricityPrice(
+			context.simulator,
+			context.user,
 			args.powerPlant.electricitySellPrice,
-			args.powerPlant.electricityBuyPrice,
-			context
+			args.powerPlant.electricityBuyPrice
 		);
 	}
 };

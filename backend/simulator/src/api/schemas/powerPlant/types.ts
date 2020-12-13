@@ -7,8 +7,8 @@ import {
 	GraphQLList,
 	GraphQLError
 } from 'graphql';
-import { resolve } from 'path';
 import { Manager } from '../../../users/manager';
+import { Prosumer } from '../../../users/prosumer';
 import { batteryResolver } from '../../resolvers/battery';
 import { generatorResolver } from '../../resolvers/generator';
 import { geoDataResolver } from '../../resolvers/geoData';
@@ -60,24 +60,24 @@ const PowerPlantType = new GraphQLObjectType({
 			type: BatteryType,
 			description: `The battery of the ${typeName}.`,
 			resolve(parent: any, args: any, context: GraphQLContext) {
-				if (context.user.type !== Manager.name) throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
-				return batteryResolver.one(context);
+				if (context.user.type !== Manager.name) throw new GraphQLError("Permission denied, must be manager to fetch battery of powerPlant");
+				return batteryResolver.findByUser(context.simulator, context.user);
 			}
 		},
 		geoData: {
 			type: GeoDataType,
 			description: `The geo data of the ${typeName}.`,
 			resolve(parent: any, args: any, context: GraphQLContext) {
-				if (context.user.type !== Manager.name) throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
-				return geoDataResolver.one(context);
+				if (context.user.type !== Manager.name) throw new GraphQLError("Permission denied, must be manager to fetch geoData of powerPlant");
+				return geoDataResolver.findByUser(context.simulator, context.user);
 			}
 		},
 		generators: {
 			type: new GraphQLList(GeneratorType),
 			description: `List of generators in the ${typeName}.`,
 			resolve(parent: any, args: any, context: GraphQLContext) {
-				if (context.user.type !== Manager.name) throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);
-				return generatorResolver.all(context);
+				if (context.user.type !== Manager.name) throw new GraphQLError("Permission denied, must be manager to fetch generators of powerPlant");
+				return generatorResolver.findByUser(context.simulator, context.user);
 			}
 		}
 	}

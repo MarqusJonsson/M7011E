@@ -6,8 +6,7 @@ const powerPlant = {
 	type: PowerPlantType,
 	description: `Returns a ${typeName} with matching id.`,
 	resolve(parent: any, args: any, context: GraphQLContext) {
-		let ret = powerPlantResolver.one(context);
-		return ret
+		return powerPlantResolver.findByUser(context.simulator, context.user);
 	}
 };
 

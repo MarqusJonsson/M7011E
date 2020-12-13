@@ -12,10 +12,7 @@ const updateHouseBatteryToPowerPlantRatio = {
 		house: { type: new GraphQLNonNull(UpdateHouseBatteryToPowerPlantRatioInputType) }
 	},
 	resolve(parent: any, args: any, context: GraphQLContext) {
-		return houseResolver.updateBatteryToPowerPlantRatio(
-			args.house.batteryToPowerPlantRatio,
-			context
-		);
+		return houseResolver.updateBatteryToPowerPlantRatio(context.simulator, context.user, args.house.batteryToPowerPlantRatio);
 	}
 };
 
