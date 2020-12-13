@@ -61,13 +61,13 @@ export class VisualBlockComponent implements OnInit {
 	}
 
 	public onUpdate = (data: any) => {
-		this.setProduction(data.house.electricityProduction);
-		this.setConsumption(data.house.electricityConsumption);
+		this.setProduction(data.prosumer.house.electricityProduction);
+		this.setConsumption(data.prosumer.house.electricityConsumption);
 		this.setNetProduction();
-		this.setTemperature(data.house.geoData.temperature);
-		this.setWindSpeed(data.house.geoData.windSpeed);
-		this.setBattery(data.house.battery.buffer);
-		this.setBatteryCapacity(data.house.battery.capacity);
+		this.setTemperature(data.prosumer.house.geoData.temperature);
+		this.setWindSpeed(data.prosumer.house.geoData.windSpeed);
+		this.setBattery(data.prosumer.house.battery.buffer);
+		this.setBatteryCapacity(data.prosumer.house.battery.capacity);
 	}
 
 }
