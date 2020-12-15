@@ -19,7 +19,7 @@ export class RefreshTokenRepository extends BaseWithHistoryRepository<RefreshTok
 					id INT PRIMARY KEY,
 					token CHAR (60)	NOT NULL UNIQUE,
 					users_id INT NOT NULL REFERENCES users (id),
-					histories_id INT NOT NULL REFERENCES histories (id)
+					histories_id INT NOT NULL REFERENCES histories (id) ON DELETE CASCADE
 				)`
 			).then(() => {
 				resolve(null);
