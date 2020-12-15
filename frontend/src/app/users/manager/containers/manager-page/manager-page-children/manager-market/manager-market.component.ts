@@ -48,8 +48,5 @@ export class ManagerMarketComponent implements OnInit {
 		this.setElectricityPrice(data.manager.powerPlant.electricityBuyPrice);
 		this.setSuggestBuyPrice(data.manager.powerPlant.modelledElectricityBuyPrice);
 		this.setSuggestSellPrice(data.manager.powerPlant.modelledElectricitySellPrice);
-
 	}
-
-
 }
