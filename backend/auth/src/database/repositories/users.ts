@@ -28,7 +28,7 @@ export class UsersRepository extends BaseWithHistoryRepository<User> {
 					email VARCHAR (255)	NOT NULL UNIQUE,
 					password VARCHAR (60) NOT NULL,
 					role SMALLINT default '${UsersRepository.defaultUserRole}',
-					histories_id INT NOT NULL REFERENCES histories (id)
+					histories_id INT NOT NULL REFERENCES histories (id) ON DELETE CASCADE
 				)`
 			).then(() => {
 				resolve(null);

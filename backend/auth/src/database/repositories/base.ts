@@ -3,7 +3,7 @@ import { toResponseError } from '../errorParser';
 
 export abstract class BaseRepository<T> {
 	protected database: pgPromise.IDatabase<any>;
-	protected readonly tableName: string;
+	public readonly tableName: string;
 
 	constructor(database: pgPromise.IDatabase<any>, tableName: string) {
 		this.database = database;

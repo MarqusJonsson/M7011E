@@ -15,7 +15,9 @@ export abstract class BaseWithHistoryRepository<T> extends BaseRepository<T> {
 		return new Promise<number>((resolve, reject) => {
 			const db = t || this.database;
 			return db.txIf((t_: pgPromise.ITask<any>) => {
-				return db.one(`DELETE FROM ${this.tableName} WHERE id = $1 RETURNING id, histories_id`, id).then((deletedRecord: {id :number, histories_id: number}) => {
+				return db.one(`
+					SELECT id FROM ${this.tableName} WHERE id = $1 RETURNING id, histories_id`, id)
+				.then((deletedRecord: {id :number, histories_id: number}) => {
 					return this.historyRepository.delete(deletedRecord.histories_id, t_).then((deletedHistoryId) => {
 						resolve(deletedRecord.id);
 					}).catch((error) => { reject(toResponseError(error)); });
