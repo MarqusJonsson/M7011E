@@ -1,5 +1,9 @@
 # Auth server config
 SERVER_PORT=3001
+# 14 days = 14 * 24 * 60 * 60s
+REFRESH_TOKEN_EXPIRE_SECONDS=1209600
+# 5 minutes = 5 * 60s
+ACCESS_TOKEN_EXPIRE_SECONDS=300
 # Auth database config
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
