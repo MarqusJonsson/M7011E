@@ -18,3 +18,4 @@
 |2020-12-10| 4.5 | Starting working on setting up graphql queries from frontend.
 |2020-12-12| 3 | Continued setting up graphql queries.
 |2020-12-13| 7 | More setting up graphql queries so it can the values requested from the simulator can be displayed in both manager and prosumer GUI.
+|2020-12-15| 11.5 | Added more functionality to manager GUI and graphql queries. Also started working on adding mutation requests for our system.
