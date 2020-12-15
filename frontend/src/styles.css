@@ -42,3 +42,12 @@ body {
 .p-list > *:hover {
 	filter: invert(1);	
 }
+
+/* Suppost to be in manager-main-block css but does not work there */
+.prosumer-list-blackout-status {
+	fill: red;
+}
+
+.prosumer-list-blackout-status.online-status {
+	fill:green;
+}
