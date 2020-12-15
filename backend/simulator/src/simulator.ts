@@ -280,11 +280,11 @@ export class Simulator {
 		this._deltaTime = value;
 	}
 
-	private get deltaTimeS(): number {
+	public get deltaTimeS(): number {
 		return this._deltaTimeS;
 	}
 
-	private set deltaTimeS(value: number) {
+	public set deltaTimeS(value: number) {
 		this._deltaTimeS = value;
 	}
 

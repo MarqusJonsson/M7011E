@@ -11,8 +11,8 @@ class HouseResolver {
 		const house = prosumer.building;
 		return {
 			id: house.id,
-			electricityConsumption: house.electricityConsumption,
-			electricityProduction: house.electricityProduction,
+			electricityConsumption: house.electricityConsumption / simulator.deltaTimeS,
+			electricityProduction: house.electricityProduction / simulator.deltaTimeS,
 			batteryToPowerPlantRatio: house.batteryToPowerPlantRatio,
 			hasBlackout: house.hasBlackout
 		}
@@ -26,8 +26,8 @@ class HouseResolver {
 		const house = prosumer.building;
 		return {
 			id: house.id,
-			electricityConsumption: house.electricityConsumption,
-			electricityProduction: house.electricityProduction,
+			electricityConsumption: house.electricityConsumption / simulator.deltaTimeS,
+			electricityProduction: house.electricityProduction / simulator.deltaTimeS,
 			batteryToPowerPlantRatio: house.batteryToPowerPlantRatio,
 			hasBlackout: house.hasBlackout
 		}

@@ -27,8 +27,8 @@ class PowerPlantResolver {
 				const powerPlant = user.building as BasePowerPlant;
 				return {
 					id: user.building.id,
-					electricityConsumption: powerPlant.electricityConsumption,
-					electricityProduction: powerPlant.electricityProduction,
+					electricityConsumption: powerPlant.electricityConsumption / simulator.deltaTimeS,
+					electricityProduction: powerPlant.electricityProduction / simulator.deltaTimeS,
 					modelledElectricitySellPrice: powerPlant.modelledElectricitySellPrice,
 					modelledElectricityBuyPrice: powerPlant.modelledElectricityBuyPrice,
 					electricitySellPrice: powerPlant.electricitySellPrice,
@@ -49,8 +49,8 @@ class PowerPlantResolver {
 		const powerPlant = manager.building;
 		return {
 			id: manager.building.id,
-			electricityConsumption: powerPlant.electricityConsumption,
-			electricityProduction: powerPlant.electricityProduction,
+			electricityConsumption: powerPlant.electricityConsumption / simulator.deltaTimeS,
+			electricityProduction: powerPlant.electricityProduction / simulator.deltaTimeS,
 			modelledElectricitySellPrice: powerPlant.modelledElectricitySellPrice,
 			modelledElectricityBuyPrice: powerPlant.modelledElectricityBuyPrice,
 			electricitySellPrice: powerPlant.electricitySellPrice,
