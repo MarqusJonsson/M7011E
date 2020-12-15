@@ -10,15 +10,22 @@ export class GraphqlService {
 	subscriberCallBacks: ((data: any) => void)[] = [];
 	constructor(private apollo: Apollo) { }
 	ngOnInit(){}
-	query(queryContent: any) {
+	query(query: any) {
 		return this.apollo.query({
-			query: gql`${queryContent}` 
-		}).pipe(
-			map((response: any) => {
+			query: gql`${query}` 
+		}).pipe(map((response) => {
+			return response.data;
+		}))
+		//TODO error handling
+	}
+
+	queryAndNotifySubscribers(query: any) {
+		return this.query(query).pipe(
+			map((data: any) => {
 				this.subscriberCallBacks.forEach((callback) => {
-					callback(response.data);
+					callback(data);
 				})
-				return response.data;
+				return data;
 			})
 		);
 	}
