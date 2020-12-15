@@ -50,7 +50,7 @@
 
 #environment-details {
 	display: inline-block;
-	margin: 0px 4px 4px 4px;
+	margin: 0px 4px 4px 0px;
 	width: 180px;
 	height: 150px;
 	vertical-align: top;
@@ -116,7 +116,6 @@
 	vertical-align: top;;
 	display: inline-block;
 	background-color: crimson;
+	margin: 0 4px 4px 0;
 }
-
-
 
