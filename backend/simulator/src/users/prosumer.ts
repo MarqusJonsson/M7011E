@@ -3,7 +3,7 @@ import { House } from '../buildings/house';
 import { Manager } from './manager';
 
 export class Prosumer extends BaseUser<House> {
-
+	private isBlocked : boolean = false;
 	constructor(currency: number = 0, house: House, id?: number) {
 		super(Prosumer.name, currency, house, id);
 	}
@@ -54,26 +54,33 @@ export class Prosumer extends BaseUser<House> {
 	}
 
 	public sellElectricity(manager: Manager) {
-		const powerPlant = manager.building;
-		if (manager.currency > 0) {
-			const payment = powerPlant.calculateElectricityPrice(this.building.electricityOutput);
-			if (manager.currency >= payment) {
-				powerPlant.battery.buffer += this.building.electricityOutput;
-				this.currency += payment;
-				manager.currency -= payment;
+		if (!this.isBlocked) {
+			const powerPlant = manager.building;
+			if (manager.currency > 0) {
+				const payment = powerPlant.calculateElectricityPrice(this.building.electricityOutput);
+				if (manager.currency >= payment) {
+					powerPlant.battery.buffer += this.building.electricityOutput;
+					this.currency += payment;
+					manager.currency -= payment;
+				} else {
+					// The manager could not afford all of the electricity, buy as much is possible
+					const maxAffordableElectricity = manager.currency / powerPlant.electricitySellPrice;
+					const unsoldElectricity = this.building.electricityOutput - maxAffordableElectricity;
+					powerPlant.battery.buffer += maxAffordableElectricity;
+					this.currency += manager.currency;
+					manager.currency = 0;
+					// Put as much of the unsold the electricity as possible back in the house battery, the rest gets wasted
+					this.building.battery.buffer = Math.min(this.building.battery.buffer + unsoldElectricity, this.building.battery.capacity);
+				}
 			} else {
-				// The manager could not afford all of the electricity, buy as much is possible
-				const maxAffordableElectricity = manager.currency / powerPlant.electricitySellPrice;
-				const unsoldElectricity = this.building.electricityOutput - maxAffordableElectricity;
-				powerPlant.battery.buffer += maxAffordableElectricity;
-				this.currency += manager.currency;
-				manager.currency = 0;
-				// Put as much of the unsold the electricity as possible back in the house battery, the rest gets wasted
-				this.building.battery.buffer = Math.min(this.building.battery.buffer + unsoldElectricity, this.building.battery.capacity);
+				// Put as much of the unsold electricity as possible back in the house battery, the rest gets wasted
+				this.building.battery.buffer = Math.min(this.building.battery.buffer + this.building.electricityOutput, this.building.battery.capacity);
 			}
-		} else {
-			// Put as much of the unsold electricity as possible back in the house battery, the rest gets wasted
-			this.building.battery.buffer = Math.min(this.building.battery.buffer + this.building.electricityOutput, this.building.battery.capacity);
 		}
+	}
+
+	public blockSellElectricity(seconds: number) {
+		this.isBlocked = true;
+		setTimeout(() => {this.isBlocked = false}, seconds*1000);
 	}
 }
