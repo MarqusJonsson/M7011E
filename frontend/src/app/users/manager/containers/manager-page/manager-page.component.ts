@@ -15,11 +15,11 @@ export class ManagerPageComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-	setInterval(this.fetchManagerData, 1000);
+	  setInterval(this.fetchManagerData, 1000);
   }
 
 	public fetchManagerData = () => {
-		this.graphqlService.query(managerQuery).subscribe((data: any) => {
+		this.graphqlService.queryAndNotifySubscribers(managerQuery).subscribe((data: any) => {
 			console.log("in fetch", data.manager.powerPlant.electricityConsumption);
 		});
 	}

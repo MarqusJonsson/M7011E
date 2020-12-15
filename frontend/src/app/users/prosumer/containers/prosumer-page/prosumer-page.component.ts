@@ -20,7 +20,7 @@ export class ProsumerPageComponent implements OnInit {
 	}
 
 	public fetchProsumerData = () => {
-		this.graphqlService.query(prosumerQuery).subscribe((data: any) => {
+		this.graphqlService.queryAndNotifySubscribers(prosumerQuery).subscribe((data: any) => {
 			console.log("in fetch", data.prosumer.house.electricityConsumption);
 		});
 	}
