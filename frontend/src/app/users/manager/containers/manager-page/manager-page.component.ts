@@ -19,9 +19,7 @@ export class ManagerPageComponent implements OnInit {
   }
 
 	public fetchManagerData = () => {
-		this.graphqlService.queryAndNotifySubscribers(managerQuery).subscribe((data: any) => {
-			console.log("in fetch", data.manager.powerPlant.electricityConsumption);
-		});
+		this.graphqlService.queryAndNotifySubscribers(managerQuery).subscribe((data: any) => {});
 	}
 
 }
