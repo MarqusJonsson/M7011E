@@ -30,7 +30,7 @@ export class VisualBlockComponent implements OnInit {
 	}
 
 	public setProduction(value: number) {
-		this.production.nativeElement.innerText = value + " kWh";
+		this.production.nativeElement.innerText =  Ws_to_kWh(value).toFixed(displayValuePrecision) + " kWh";
 	}
 
 	public setConsumption(value: number) {
@@ -41,7 +41,7 @@ export class VisualBlockComponent implements OnInit {
 		let production = parseFloat(this.production.nativeElement.innerText);
 		let consumption = parseFloat(this.consumption.nativeElement.innerText);
 		let netProduction = production - consumption;
-		this.netProduction.nativeElement.innerText = netProduction + " kWh";
+		this.netProduction.nativeElement.innerText = netProduction.toFixed(displayValuePrecision) + " kWh";
 	}
 
 	public setTemperature(value: number) {

@@ -106,8 +106,8 @@ export class ManagerMainBlockComponent implements OnInit {
 	}
 
 	public onUpdate = (data: any) => {
-		this.setTemperature(data.powerPlant.geoData.temperature);
-		this.setWindSpeed(data.powerPlant.geoData.windSpeed);
+		this.setTemperature(data.manager.powerPlant.geoData.temperature);
+		this.setWindSpeed(data.manager.powerPlant.geoData.windSpeed);
 
 	}
 

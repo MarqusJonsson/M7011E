@@ -17,3 +17,4 @@
 |2020-12-09| 6 | Continued working on GUI for manager. Created a prosumer list where managers can see info about specific prosumers and in the future be able to block and delete prosumers.
 |2020-12-10| 4.5 | Starting working on setting up graphql queries from frontend.
 |2020-12-12| 3 | Continued setting up graphql queries.
+|2020-12-13| 7 | More setting up graphql queries so it can the values requested from the simulator can be displayed in both manager and prosumer GUI.

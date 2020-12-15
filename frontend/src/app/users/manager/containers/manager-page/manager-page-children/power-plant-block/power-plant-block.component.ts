@@ -58,12 +58,12 @@ export class PowerPlantBlockComponent implements OnInit {
   }
 
   public onUpdate = (data: any) => {
-    this.setBattery(data.powerPlant.battery.buffer);
-    this.setBatteryCapacity(data.powerPlant.battery.capacity);
-    this.setProduction(data.powerPlant.electricityProduction);
-    this.setConsumption(data.powerPlant.electricityConsumption)
+    this.setBattery(data.manager.powerPlant.battery.buffer);
+    this.setBatteryCapacity(data.manager.powerPlant.battery.capacity);
+    this.setProduction(data.manager.powerPlant.electricityProduction);
+    this.setConsumption(data.manager.powerPlant.electricityConsumption)
     this.setNetProduction();
-    this.setStatus(data.powerPlant.hasBlackout);
+    this.setStatus(data.manager.powerPlant.hasBlackout);
   }
 
 }
