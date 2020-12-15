@@ -20,6 +20,7 @@ const refreshPrivateKeyPath = process.env.PATH_REFRESH_PRIVATE_KEY || 'refreshPr
 const refreshPublicKeyPath = process.env.PATH_REFRESH_PUBLIC_KEY || 'refreshPublic.key';
 const accessPrivateKeyPath = process.env.PATH_ACCESS_PRIVATE_KEY || 'accessPrivate.key';
 const accessPublicKeyPath = process.env.PATH_ACCESS_PUBLIC_KEY || 'accessPublic.key';
+const refreshTokenExpireSeconds = process.env.REFRESH_TOKEN_EXPIRE_SECONDS || 14 * 24 * 60 * 60;
 console.log('Creating authentication key pairs...')
 authentication.createKeyPairs(refreshPrivateKeyPath, refreshPublicKeyPath, accessPrivateKeyPath, accessPublicKeyPath)
 console.log('Finished creating authentication key pairs');
@@ -30,6 +31,8 @@ database.task((t) => {
 		return database.users.createTable(t).then(() => {
 			return database.refreshTokens.createTable(t).then(() => {
 				console.log('Finished creating database tables')
+				// Remove expired refresh tokens every hour
+				initiateDeleteExpiredRefreshTokensInterval(60 * 60 * 1000); // 60 * 60 * 1000ms
 				// Setup middleware
 				app.use(bodyParser.json());
 				app.use(bodyParser.urlencoded({extended:true}));
@@ -47,6 +50,13 @@ database.task((t) => {
 		});
 	});
 });
+
+function initiateDeleteExpiredRefreshTokensInterval(ms: number) {
+	setInterval(() => {
+		database.refreshTokens.deleteOld(+refreshTokenExpireSeconds);
+	}, ms); 
+}
+
 // Generic GET handler
 function GET(url: string, handler: (request: any, response: any) => Promise<GetResult>) {
 	app.get(url, (request, response, next) => {
