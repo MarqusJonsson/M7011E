@@ -3,20 +3,21 @@ import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 
 export class GraphqlService {
 	subscriberCallBacks: ((data: any) => void)[] = [];
 	constructor(private apollo: Apollo) { }
-	ngOnInit(){}
+
 	query(query: any, variables?: any) {
 		return this.apollo.query({
 			query: gql`${query}`,
-			variables: variables
+			variables: variables,
+			fetchPolicy: 'network-only'
 		}).pipe(map((response) => {
 			return response.data;
-		}))
+		}));
 		//TODO error handling
 	}
 
@@ -25,7 +26,7 @@ export class GraphqlService {
 			map((data: any) => {
 				this.subscriberCallBacks.forEach((callback) => {
 					callback(data);
-				})
+				});
 				return data;
 			})
 		);
