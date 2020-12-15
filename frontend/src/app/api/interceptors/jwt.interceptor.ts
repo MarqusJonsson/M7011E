@@ -15,11 +15,11 @@ export default class JwtInterceptor implements HttpInterceptor {
 	constructor(private authService: AuthService) {}
 
 	intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-		// Do not add authorization header to login and register request
+		// Do not add Authorization header to login and register request
 		if (request.url === config.URL_LOGIN || request.url === config.URL_REGISTER) {
 			return next.handle(request);
 		}
-		// Add authorization header with access token
+		// Add Authorization header with access token
 		request = this.addAccessToken(request, AuthService.getAccessToken());
 
 		return next.handle(request).pipe(
@@ -38,7 +38,7 @@ export default class JwtInterceptor implements HttpInterceptor {
 	private addAccessToken(request: HttpRequest<any>, accessToken: string) {
 		return request.clone({
 			setHeaders: {
-				authorization: 'Bearer ' + accessToken,
+				Authorization: 'Bearer ' + accessToken,
 				// 'Content-Type': 'application/json'
 			}
 		});
