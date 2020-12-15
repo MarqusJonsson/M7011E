@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { prosumerQueryById } from 'src/app/api/models/prosumerContent';
 import { GraphqlService } from 'src/app/api/services/graphql.service';
 import { displayValuePrecision } from 'src/app/users/shared/pageConstants';
 import { Ws_to_kWh } from 'src/app/utils/electricity';
@@ -17,6 +18,9 @@ export class ManagerMainBlockComponent implements OnInit {
   @ViewChild('prosumerInfoCapacity') prosumerInfoCapacity:ElementRef;
   @ViewChild('prosumerInfoProduction') prosumerInfoProduction:ElementRef;
   @ViewChild('prosumerInfoConsumption') prosumerInfoConsumption:ElementRef;
+  private svgWidth = "24";
+  private svgHeight = "24";
+  private svgViewBox = "0 0 24 24";
 	constructor(private graphqlService: GraphqlService) {
 
 	}
@@ -26,9 +30,9 @@ export class ManagerMainBlockComponent implements OnInit {
 
 	ngAfterViewInit() {
 		this.prosumerInfoHeader.nativeElement.innerText = "TODO";
-		this.createProsumerList([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19])
 		this.prosumerInfoBattery.nativeElement.innerText = "TODO kwh";
 		this.graphqlService.addSubscriberCallBack(this.onUpdate);
+		this.hideElement(this.prosumerInfoContainer.nativeElement.id)
 		this.prosumerInfoContainer.nativeElement.onclick = () => {this.hideElement(this.prosumerInfoContainer.nativeElement.id);};
 
 	}
@@ -36,32 +40,42 @@ export class ManagerMainBlockComponent implements OnInit {
 	public createProsumerList(prosumers): void {
 	this.prosumerList.nativeElement.innerText = "";
 	for (let i = 0; i < prosumers.length; i++) {
-		let deleteImage = document.createElement('img');
+		const deleteImage = document.createElement('img');
 		deleteImage.src = "/assets/x-mark.svg";
 		deleteImage.alt = "Delete";
-		let prosumerEmail = document.createElement('button');
-		prosumerEmail.innerText = prosumers[i].email;
+		const prosumerEmail = document.createElement('button');
+		prosumerEmail.innerText = `Prosumer ${prosumers[i].id}`;
+		let blackoutStatus = true;
 		prosumerEmail.onclick = () => {
-			this.setProsumerInfoHeader(prosumerEmail.innerText);
-			this.setProsumerInfoBattery(parseInt(prosumerEmail.innerText));
-			this.setProsumerInfoCapacity(parseInt(prosumerEmail.innerText));
-			this.setProsumerInfoProduction(parseInt(prosumerEmail.innerText));
-			this.setProsumerInfoConsumption(parseInt(prosumerEmail.innerText));
-			this.showElement(this.prosumerInfoContainer.nativeElement.id);
+			this.graphqlService.query(prosumerQueryById, {id: prosumers[i].id}).subscribe((data: any) => {
+				const prosumer = data.prosumer;
+				this.setProsumerInfoHeader(prosumerEmail.innerText);
+				this.setProsumerInfoBattery(prosumer.house.battery.buffer);
+				this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
+				this.setProsumerInfoProduction(prosumer.house.electricityProduction);
+				this.setProsumerInfoConsumption(prosumer.house.electricityConsumption);
+				this.showElement(this.prosumerInfoContainer.nativeElement.id);
+				blackoutStatus = prosumer.house.hasBlackout;
+			});
+			
 		}
-		let blockImage = document.createElement('img');
+		const blockImage = document.createElement('img');
 		blockImage.src = "/assets/stop.svg";
 		blockImage.alt = "Block";
-		let blackoutImage = document.createElement('img');
-		blackoutImage.src = "/assets/light-bulb.svg"
-		let onlineStatusImage = document.createElement('img');
-		onlineStatusImage.src = "/assets/sound-wave.svg";
-		let item = document.createElement('li');
+		
+		const blackoutSvg = this.createProsumerListBlackoutSVG();
+		blackoutSvg.classList.add("prosumer-list-blackout-status");
+		if(blackoutStatus)
+		blackoutSvg.classList.add("online-status");
+
+		const onlineStatusSvg = this.createProsumerListLoginStatusSVG();
+
+		const item = document.createElement('li');
 		item.className = "p-list";
-		item.appendChild(blackoutImage);
+		item.appendChild(blackoutSvg);
 		item.appendChild(prosumerEmail);
 		item.appendChild(blockImage);
-		item.appendChild(onlineStatusImage);
+		item.appendChild(onlineStatusSvg);
 		item.appendChild(deleteImage);
 		this.prosumerList.nativeElement.appendChild(item);
 		}
@@ -108,7 +122,32 @@ export class ManagerMainBlockComponent implements OnInit {
 	public onUpdate = (data: any) => {
 		this.setTemperature(data.manager.powerPlant.geoData.temperature);
 		this.setWindSpeed(data.manager.powerPlant.geoData.windSpeed);
+		this.createProsumerList(data.manager.prosumers);
+	}
 
+	public createProsumerListBlackoutSVG(): SVGSVGElement{
+		const blackoutSvg = document.createElementNS('http://www.w3.org/2000/svg', "svg");
+		blackoutSvg.setAttribute("width", this.svgWidth);
+		blackoutSvg.setAttribute("height", this.svgHeight);
+		blackoutSvg.setAttribute("viewBox", this.svgViewBox)
+		const blackoutShape = document.createElementNS('http://www.w3.org/2000/svg', "path");
+		blackoutShape.setAttribute("d","M19 6.734c0 4.164-3.75 6.98-3.75 10.266h-6.5c0-3.286-3.75-6.103-3.75-10.266 0-4.343 3.498-6.734 6.996-6.734 3.502 0 7.004 2.394 7.004 6.734zm-4.5 11.266h-5c-.276 0-.5.224-.5.5s.224.5.5.5h5c.276 0 .5-.224.5-.5s-.224-.5-.5-.5zm0 2h-5c-.276 0-.5.224-.5.5s.224.5.5.5h5c.276 0 .5-.224.5-.5s-.224-.5-.5-.5zm.25 2h-5.5l1.451 1.659c.19.216.465.341.753.341h1.093c.288 0 .562-.125.752-.341l1.451-1.659z");		
+		blackoutSvg.appendChild(blackoutShape);
+		return blackoutSvg;
+
+	}
+
+	public createProsumerListLoginStatusSVG(): SVGSVGElement{
+		const loginStatusSvg = document.createElementNS('http://www.w3.org/2000/svg', "svg");;
+		loginStatusSvg.setAttribute("width", this.svgWidth);
+		loginStatusSvg.setAttribute("height", this.svgHeight);
+		loginStatusSvg.setAttribute("viewBox", this.svgViewBox);
+		loginStatusSvg.setAttribute('fill-rule', 'evenodd');
+		loginStatusSvg.setAttribute('clip-rule', "evenodd");
+		const loginStatusShape = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+		loginStatusShape.setAttribute('d', "M3.732 13h1.504s2.32-8.403 2.799-10.263c.156-.605.646-.738.965-.737.319.001.826.224.947.74.581 2.466 3.11 13.908 3.11 13.908s1.597-6.441 1.943-7.891c.101-.425.536-.757 1-.757.464 0 .865.343 1 .707.312.841 1.675 4.287 1.677 4.293h1.591c.346-.598.992-1 1.732-1 1.104 0 2 .896 2 2s-.896 2-2 2c-.741 0-1.388-.404-1.734-1.003-.939-.001-1.856 0-2.266.003-.503.004-.774-.289-.928-.629l-.852-2.128s-1.828 7.367-2.25 8.999c-.153.595-.646.762-.97.758-.324-.004-.847-.198-.976-.783-.549-2.487-2.081-9.369-3.123-14.053 0 0-1.555 5.764-1.936 7.099-.13.454-.431.731-.965.737h-2.268c-.346.598-.992 1-1.732 1-1.104 0-2-.896-2-2s.896-2 2-2c.74 0 1.386.402 1.732 1z");
+		loginStatusSvg.appendChild(loginStatusShape)
+		return loginStatusSvg;
 	}
 
 }
