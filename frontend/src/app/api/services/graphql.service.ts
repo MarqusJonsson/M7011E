@@ -34,4 +34,11 @@ export class GraphqlService {
 	addSubscriberCallBack(callback: (data:any) => void) {
 		this.subscriberCallBacks.push(callback);
 	}
+
+	mutate(mutation: any, variables: any) {
+		return this.apollo.mutate({
+			mutation: gql`${mutation}`,
+			variables: variables
+		  })
+	}
 }

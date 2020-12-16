@@ -2,7 +2,8 @@ import {
 	GraphQLObjectType,
 	GraphQLID,
 	GraphQLFloat,
-	GraphQLError
+	GraphQLError,
+	GraphQLBoolean
 } from 'graphql';
 import { Identifier } from '../../../identifiable';
 import { Manager } from '../../../users/manager';
@@ -25,6 +26,10 @@ const ProsumerType = new GraphQLObjectType({
 		currency: {
 			type: GraphQLFloat,
 			description: `The amount of currency the ${typeName} has.`
+		},
+		isBlocked: {
+			type: GraphQLBoolean,
+			description: `Indication if the ${typeName} is blocked or not.`
 		},
 		house: {
 			type: HouseType,

@@ -3,7 +3,7 @@ import { House } from '../buildings/house';
 import { Manager } from './manager';
 
 export class Prosumer extends BaseUser<House> {
-	private isBlocked : boolean = false;
+	private _isBlocked : boolean = false;
 	constructor(currency: number = 0, house: House, id?: number) {
 		super(Prosumer.name, currency, house, id);
 	}
@@ -80,7 +80,11 @@ export class Prosumer extends BaseUser<House> {
 	}
 
 	public blockSellElectricity(seconds: number) {
-		this.isBlocked = true;
-		setTimeout(() => {this.isBlocked = false}, seconds*1000);
+		this._isBlocked = true;
+		setTimeout(() => {this._isBlocked = false}, seconds*1000);
+	}
+
+	public get isBlocked(): boolean {
+		return this._isBlocked;
 	}
 }

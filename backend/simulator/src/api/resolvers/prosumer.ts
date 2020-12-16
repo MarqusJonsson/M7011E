@@ -11,7 +11,8 @@ class ProsumerResolver {
 		if (prosumer === undefined) throw new GraphQLError(GraphQLErrorName.PROSUMER_NOT_FOUND);
 		return {
 			id: prosumer.id,
-			currency: prosumer.currency
+			currency: prosumer.currency,
+			isBlocked: prosumer.isBlocked
 		}
 	}
 
@@ -22,11 +23,26 @@ class ProsumerResolver {
 		manager.prosumers.forEach((prosumer) => {
 			prosumers.push({
 				id: prosumer.id,
-				currency: prosumer.currency
+				currency: prosumer.currency,
+				isBlocked: prosumer.isBlocked
 			})
 		});
 		return prosumers;
 	}
+
+	blockSellElectricity = (simulator: Simulator, userIdentifier: Identifier, id: number, seconds: number) => {
+		const manager: Manager | undefined = simulator.managers.uGet(userIdentifier);
+		if (manager === undefined) throw new GraphQLError(GraphQLErrorName.MANAGER_NOT_FOUND);
+		const prosumer: Prosumer | undefined = manager.prosumers.uGet(new Identifier(Prosumer.name, id));
+		if (prosumer === undefined) throw new GraphQLError(GraphQLErrorName.PROSUMER_NOT_FOUND);
+		prosumer.blockSellElectricity(seconds);
+		return {
+			id: prosumer.id,
+			isBlocked: prosumer.isBlocked
+		}
+	}
+
+
 }
 
 export const prosumerResolver = new ProsumerResolver();
