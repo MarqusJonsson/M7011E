@@ -20,6 +20,7 @@ export class ManagerMainBlockComponent implements OnInit {
 	@ViewChild('prosumerInfoCapacity') prosumerInfoCapacity:ElementRef;
 	@ViewChild('prosumerInfoProduction') prosumerInfoProduction:ElementRef;
 	@ViewChild('prosumerInfoConsumption') prosumerInfoConsumption:ElementRef;
+	@ViewChild('prosumerInfoIsBlocked') prosumerInfoIsBlocked:ElementRef;
 	private selectedProsumerId = null;
 	private svgWidth = "24";
 	private svgHeight = "24";
@@ -50,6 +51,7 @@ export class ManagerMainBlockComponent implements OnInit {
 			this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
 			this.setProsumerInfoProduction(prosumer.house.electricityProduction);
 			this.setProsumerInfoConsumption(prosumer.house.electricityConsumption);
+			this.setProsumerInfoIsBlocked(prosumer.isBlocked);
 			blackoutStatus = prosumer.house.hasBlackout;
 		});
 	}
@@ -61,11 +63,13 @@ export class ManagerMainBlockComponent implements OnInit {
 			this.selectedProsumerId = prosumers[i].id;
 			this.graphqlService.query(prosumerQueryById, {id: prosumers[i].id}).subscribe((data: any) => {
 				const prosumer = data.prosumer;
+				console.log(prosumer, "prosumer");
 				this.setProsumerInfoHeader(prosumerName.innerText);
 				this.setProsumerInfoBattery(prosumer.house.battery.buffer);
 				this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
 				this.setProsumerInfoProduction(prosumer.house.electricityProduction);
 				this.setProsumerInfoConsumption(prosumer.house.electricityConsumption);
+				this.setProsumerInfoIsBlocked(prosumer.isBlocked);
 				this.showElement(this.prosumerInfoContainer.nativeElement.id);
 				blackoutStatus = prosumer.house.hasBlackout;
 			});
@@ -117,6 +121,11 @@ export class ManagerMainBlockComponent implements OnInit {
 	public setProsumerInfoConsumption(value: number) {
 		this.prosumerInfoConsumption.nativeElement.innerText =  Ws_to_kWh(value).toFixed(displayValuePrecision) + " kWh";
 	}
+
+	public setProsumerInfoIsBlocked(value: boolean) {
+		this.prosumerInfoIsBlocked.nativeElement.innerText = value;
+	}
+
 
 	public setTemperature(value: number) {
 		this.temperature.nativeElement.innerText = value.toFixed(displayValuePrecision) + " C";
@@ -170,7 +179,7 @@ export class ManagerMainBlockComponent implements OnInit {
 	public blockProsumer(prosumerId) {
 		const dialogData = {
 			title: 'Confirm Block',
-			message: 'Block duration',
+			message: 'Input desired block duration for selected prosumer',
 			cancelText: 'Cancel',
 			confirmText: 'Submit',
 		  };
@@ -178,7 +187,7 @@ export class ManagerMainBlockComponent implements OnInit {
 		  this.dialogService.open(dialogData);
 		  this.dialogService.confirmed().subscribe(confirmed => {
 			if (confirmed) {
-			  this.graphqlService.mutate(setProsumerSellTimeoutMutation, { id: prosumerId, seconds: 30}).subscribe();
+			  this.graphqlService.mutate(setProsumerSellTimeoutMutation, { id: prosumerId, seconds: 5}).subscribe();
 			}
 		 });
 	}
