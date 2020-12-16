@@ -228,6 +228,7 @@ export class Simulator {
 		const houseGeoData = prosumer.building.geoData;
 		const managersIterable: IterableIterator<Manager> = this.managers.values();
 		let closestManager: Manager = managersIterable.next().value;
+		if (closestManager === undefined) return;
 		let closestPowerPlantDistance: number = houseGeoData.distance(closestManager.building.geoData);
 		for (const manager of managersIterable) {
 			const distance = houseGeoData.distance(manager.building.geoData);
