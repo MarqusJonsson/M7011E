@@ -56,6 +56,10 @@ const PowerPlantType = new GraphQLObjectType({
 			type: GraphQLBoolean,
 			description: `Whether or not the ${typeName} is currently experiencing a blackout.`
 		},
+		totalDemand: {
+			type: GraphQLFloat,
+			description: `The total electricity demand from buildings connected to the ${typeName}.`
+		},
 		battery: {
 			type: BatteryType,
 			description: `The battery of the ${typeName}.`,

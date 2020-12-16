@@ -12,6 +12,7 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	private _productionLowerCutOff: number = 0.2;
 	private _productionUpperCutOff: number = 0.6;
 	private _productionFlag: boolean = true;
+	private _totalDemand: number = 0;
 
 	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[]) {
 		super(type, battery, geoData, generators);
@@ -103,5 +104,13 @@ export abstract class BasePowerPlant extends BaseBuilding {
 
 	public set productionFlag(value: boolean) {
 		this._productionFlag = value;
+	}
+
+	public get totalDemand(): number {
+		return this._totalDemand;
+	}
+
+	public set totalDemand(value: number) {
+		this._totalDemand = value;
 	}
 }

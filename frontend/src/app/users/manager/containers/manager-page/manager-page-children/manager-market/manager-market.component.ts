@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GraphqlService } from 'src/app/api/services/graphql.service';
 import { displayValuePrecision } from 'src/app/users/shared/pageConstants';
-import { Ws_to_kWh, kWh_to_Ws } from 'src/app/utils/electricity';
 
 @Component({
 	selector: 'manager-market-block',
@@ -13,7 +12,8 @@ export class ManagerMarketComponent implements OnInit {
 	@ViewChild('suggestBuyPrice') suggestBuyPrice:ElementRef;
 	@ViewChild('suggestSellPrice') suggestSellPrice:ElementRef;
 	@ViewChild('electricityPrice') electricityPrice:ElementRef;
-	@ViewChild('currency') currency:ElementRef; 
+	@ViewChild('currency') currency:ElementRef;
+	@ViewChild('totalDemand') totalDemand:ElementRef;
  
 	constructor(private hostElement: ElementRef, private graphqlService: GraphqlService) { }
 		ngOnInit(): void {
@@ -24,23 +24,27 @@ export class ManagerMarketComponent implements OnInit {
 		this.graphqlService.addSubscriberCallBack(this.onUpdate);
 	}
 	public setMarketDemand(value: number) {
-		this.marketDemand.nativeElement.innerText = kWh_to_Ws(value).toFixed(displayValuePrecision) + " kwh/currency";
+		this.marketDemand.nativeElement.innerText = value.toFixed(displayValuePrecision) + " J/currency";
 	}
 
 	public setSuggestBuyPrice(value: number) {
-		this.suggestBuyPrice.nativeElement.innerText = kWh_to_Ws(value).toFixed(displayValuePrecision) + " kWh/currency";
+		this.suggestBuyPrice.nativeElement.innerText = value.toFixed(displayValuePrecision) + " J/currency";
 	}
 
 	public setSuggestSellPrice(value: number) {
-		this.suggestSellPrice.nativeElement.innerText = kWh_to_Ws(value).toFixed(displayValuePrecision) + " kWh/currency";
+		this.suggestSellPrice.nativeElement.innerText = value.toFixed(displayValuePrecision) + " J/currency";
 	}
 
 	public setElectricityPrice(value: number) {
-		this.electricityPrice.nativeElement.innerText = kWh_to_Ws(value).toFixed(displayValuePrecision) + " kWh/currency";
+		this.electricityPrice.nativeElement.innerText = value.toFixed(displayValuePrecision) + " J/currency";
 	}
 
 	public setCurrency(value: number) {
 		this.currency.nativeElement.innerText = value.toFixed(displayValuePrecision);
+	}
+
+	public setTotalDemand(value: number) {
+		this.totalDemand.nativeElement.innerText = value.toFixed(displayValuePrecision) + " J";
 	}
 
 	public onUpdate = (data: any) => {
@@ -48,5 +52,6 @@ export class ManagerMarketComponent implements OnInit {
 		this.setElectricityPrice(data.manager.powerPlant.electricityBuyPrice);
 		this.setSuggestBuyPrice(data.manager.powerPlant.modelledElectricityBuyPrice);
 		this.setSuggestSellPrice(data.manager.powerPlant.modelledElectricitySellPrice);
+		this.setTotalDemand(data.manager.powerPlant.totalDemand);
 	}
 }

@@ -127,12 +127,12 @@ export class Simulator {
 
 	private updatePrices() {
 		this.managers.forEach((manager) => {
-			let demand: number = 0;
+			manager.building.totalDemand = 0;
 			const prosumers = manager.prosumers;
 			prosumers.forEach((prosumer) => {
-				demand += prosumer.building.getDemand();
+				manager.building.totalDemand += prosumer.building.getDemand();
 			});
-			const modelledBuyPrice: number = manager.calcBuyPrice(1, demand / Math.max(prosumers.size, 1), this.deltaTimeS);
+			const modelledBuyPrice: number = manager.calcBuyPrice(1, manager.building.totalDemand / Math.max(prosumers.size, 1), this.deltaTimeS);
 			const powerPlant = manager.building;
 			powerPlant.modelledElectricityBuyPrice = modelledBuyPrice;
 			powerPlant.modelledElectricitySellPrice = modelledBuyPrice * ELECTRICITY_SELL_RATIO;
