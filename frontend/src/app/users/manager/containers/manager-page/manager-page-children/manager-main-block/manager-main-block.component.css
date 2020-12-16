@@ -119,3 +119,7 @@
 	margin: 0 4px 4px 0;
 }
 
+#prosumer-info-container > img:hover {
+	filter: invert(1);
+}
+
