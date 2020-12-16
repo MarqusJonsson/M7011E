@@ -33,7 +33,8 @@ class PowerPlantResolver {
 					modelledElectricityBuyPrice: powerPlant.modelledElectricityBuyPrice,
 					electricitySellPrice: powerPlant.electricitySellPrice,
 					electricityBuyPrice: powerPlant.electricityBuyPrice,
-					hasBlackout: powerPlant.hasBlackout
+					hasBlackout: powerPlant.hasBlackout,
+					totalDemand: powerPlant.totalDemand / simulator.deltaTimeS
 				};
 			}
 			default:
@@ -55,7 +56,9 @@ class PowerPlantResolver {
 			modelledElectricityBuyPrice: powerPlant.modelledElectricityBuyPrice,
 			electricitySellPrice: powerPlant.electricitySellPrice,
 			electricityBuyPrice: powerPlant.electricityBuyPrice,
-			hasBlackout: powerPlant.hasBlackout
+			hasBlackout: powerPlant.hasBlackout,
+			totalDemand: powerPlant.totalDemand / simulator.deltaTimeS
+
 		}
 	}
 }
