@@ -63,7 +63,6 @@ export class ManagerMainBlockComponent implements OnInit {
 			this.selectedProsumerId = prosumers[i].id;
 			this.graphqlService.query(prosumerQueryById, {id: prosumers[i].id}).subscribe((data: any) => {
 				const prosumer = data.prosumer;
-				console.log(prosumer, "prosumer");
 				this.setProsumerInfoHeader(prosumerName.innerText);
 				this.setProsumerInfoBattery(prosumer.house.battery.buffer);
 				this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
