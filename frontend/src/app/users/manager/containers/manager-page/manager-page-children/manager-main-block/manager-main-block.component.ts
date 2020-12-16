@@ -11,19 +11,19 @@ import { Ws_to_kWh } from 'src/app/utils/electricity';
   styleUrls: ['./manager-main-block.component.css']
 })
 export class ManagerMainBlockComponent implements OnInit {
-  @ViewChild('temperature') temperature:ElementRef;
-  @ViewChild('windSpeed') windSpeed:ElementRef;
-  @ViewChild('prosumerList') prosumerList:ElementRef;
-  @ViewChild('prosumerInfoContainer') prosumerInfoContainer:ElementRef;
-  @ViewChild('prosumerInfoHeader') prosumerInfoHeader:ElementRef;
-  @ViewChild('prosumerInfoBattery') prosumerInfoBattery:ElementRef;
-  @ViewChild('prosumerInfoCapacity') prosumerInfoCapacity:ElementRef;
-  @ViewChild('prosumerInfoProduction') prosumerInfoProduction:ElementRef;
-  @ViewChild('prosumerInfoConsumption') prosumerInfoConsumption:ElementRef;
-  private selectedProsumerId = null;
-  private svgWidth = "24";
-  private svgHeight = "24";
-  private svgViewBox = "0 0 24 24";
+	@ViewChild('temperature') temperature:ElementRef;
+	@ViewChild('windSpeed') windSpeed:ElementRef;
+	@ViewChild('prosumerList') prosumerList:ElementRef;
+	@ViewChild('prosumerInfoContainer') prosumerInfoContainer:ElementRef;
+	@ViewChild('prosumerInfoHeader') prosumerInfoHeader:ElementRef;
+	@ViewChild('prosumerInfoBattery') prosumerInfoBattery:ElementRef;
+	@ViewChild('prosumerInfoCapacity') prosumerInfoCapacity:ElementRef;
+	@ViewChild('prosumerInfoProduction') prosumerInfoProduction:ElementRef;
+	@ViewChild('prosumerInfoConsumption') prosumerInfoConsumption:ElementRef;
+	private selectedProsumerId = null;
+	private svgWidth = "24";
+	private svgHeight = "24";
+	private svgViewBox = "0 0 24 24";
 	constructor(private graphqlService: GraphqlService, private dialogService: ConfirmDialogService) {
 
 	}
