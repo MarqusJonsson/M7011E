@@ -20,6 +20,7 @@ export class ManagerMainBlockComponent implements OnInit {
   @ViewChild('prosumerInfoCapacity') prosumerInfoCapacity:ElementRef;
   @ViewChild('prosumerInfoProduction') prosumerInfoProduction:ElementRef;
   @ViewChild('prosumerInfoConsumption') prosumerInfoConsumption:ElementRef;
+  private selectedProsumerId = null;
   private svgWidth = "24";
   private svgHeight = "24";
   private svgViewBox = "0 0 24 24";
@@ -41,17 +42,26 @@ export class ManagerMainBlockComponent implements OnInit {
 
 	public createProsumerList(prosumers): void {
 	this.prosumerList.nativeElement.innerText = "";
+	let blackoutStatus = true;
+	if (this.selectedProsumerId != null) {
+		this.graphqlService.query(prosumerQueryById, {id:this.selectedProsumerId}).subscribe((data: any) => {
+			const prosumer = data.prosumer;
+			this.setProsumerInfoBattery(prosumer.house.battery.buffer);
+			this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
+			this.setProsumerInfoProduction(prosumer.house.electricityProduction);
+			this.setProsumerInfoConsumption(prosumer.house.electricityConsumption);
+			blackoutStatus = prosumer.house.hasBlackout;
+		});
+	}
+		
 	for (let i = 0; i < prosumers.length; i++) {
-		const deleteImage = document.createElement('img');
-		deleteImage.src = "/assets/x-mark.svg";
-		deleteImage.alt = "Delete";
-		const prosumerEmail = document.createElement('button');
-		prosumerEmail.innerText = `Prosumer ${prosumers[i].id}`;
-		let blackoutStatus = true;
-		prosumerEmail.onclick = () => {
+		const prosumerName = document.createElement('button');
+		prosumerName.innerText = `Prosumer ${prosumers[i].id}`;
+		prosumerName.onclick = () => {
+			this.selectedProsumerId = prosumers[i].id;
 			this.graphqlService.query(prosumerQueryById, {id: prosumers[i].id}).subscribe((data: any) => {
 				const prosumer = data.prosumer;
-				this.setProsumerInfoHeader(prosumerEmail.innerText);
+				this.setProsumerInfoHeader(prosumerName.innerText);
 				this.setProsumerInfoBattery(prosumer.house.battery.buffer);
 				this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
 				this.setProsumerInfoProduction(prosumer.house.electricityProduction);
@@ -61,6 +71,10 @@ export class ManagerMainBlockComponent implements OnInit {
 			});
 			
 		}
+		const deleteImage = document.createElement('img');
+		deleteImage.src = "/assets/x-mark.svg";
+		deleteImage.alt = "Delete";
+
 		const blockImage = document.createElement('img');
 		blockImage.src = "/assets/stop.svg";
 		blockImage.onclick = () => {this.blockProsumer(prosumers[i].id)};
@@ -76,7 +90,7 @@ export class ManagerMainBlockComponent implements OnInit {
 		const item = document.createElement('li');
 		item.className = "p-list";
 		item.appendChild(blackoutSvg);
-		item.appendChild(prosumerEmail);
+		item.appendChild(prosumerName);
 		item.appendChild(blockImage);
 		item.appendChild(onlineStatusSvg);
 		item.appendChild(deleteImage);
