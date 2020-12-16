@@ -16,7 +16,8 @@ export class ConfirmDialogService {
            title: options.title,
            message: options.message,
            cancelText: options.cancelText,
-           confirmText: options.confirmText
+           confirmText: options.confirmText,
+           extraField : options.extraField
          }
     });  
   }  

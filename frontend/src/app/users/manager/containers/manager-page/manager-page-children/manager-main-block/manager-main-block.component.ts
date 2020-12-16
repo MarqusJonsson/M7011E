@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AlertService } from 'src/app/alert/services/alert.service';
 import { setProsumerSellTimeoutMutation } from 'src/app/api/models/mutations/prosumerMutations';
 import { prosumerQueryById } from 'src/app/api/models/prosumerContent';
 import { GraphqlService } from 'src/app/api/services/graphql.service';
@@ -21,11 +22,12 @@ export class ManagerMainBlockComponent implements OnInit {
 	@ViewChild('prosumerInfoProduction') prosumerInfoProduction:ElementRef;
 	@ViewChild('prosumerInfoConsumption') prosumerInfoConsumption:ElementRef;
 	@ViewChild('prosumerInfoIsBlocked') prosumerInfoIsBlocked:ElementRef;
+	@ViewChild('prosumerInfoCloseSymbol') prosumerInfoCloseSymbol:ElementRef;
 	private selectedProsumerId = null;
 	private svgWidth = "24";
 	private svgHeight = "24";
 	private svgViewBox = "0 0 24 24";
-	constructor(private graphqlService: GraphqlService, private dialogService: ConfirmDialogService) {
+	constructor(private graphqlService: GraphqlService, private dialogService: ConfirmDialogService, private alertService: AlertService) {
 
 	}
 
@@ -37,7 +39,7 @@ export class ManagerMainBlockComponent implements OnInit {
 		this.prosumerInfoBattery.nativeElement.innerText = "TODO kwh";
 		this.graphqlService.addSubscriberCallBack(this.onUpdate);
 		this.hideElement(this.prosumerInfoContainer.nativeElement.id)
-		this.prosumerInfoContainer.nativeElement.onclick = () => {this.hideElement(this.prosumerInfoContainer.nativeElement.id);};
+		this.prosumerInfoCloseSymbol.nativeElement.onclick = () => {this.hideElement(this.prosumerInfoContainer.nativeElement.id);};
 
 	}
 
@@ -114,11 +116,11 @@ export class ManagerMainBlockComponent implements OnInit {
 	}
 
 	public setProsumerInfoProduction(value: number) {
-		this.prosumerInfoProduction.nativeElement.innerText = Ws_to_kWh(value).toFixed(displayValuePrecision) + " kWh";
+		this.prosumerInfoProduction.nativeElement.innerText = value.toFixed(displayValuePrecision) + " J";
 	}
 
 	public setProsumerInfoConsumption(value: number) {
-		this.prosumerInfoConsumption.nativeElement.innerText =  Ws_to_kWh(value).toFixed(displayValuePrecision) + " kWh";
+		this.prosumerInfoConsumption.nativeElement.innerText =  value.toFixed(displayValuePrecision) + " J";
 	}
 
 	public setProsumerInfoIsBlocked(value: boolean) {
@@ -176,17 +178,27 @@ export class ManagerMainBlockComponent implements OnInit {
 	}
 
 	public blockProsumer(prosumerId) {
+		const inputFieldContainer = document.createElement("div");
+		let inputField = document.createElement("input");
+		inputField.placeholder = "Block duration in seconds";
+		inputFieldContainer.appendChild(inputField);
 		const dialogData = {
 			title: 'Confirm Block',
-			message: 'Input desired block duration for selected prosumer',
+			message: '',
 			cancelText: 'Cancel',
 			confirmText: 'Submit',
+			extraField: inputFieldContainer
 		  };
-
 		  this.dialogService.open(dialogData);
 		  this.dialogService.confirmed().subscribe(confirmed => {
 			if (confirmed) {
-			  this.graphqlService.mutate(setProsumerSellTimeoutMutation, { id: prosumerId, seconds: 5}).subscribe();
+				const input = parseFloat(inputField.value);
+				if(!isNaN(input))
+					this.graphqlService.mutate(setProsumerSellTimeoutMutation, { id: prosumerId, seconds: input}).subscribe();
+				else {
+					this.alertService.error("Invalid input, prosumer block canceled", {autoClose: true});
+				}
+					
 			}
 		 });
 	}
