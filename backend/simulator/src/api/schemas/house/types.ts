@@ -43,7 +43,7 @@ const HouseType = new GraphQLObjectType({
 			type: GraphQLFloat,
 			description: `The ratio describing how big of an portion of the produced `
 				+ `electricity should be sent to the battery of the ${typeName}, the remaining `
-				+ `portion gets sold to the power plant. The ratio is in a sacle from 0 to 1.`
+				+ `portion gets sold to the power plant. The ratio is in a scale from 0 to 1.`
 		},
 		hasBlackout: {
 			type: GraphQLBoolean,
@@ -118,7 +118,7 @@ const UpdateHouseBatteryToPowerPlantRatioInputType = new GraphQLInputObjectType(
 			type: GraphQLFloat,
 			description: `The ratio describing how big of an portion of the produced `
 				+ `electricity should be sent to the battery of the ${typeName}, the remaining `
-				+ `portion gets sold to the power plant. The ratio is in a sacle from 0 to 1.`
+				+ `portion gets sold to the power plant. The ratio is in a scale from 0 to 1.`
 		}
 	}
 });
