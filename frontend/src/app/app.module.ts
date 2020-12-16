@@ -31,6 +31,9 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { AuthService } from './auth/services/auth.service';
 import JwtInterceptor from './api/interceptors/jwt.interceptor';
 import { GraphQLModule } from './graphql.module';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DialogComponent } from './users/shared/containers/dialog/dialog.component';
+import { ConfirmDialogService } from './users/shared/services/confirm-dialog.service';
 
 @NgModule({
 	declarations: [
@@ -50,7 +53,8 @@ import { GraphQLModule } from './graphql.module';
 		PowerPlantBlockComponent,
 		SubBlockComponent,
 		ManagerMarketComponent,
-		ProsumerCurrencyBlockComponent
+		ProsumerCurrencyBlockComponent,
+		DialogComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -66,7 +70,8 @@ import { GraphQLModule } from './graphql.module';
 			allowedDomains: ['localhost:4200']
 			}
 		}),
-		GraphQLModule
+		GraphQLModule,
+		MatDialogModule
 	],
 	providers: [
 		{
@@ -75,6 +80,9 @@ import { GraphQLModule } from './graphql.module';
 			multi: true
 		}
 	],
-	bootstrap: [AppComponent]
+	entryComponents: [DialogComponent],
+	// 	exports: [ConfirmDialogService],
+	bootstrap: [AppComponent],
+
 })
 export class AppModule {}

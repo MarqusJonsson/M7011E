@@ -7,6 +7,7 @@ import { RegisterComponent } from './auth/containers/register/register.component
 import { ManagerPageComponent } from './users/manager/containers/manager-page/manager-page.component';
 import { ProsumerGuard } from './auth/guards/prosumer.guard';
 import { ManagerGuard } from './auth/guards/manager.guard';
+import { DialogComponent } from './users/shared/containers/dialog/dialog.component';
 
 const routes: Routes = [
 	{path: '', pathMatch: 'full', redirectTo: '/login'},
