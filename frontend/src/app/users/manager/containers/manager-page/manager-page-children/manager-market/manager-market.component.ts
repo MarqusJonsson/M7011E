@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GraphqlService } from 'src/app/api/services/graphql.service';
 import { displayValuePrecision } from 'src/app/users/shared/pageConstants';
+import { Ws_to_kWh } from 'src/app/utils/electricity';
 
 @Component({
 	selector: 'manager-market-block',
@@ -24,19 +25,19 @@ export class ManagerMarketComponent implements OnInit {
 		this.graphqlService.addSubscriberCallBack(this.onUpdate);
 	}
 	public setMarketDemand(value: number) {
-		this.marketDemand.nativeElement.innerText = value.toFixed(displayValuePrecision) + " J/currency";
+		this.marketDemand.nativeElement.innerText = value.toFixed(displayValuePrecision) + " currency/J";
 	}
 
 	public setSuggestBuyPrice(value: number) {
-		this.suggestBuyPrice.nativeElement.innerText = value.toFixed(displayValuePrecision) + " J/currency";
+		this.suggestBuyPrice.nativeElement.innerText = (value * 3600000).toFixed(displayValuePrecision) + " currency/kWh";
 	}
 
 	public setSuggestSellPrice(value: number) {
-		this.suggestSellPrice.nativeElement.innerText = value.toFixed(displayValuePrecision) + " J/currency";
+		this.suggestSellPrice.nativeElement.innerText = (value * 3600000).toFixed(displayValuePrecision) + " currency/kWh";
 	}
 
 	public setElectricityPrice(value: number) {
-		this.electricityPrice.nativeElement.innerText = value.toFixed(displayValuePrecision) + " J/currency";
+		this.electricityPrice.nativeElement.innerText = (value * 3600000).toFixed(displayValuePrecision) + " currency/kWh";
 	}
 
 	public setCurrency(value: number) {
