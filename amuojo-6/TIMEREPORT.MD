@@ -19,4 +19,4 @@
 | 2020-12-12 | 3 | <ul><li>Added functionality to get data about prosumers and managers in the simulator API.</li><li>Cleanup simulator code to use inheritance instead of duplicate code for "BaseUser" objects.</li></ul> |
 | 2020-12-13 | 7 | <ul><li>Cleanup usage of user data which is sent to simulator server and used jwt payload instead.</li><li>Made it so the simulator automatically creates user in simulator if requesting useris not already in the simulator.</li></ul> |
 | 2020-12-15 | 8 | <ul><li>Setup query interval for fetching data to frontend pages.</li><li>Started working on creating geo data maps which will be interpolated on using trilinear interpolation to get values for data such as temperature and wind speed to be dependant on geograpic location.</li></ul> |
-| 2020-12-15 | 13 | <ul><li>Worked on presentation.</li><li>Continued working with the goe data maps.</li></ul> |
+| 2020-12-15 | 13 | <ul><li>Worked on presentation.</li><li>Continued working with the geo data maps.</li></ul> |
