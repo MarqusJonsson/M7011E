@@ -16,6 +16,7 @@ export class ManagerMainBlockComponent implements OnInit {
 	@ViewChild('windSpeed') windSpeed:ElementRef;
 	@ViewChild('prosumerList') prosumerList:ElementRef;
 	@ViewChild('prosumerInfoContainer') prosumerInfoContainer:ElementRef;
+	@ViewChild('prosumerInfoCurrency') prosumerInfoCurrency:ElementRef;
 	@ViewChild('prosumerInfoHeader') prosumerInfoHeader:ElementRef;
 	@ViewChild('prosumerInfoBattery') prosumerInfoBattery:ElementRef;
 	@ViewChild('prosumerInfoCapacity') prosumerInfoCapacity:ElementRef;
@@ -23,6 +24,7 @@ export class ManagerMainBlockComponent implements OnInit {
 	@ViewChild('prosumerInfoConsumption') prosumerInfoConsumption:ElementRef;
 	@ViewChild('prosumerInfoIsBlocked') prosumerInfoIsBlocked:ElementRef;
 	@ViewChild('prosumerInfoCloseSymbol') prosumerInfoCloseSymbol:ElementRef;
+
 	private selectedProsumerId = null;
 	private svgWidth = "24";
 	private svgHeight = "24";
@@ -50,6 +52,7 @@ export class ManagerMainBlockComponent implements OnInit {
 		this.graphqlService.query(prosumerQueryById, {id:this.selectedProsumerId}).subscribe((data: any) => {
 			const prosumer = data.prosumer;
 			this.setProsumerInfoBattery(prosumer.house.battery.buffer);
+			this.setProsumerInfoCurrency(prosumer.currency);
 			this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
 			this.setProsumerInfoProduction(prosumer.house.electricityProduction);
 			this.setProsumerInfoConsumption(prosumer.house.electricityConsumption);
@@ -66,6 +69,7 @@ export class ManagerMainBlockComponent implements OnInit {
 			this.graphqlService.query(prosumerQueryById, {id: prosumers[i].id}).subscribe((data: any) => {
 				const prosumer = data.prosumer;
 				this.setProsumerInfoHeader(prosumerName.innerText);
+				this.setProsumerInfoCurrency(prosumer.currency);
 				this.setProsumerInfoBattery(prosumer.house.battery.buffer);
 				this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
 				this.setProsumerInfoProduction(prosumer.house.electricityProduction);
@@ -105,6 +109,10 @@ export class ManagerMainBlockComponent implements OnInit {
 
 	public setProsumerInfoHeader(value: string) {
 		this.prosumerInfoHeader.nativeElement.innerText = value;
+	}
+
+	public setProsumerInfoCurrency(value: number) {
+		this.prosumerInfoCurrency.nativeElement.innerText =  value.toFixed(displayValuePrecision) + " ";
 	}
 
 	public setProsumerInfoBattery(value: number) {
