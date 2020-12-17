@@ -26,18 +26,18 @@ export class VisualBlockComponent implements OnInit {
 	}
 
 	public setProduction(value: number) {
-		this.production.nativeElement.innerText = value.toFixed(displayValuePrecision) + ' J';
+		this.production.nativeElement.innerText = value.toFixed(displayValuePrecision) + ' W';
 	}
 
 	public setConsumption(value: number) {
-		this.consumption.nativeElement.innerText = value.toFixed(displayValuePrecision) + ' J';
+		this.consumption.nativeElement.innerText = value.toFixed(displayValuePrecision) + ' W';
 	}
 
 	public setNetProduction() {
 		const production = parseFloat(this.production.nativeElement.innerText);
 		const consumption = parseFloat(this.consumption.nativeElement.innerText);
 		const netProduction = production - consumption;
-		this.netProduction.nativeElement.innerText = netProduction.toFixed(displayValuePrecision) + ' J';
+		this.netProduction.nativeElement.innerText = netProduction.toFixed(displayValuePrecision) + ' W';
 	}
 
 	public setTemperature(value: number) {
