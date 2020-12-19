@@ -16,10 +16,6 @@ export class ProsumerPageComponent implements OnInit {
 	}
 
 	ngAfterViewInit() {
-		setInterval(this.fetchProsumerData, 1000);
-	}
-
-	public fetchProsumerData = () => {
-		this.graphqlService.queryAndNotifySubscribers(prosumerQuery).subscribe();
+		this.graphqlService.startQueryInterval(prosumerQuery, 1000);
 	}
 }
