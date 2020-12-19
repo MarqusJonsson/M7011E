@@ -60,19 +60,19 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	}
 
 	public get modelledElectricityBuyPrice(): number{
-		return this._electricityBuyPrice;
+		return this._modelledElectricityBuyPrice;
 	}
 
 	public set modelledElectricityBuyPrice(value: number){
-		this._electricityBuyPrice = value;
+		this._modelledElectricityBuyPrice = value;
 	}
 
 	public get modelledElectricitySellPrice(): number{
-		return this._electricitySellPrice;
+		return this._modelledElectricitySellPrice;
 	}
 
 	public set modelledElectricitySellPrice(value: number){
-		this._electricitySellPrice = value;
+		this._modelledElectricitySellPrice = value;
 	}
 
 	public get startUpTime(): number {
