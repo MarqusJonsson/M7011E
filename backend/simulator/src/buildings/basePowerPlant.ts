@@ -2,12 +2,13 @@ import {BaseBuilding} from './baseBuilding';
 import {Battery} from './components/battery';
 import {GeoData} from './components/geoData';
 import {BaseGenerator} from '../generators/baseGenerator';
+import { Ws_per_kWh } from '../math/electricity';
 
 export abstract class BasePowerPlant extends BaseBuilding {
 	private _modelledElectricityBuyPrice: number = 0;
 	private _modelledElectricitySellPrice: number = 0;
-	private _electricityBuyPrice: number = 0;
-	private _electricitySellPrice: number = 0;
+	private _electricityBuyPrice: number = 1.5 / Ws_per_kWh;
+	private _electricitySellPrice: number = 1.5 / Ws_per_kWh;
 	private _startUpTime: number = 30;
 	private _productionLowerCutOff: number = 0.2;
 	private _productionUpperCutOff: number = 0.6;
