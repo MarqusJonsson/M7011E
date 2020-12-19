@@ -1,13 +1,13 @@
 import { GraphQLObjectType } from 'graphql';
 import { updateHouseBatteryToPowerPlantRatio } from '../house/mutations';
-import { updatePowerPlantElectricityPrice } from '../powerPlant/mutations';
+import { updateElectricityPrices } from '../powerPlant/mutations';
 import { setProsumerSellTimeout } from '../prosumer/mutations';
 
 const rootMutation = new GraphQLObjectType({
 	name: 'RootMutation',
 	fields: {
 		updateHouseBatteryToPowerPlantRatio: updateHouseBatteryToPowerPlantRatio,
-		updatePowerPlantElectricityPrice: updatePowerPlantElectricityPrice,
+		updateElectricityPrices: updateElectricityPrices,
 		setProsumerSellTimeout: setProsumerSellTimeout
 	}
 });

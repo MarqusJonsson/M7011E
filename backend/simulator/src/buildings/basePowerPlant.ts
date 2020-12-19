@@ -2,12 +2,13 @@ import {BaseBuilding} from './baseBuilding';
 import {Battery} from './components/battery';
 import {GeoData} from './components/geoData';
 import {BaseGenerator} from '../generators/baseGenerator';
+import { Ws_per_kWh } from '../math/electricity';
 
 export abstract class BasePowerPlant extends BaseBuilding {
 	private _modelledElectricityBuyPrice: number = 0;
 	private _modelledElectricitySellPrice: number = 0;
-	private _electricityBuyPrice: number = 0;
-	private _electricitySellPrice: number = 0;
+	private _electricityBuyPrice: number = 1.5 / Ws_per_kWh;
+	private _electricitySellPrice: number = 1.5 / Ws_per_kWh;
 	private _startUpTime: number = 30;
 	private _productionLowerCutOff: number = 0.2;
 	private _productionUpperCutOff: number = 0.6;
@@ -59,19 +60,19 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	}
 
 	public get modelledElectricityBuyPrice(): number{
-		return this._electricityBuyPrice;
+		return this._modelledElectricityBuyPrice;
 	}
 
 	public set modelledElectricityBuyPrice(value: number){
-		this._electricityBuyPrice = value;
+		this._modelledElectricityBuyPrice = value;
 	}
 
 	public get modelledElectricitySellPrice(): number{
-		return this._electricitySellPrice;
+		return this._modelledElectricitySellPrice;
 	}
 
 	public set modelledElectricitySellPrice(value: number){
-		this._electricitySellPrice = value;
+		this._modelledElectricitySellPrice = value;
 	}
 
 	public get startUpTime(): number {
