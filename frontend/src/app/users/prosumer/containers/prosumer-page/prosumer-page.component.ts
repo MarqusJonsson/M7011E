@@ -16,6 +16,6 @@ export class ProsumerPageComponent implements OnInit {
 	}
 
 	ngAfterViewInit() {
-		this.graphqlService.startQueryInterval(prosumerQuery, 10000);
+		this.graphqlService.startQueryInterval(prosumerQuery, 1000);
 	}
 }
