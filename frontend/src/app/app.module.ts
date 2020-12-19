@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './auth/containers/login//login.component';
+import { LoginComponent } from './auth/containers/login/login.component';
+import { LogoutComponent } from './auth/containers/logout/logout.component';
 import { AlertComponent } from './alert/containers/alert/alert.component';
 import { ProsumerPageComponent } from './users/prosumer/containers/prosumer-page/prosumer-page.component';
 import { AccountSettingsComponent } from './users/shared/containers/account-settings/account-settings.component';
@@ -55,6 +56,7 @@ import { ConfirmDialogService } from './users/shared/services/confirm-dialog.ser
 		ManagerMarketComponent,
 		ProsumerCurrencyBlockComponent,
 		DialogComponent,
+		LogoutComponent,
 	],
 	imports: [
 		BrowserModule,

@@ -61,7 +61,6 @@ export class AuthService {
 		.pipe(
 			map((response) => {
 				if (response.status === StatusCode.CREATED) {
-					console.error(response);
 					throw new AuthError();
 				}
 				AuthService.setSession(response.body);
@@ -80,7 +79,6 @@ export class AuthService {
 		.pipe(
 			map((response) => {
 				if (response.status === StatusCode.CREATED) {
-					console.error(response);
 					throw new AuthError();
 				}
 				AuthService.setSession(response.body);
@@ -96,26 +94,17 @@ export class AuthService {
 	}
 
 	public logout() {
-		return this.http.post(config.URL_LOGOUT, { refreshToken: AuthService.getRefreshToken() })
-			.pipe(
-				tap(() => {
-					AuthService.removeSession();
-				}));
-	}
-
-	public refreshAccessToken() {
-		return this.http.post<any>(config.URL_REFRESH_ACCESS_TOKEN, { refreshToken: AuthService.getRefreshToken() })
-			.pipe(tap((response) => {
-				AuthService.setAccessToken(response.body.accessToken);
+		return this.http.delete<any>(config.URL_LOGOUT) // Refresh token is in Authorization header, see jwt interceptor
+			.pipe(tap(() => {
+				AuthService.removeSession();
 			}));
 	}
 
-	private getEmail(): string {
-		const payload = this.jwtHelper.decodeToken(AuthService.getRefreshToken());
-		if (payload) {
-			return payload.user.email;
-		}
-		return 'UNKNOWN';
+	public refreshAccessToken() {
+		return this.http.post<any>(config.URL_REFRESH_ACCESS_TOKEN, {}) // Refresh token is in Authorization header, see jwt interceptor
+			.pipe(tap((response) => {
+				AuthService.setAccessToken(response.body.accessToken);
+			}));
 	}
 
 	public getRole(): number {

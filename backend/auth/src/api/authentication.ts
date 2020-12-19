@@ -7,6 +7,7 @@ import { crypto } from '../utils/crypto';
 import express from 'express';
 import { StatusCode } from '../utils/statusCode';
 import { UsersRepository } from '../database/repositories';
+import { TokenExpiredError } from 'jsonwebtoken';
 
 function register(request: express.Request): Promise<PostResult> {
 	return new Promise((resolve, reject) => {
@@ -88,25 +89,34 @@ function login(request: express.Request): Promise<PostResult> {
 
 function logout(request: express.Request): Promise<DeleteResult> {
 	return new Promise((resolve, reject) => {
-		const { refreshToken } = request.body;
-		auth.verifyRefreshToken(refreshToken, (error, payload) => {
-			if (error) reject(new ResponseError('Invalid refresh token', StatusCode.UNAUTHORIZED));
-			const refreshTokenPayload = <RefreshTokenPayload><unknown> payload;
-			return database.refreshTokens.delete(refreshTokenPayload.refreshToken.id).then((deletedRefreshTokenId) => {
-				resolve(new DeleteResult(null));
-			}).catch((error) => { reject(error); });
-		});
+		const authHeader = request.headers.authorization;
+		const refreshToken = authHeader && authHeader.split(' ')[1];
+		if (refreshToken === undefined) {
+			reject(new ResponseError('The request is missing or contains a malformed required header: Authorization', StatusCode.BAD_REQUEST));
+		} else {
+			auth.verifyRefreshToken(refreshToken, (error, payload) => {
+				if (error) {
+					reject(new ResponseError('Invalid refresh token', StatusCode.FORBIDDEN));
+					return;
+				}
+				const refreshTokenPayload: RefreshTokenPayload = <RefreshTokenPayload><unknown>payload;
+				return database.refreshTokens.delete(refreshTokenPayload.refreshToken.id).then((deletedRefreshTokenId) => {
+					resolve(new DeleteResult(null));
+				}).catch((error) => { reject(error); });
+			}, { ignoreExpiration: true });
+		}
 	});
 }
 
 function refreshAccessToken(request: express.Request): Promise<PostResult> {
 	return new Promise((resolve, reject) => {
-		const { refreshToken } = request.body;
-		if (!validation.validateRefreshToken(refreshToken)) {
-			reject(new ResponseError('Malformed input', StatusCode.BAD_REQUEST));
+		const authHeader = request.headers.authorization;
+		const refreshToken = authHeader && authHeader.split(' ')[1];
+		if (refreshToken === undefined) {
+			reject(new ResponseError('The request is missing or contains a malformed required header: Authorization', StatusCode.BAD_REQUEST));
 		} else {
 			auth.verifyRefreshToken(refreshToken, (error, payload) => {
-				if (error) reject(new ResponseError('Invalid refresh token', StatusCode.UNAUTHORIZED));
+				if (error) reject(new ResponseError('Invalid refresh token', StatusCode.FORBIDDEN));
 				const refreshTokenPayload = <RefreshTokenPayload><unknown> payload;
 				const accessToken = auth.generateAccessToken({
 					user: refreshTokenPayload.user

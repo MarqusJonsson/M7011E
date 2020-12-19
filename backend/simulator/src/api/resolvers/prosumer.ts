@@ -41,8 +41,6 @@ class ProsumerResolver {
 			isBlocked: prosumer.isBlocked
 		}
 	}
-
-
 }
 
 export const prosumerResolver = new ProsumerResolver();

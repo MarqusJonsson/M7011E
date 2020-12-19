@@ -48,7 +48,7 @@ export class RegisterComponent implements OnInit {
 			(success) => {
 				this.loading = false;
 				if (success === true) {
-					this.alertService.success('Registration successful', { autoClose: true });
+					this.alertService.success('Registration successful', { autoClose: true, keepAfterRouteChange: true });
 					this.router.navigateByUrl('/prosumer-page');
 				} else {
 					throw new Error('Unknown error');

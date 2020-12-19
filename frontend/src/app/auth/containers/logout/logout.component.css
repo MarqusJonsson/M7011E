@@ -1,0 +1,9 @@
+:host > .logout-button {
+	width: 100%;
+	background-color: transparent;
+	border: none;
+}
+
+:host > .logout-button:hover {
+	filter: invert(1);
+}

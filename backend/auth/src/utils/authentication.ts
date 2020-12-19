@@ -5,7 +5,7 @@ import crypto from 'crypto';
 dotenv.config();
 
 const refreshTokenExpireSeconds = process.env.REFRESH_TOKEN_EXPIRE_SECONDS || 14 * 24 * 60 * 60;
-const accessTokenExpireSeconds = process.env.REFRESH_TOKEN_EXPIRE_SECONDS || 5 * 60;
+const accessTokenExpireSeconds = process.env.ACCESS_TOKEN_EXPIRE_SECONDS || 5 * 60;
 const refreshTokenExpireTime = refreshTokenExpireSeconds + 's';
 const accessTokenExpireTime = accessTokenExpireSeconds + 's';
 const signingAlgorithm = 'RS256';
@@ -60,10 +60,10 @@ function generateRefreshToken(payload: RefreshTokenPayload) {
 	});
 }
 
-function verifyRefreshToken(token: string, callback: jwt.VerifyCallback) {
+function verifyRefreshToken(token: string, callback: jwt.VerifyCallback, options?: jwt.VerifyOptions) {
 	if (refreshKeyPair == undefined) throw new Error('Missing refresh key pair');
 	jwt.verify(token, <jwt.Secret><unknown> refreshKeyPair.publicKey, {
-		algorithms: [signingAlgorithm]
+		...{algorithms: [signingAlgorithm]}, ...options || {} 
 	}, callback);
 }
 
