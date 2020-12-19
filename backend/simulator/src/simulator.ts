@@ -98,7 +98,7 @@ export class Simulator {
 		this.updateEnvironmentVariables();
 		this.updateElectricityConsumptionValues();
 		this.updateElectricityProductionValues();
-		this.updatePrices();
+		this.updateModelledElectricityPrices();
 		this.generateElectricity();
 		this.prosumersSellElectricity();
 		this.prosumersBuyElectricity();
@@ -125,7 +125,7 @@ export class Simulator {
 		});
 	}
 
-	private updatePrices() {
+	private updateModelledElectricityPrices() {
 		this.managers.forEach((manager) => {
 			manager.building.totalDemand = 0;
 			const prosumers = manager.prosumers;
@@ -136,9 +136,6 @@ export class Simulator {
 			const powerPlant = manager.building;
 			powerPlant.modelledElectricityBuyPrice = modelledBuyPrice;
 			powerPlant.modelledElectricitySellPrice = modelledBuyPrice * ELECTRICITY_SELL_RATIO;
-			// TODO: use manager provided prices instead of modelled prices
-			manager.setBuyPrice(modelledBuyPrice);
-			manager.setSellPrice(modelledBuyPrice * ELECTRICITY_SELL_RATIO);
 		});
 	}
 
