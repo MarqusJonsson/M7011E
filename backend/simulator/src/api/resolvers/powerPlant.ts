@@ -16,8 +16,8 @@ class PowerPlantResolver {
 				simulator.managers.forEach((manager) => {
 					if (manager.prosumers.iGet(<Prosumer> user) !== undefined) {
 						powerPlant.id = manager.building.id
-						powerPlant.electricitySellPrice = manager.building.electricitySellPrice
 						powerPlant.electricityBuyPrice = manager.building.electricityBuyPrice
+						powerPlant.electricitySellPrice = manager.building.electricitySellPrice
 						return;
 					}
 				});
@@ -31,8 +31,8 @@ class PowerPlantResolver {
 					electricityProduction: powerPlant.electricityProduction / simulator.deltaTimeS,
 					modelledElectricitySellPrice: powerPlant.modelledElectricitySellPrice,
 					modelledElectricityBuyPrice: powerPlant.modelledElectricityBuyPrice,
-					electricitySellPrice: powerPlant.electricitySellPrice,
 					electricityBuyPrice: powerPlant.electricityBuyPrice,
+					electricitySellPrice: powerPlant.electricitySellPrice,
 					hasBlackout: powerPlant.hasBlackout,
 					totalDemand: powerPlant.totalDemand / simulator.deltaTimeS
 				};
@@ -42,23 +42,18 @@ class PowerPlantResolver {
 		}
 	}
 
-	updateElectricityPrice = (simulator: Simulator, userIdentifier: Identifier, sellPrice: number, buyPrice: number) => {
+	updateElectricityPrices = (simulator: Simulator, userIdentifier: Identifier, buyPrice: number, sellPrice: number) => {
 		const manager: Manager | undefined = simulator.managers.uGet(userIdentifier);
 		if (manager === undefined) throw new GraphQLError(GraphQLErrorName.USER_NOT_FOUND);
-		manager.setSellPrice(sellPrice);
 		manager.setBuyPrice(buyPrice);
+		manager.setSellPrice(sellPrice);
 		const powerPlant = manager.building;
 		return {
 			id: manager.building.id,
-			electricityConsumption: powerPlant.electricityConsumption / simulator.deltaTimeS,
-			electricityProduction: powerPlant.electricityProduction / simulator.deltaTimeS,
 			modelledElectricitySellPrice: powerPlant.modelledElectricitySellPrice,
 			modelledElectricityBuyPrice: powerPlant.modelledElectricityBuyPrice,
 			electricitySellPrice: powerPlant.electricitySellPrice,
 			electricityBuyPrice: powerPlant.electricityBuyPrice,
-			hasBlackout: powerPlant.hasBlackout,
-			totalDemand: powerPlant.totalDemand / simulator.deltaTimeS
-
 		}
 	}
 }
