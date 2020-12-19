@@ -1,21 +1,33 @@
-import { typeName, HouseType, UpdateHouseBatteryToPowerPlantRatioInputType } from './types';
+import { typeName, HouseType, setOverproductionBatteryToPowerPlantRatioInputType, setUnderproductionBatteryToPowerPlantRatioInputType } from './types';
 import { houseResolver } from '../../resolvers/house';
 import {
-	GraphQLNonNull
+	GraphQLFloat,
 } from 'graphql';
 import { GraphQLContext } from '../graphQLContext';
 
-const updateHouseBatteryToPowerPlantRatio = {
+const setOverproductionBatteryToPowerPlantRatio = {
 	type: HouseType,
-	description: `Update the battery to power plant ratio of the ${typeName}.`,
+	description: `setting the battery to power plant ratio of the ${typeName} during over production.`,
 	args: {
-		house: { type: new GraphQLNonNull(UpdateHouseBatteryToPowerPlantRatioInputType) }
+		overproductionBatteryToPowerPlantRatio: { type: GraphQLFloat },
 	},
 	resolve(parent: any, args: any, context: GraphQLContext) {
-		return houseResolver.updateBatteryToPowerPlantRatio(context.simulator, context.user, args.house.batteryToPowerPlantRatio);
+		return houseResolver.setOverproductionBatteryToPowerPlantRatio(context.simulator, context.user, args.overproductionBatteryToPowerPlantRatio);
+	}
+};
+
+const setUnderproductionBatteryToPowerPlantRatio = {
+	type: HouseType,
+	description: `setting the battery to power plant ratio of the ${typeName} during under production.`,
+	args: {
+		underproductionBatteryToPowerPlantRatio: { type: GraphQLFloat },
+	},
+	resolve(parent: any, args: any, context: GraphQLContext) {
+		return houseResolver.setOverproductionBatteryToPowerPlantRatio(context.simulator, context.user, args.underproductionBatteryToPowerPlantRatio);
 	}
 };
 
 export {
-	updateHouseBatteryToPowerPlantRatio
+	setOverproductionBatteryToPowerPlantRatio,
+	setUnderproductionBatteryToPowerPlantRatio
 };

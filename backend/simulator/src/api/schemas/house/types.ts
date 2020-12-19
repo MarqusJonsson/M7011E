@@ -39,11 +39,18 @@ const HouseType = new GraphQLObjectType({
 			type: GraphQLFloat,
 			description: `The electricity production of the ${typeName} in watt seconds.`
 		},
-		batteryToPowerPlantRatio: {
+		overproductionBatteryToPowerPlantRatio: {
 			type: GraphQLFloat,
 			description: `The ratio describing how big of an portion of the produced `
 				+ `electricity should be sent to the battery of the ${typeName}, the remaining `
-				+ `portion gets sold to the power plant. The ratio is in a scale from 0 to 1.`
+				+ `portion gets sold to the power plant during overproduction. The ratio is in a scale from 0 to 1.`
+		},
+
+		underproductionBatteryToPowerPlantRatio: {
+			type: GraphQLFloat,
+			description: `The ratio describing how big of an portion of the produced `
+				+ `electricity should be sent to the battery of the ${typeName}, the remaining `
+				+ `portion gets sold to the power plant during underproduction. The ratio is in a scale from 0 to 1.`
 		},
 		hasBlackout: {
 			type: GraphQLBoolean,
@@ -106,19 +113,36 @@ const HouseType = new GraphQLObjectType({
 	}
 });
 
-const UpdateHouseBatteryToPowerPlantRatioInputType = new GraphQLInputObjectType({
+const setOverproductionBatteryToPowerPlantRatioInputType = new GraphQLInputObjectType({
 	name: `Update${typeName}BatteryToPowerPlantRatioInput`,
-	description: `Input payload for updating the battery to power plant ratio for a ${typeName}.`,
+	description: `Input payload for setting the battery to power plant ratio for a ${typeName} during overproduction.`,
 	fields: {
 		id: {
 			type: GraphQLID,
 			description: `The id of the ${typeName}.`
 		},
-		batteryToPowerPlantRatio: {
+		overproductionBatteryToPowerPlantRatio: {
 			type: GraphQLFloat,
 			description: `The ratio describing how big of an portion of the produced `
 				+ `electricity should be sent to the battery of the ${typeName}, the remaining `
-				+ `portion gets sold to the power plant. The ratio is in a scale from 0 to 1.`
+				+ `portion gets sold to the power plant during overproduction. The ratio is in a scale from 0 to 1.`
+		}
+	}
+});
+
+const setUnderproductionBatteryToPowerPlantRatioInputType = new GraphQLInputObjectType({
+	name: `Update${typeName}BatteryToPowerPlantRatioInput`,
+	description: `Input payload for setting the battery to power plant ratio for a ${typeName} during underproduction.`,
+	fields: {
+		id: {
+			type: GraphQLID,
+			description: `The id of the ${typeName}.`
+		},
+		underproductionBatteryToPowerPlantRatio: {
+			type: GraphQLFloat,
+			description: `The ratio describing how big of an portion of the produced `
+				+ `electricity should be sent to the battery of the ${typeName}, the remaining `
+				+ `portion gets sold to the power plant during underproductio. The ratio is in a scale from 0 to 1.`
 		}
 	}
 });
@@ -126,5 +150,6 @@ const UpdateHouseBatteryToPowerPlantRatioInputType = new GraphQLInputObjectType(
 export {
 	typeName,
 	HouseType,
-	UpdateHouseBatteryToPowerPlantRatioInputType
+	setOverproductionBatteryToPowerPlantRatioInputType,
+	setUnderproductionBatteryToPowerPlantRatioInputType
 };

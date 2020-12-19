@@ -52,7 +52,7 @@ describe('buildings/house.ts', function(){
 		it('Generate over house battery capacity and power plant capacity.', function() {
 			testObject.pBattery.capacity = 1000;
 			testObject.house.generators[0].baseOutput = 2000;
-			testObject.house.batteryToPowerPlantRatio = 0.6;
+			testObject.house.overproductionBatteryToPowerPlantRatio = 0.6;
 			testObject.house.calculateProduction(1);
 			testObject.house.generateElectricity(testObject.pBattery);
 			expect(testObject.house.electricityOutput).to.equal(1000);
@@ -61,7 +61,7 @@ describe('buildings/house.ts', function(){
 		it('Generate under house battery capacity but over power plant battery capacity.', function() {
 			testObject.pBattery.capacity = 10;
 			testObject.house.generators[0].baseOutput = 50;
-			testObject.house.batteryToPowerPlantRatio = 0.6;
+			testObject.house.overproductionBatteryToPowerPlantRatio = 0.6;
 			testObject.house.calculateProduction(1);
 			testObject.house.generateElectricity(testObject.pBattery);
 			expect(testObject.hBattery.buffer).to.equal(40);

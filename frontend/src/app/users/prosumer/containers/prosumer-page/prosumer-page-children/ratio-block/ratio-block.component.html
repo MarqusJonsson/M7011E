@@ -1,4 +1,9 @@
 <div class = "sub-block">
-	<h1 #title> </h1>
-	<mat-slider min="0" max="1" step="0.1" value="1" thumbLabel = "true" (input)="onInputChange($event)"></mat-slider>
+	<h1> Production Ratios</h1>
+	<span>Electricity sent to battery : </span><span #electricityToBattery></span> <br><br>
+	<span>Electricity sent to power plant : </span><span #electricityToPowerPlant></span> <br><br>
+	<mat-slider #overproductionSlider min="0" max="1" step="0.1" value="1" thumbLabel = "true" (input)="overproductionSliderValueChange($event)"></mat-slider> 
+	<button #overproductionSubmit>Update Overproduction ratio</button> <br><br>
+	<mat-slider #underproductionSlider min="0" max="1" step="0.1" value="1" thumbLabel = "true" (input)="underproductionSliderValueChange($event)"></mat-slider>
+	<button #underproductionSubmit>Update Underproduction ratio</button> <br><br>
 </div>
