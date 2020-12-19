@@ -40,6 +40,9 @@ export class GraphqlService {
 		return this.apollo.mutate({
 			mutation: gql`${mutation}`,
 			variables: variables
-		});
+		}).pipe(map((response: any) => {
+				return response.data;
+			})
+		);
 	}
 }
