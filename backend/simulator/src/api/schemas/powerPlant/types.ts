@@ -87,28 +87,7 @@ const PowerPlantType = new GraphQLObjectType({
 	}
 });
 
-const UpdatePowerPlantElectricityPriceInputType = new GraphQLInputObjectType({
-	name: `Update${typeName}ElectricityPriceInput`,
-	description: `Input payload for updating the price for consumers exchanging `
-		+ `electricity with the ${typeName}.`,
-	fields: {
-		id: {
-			type: GraphQLID,
-			description: `The id of the ${typeName}.`
-		},
-		electricitySellPrice: {
-			type: GraphQLFloat,
-			description: `The amount of currency units electricity can be sold for when selling to the ${typeName}.`
-		},
-		electricityBuyPrice: {
-			type: GraphQLFloat,
-			description: `The amount of currency units electricity can be bought for when buying from the ${typeName}.`
-		}
-	}
-});
-
 export {
 	typeName,
 	PowerPlantType,
-	UpdatePowerPlantElectricityPriceInputType
 };
