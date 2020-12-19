@@ -37,8 +37,6 @@ export class ManagerMainBlockComponent implements OnInit {
 	}
 
 	ngAfterViewInit() {
-		this.prosumerInfoHeader.nativeElement.innerText = "TODO";
-		this.prosumerInfoBattery.nativeElement.innerText = "TODO kwh";
 		this.graphqlService.addSubscriberCallBack(this.onUpdate);
 		this.hideElement(this.prosumerInfoContainer.nativeElement.id)
 		this.prosumerInfoCloseSymbol.nativeElement.onclick = () => {this.hideElement(this.prosumerInfoContainer.nativeElement.id);};
@@ -91,7 +89,7 @@ export class ManagerMainBlockComponent implements OnInit {
 		
 		const blackoutSvg = this.createProsumerListBlackoutSVG();
 		blackoutSvg.classList.add("prosumer-list-blackout-status");
-		if(blackoutStatus)
+		if(!blackoutStatus)
 		blackoutSvg.classList.add("online-status");
 
 		const onlineStatusSvg = this.createProsumerListLoginStatusSVG();
