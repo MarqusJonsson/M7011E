@@ -29,7 +29,7 @@ class HouseResolver {
 		const house = prosumer.building;
 		return {
 			id: house.id,
-			underProductionBatteryToPowerPlantRatio: house.overproductionBatteryToPowerPlantRatio,
+			underproductionBatteryToPowerPlantRatio: house.underproductionBatteryToPowerPlantRatio,
 		}
 	}
 

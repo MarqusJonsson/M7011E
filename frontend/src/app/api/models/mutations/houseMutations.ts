@@ -5,7 +5,7 @@ export const setHouseOverproductionRatioMutation = `mutation setOverproductionBa
 }`
 
 export const setHouseUnderproductionRatioMutation = `mutation setUnderproductionBatteryToPowerPlantRatio ($ratio: Float!) {
-	setUnderproductionBatteryToPowerPlantRatio (overproductionBatteryToPowerPlantRatio: $ratio) {
-		overproductionBatteryToPowerPlantRatio
+	setUnderproductionBatteryToPowerPlantRatio (underproductionBatteryToPowerPlantRatio: $ratio) {
+		underproductionBatteryToPowerPlantRatio
 	}
 }`

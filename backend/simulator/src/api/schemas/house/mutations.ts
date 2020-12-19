@@ -1,4 +1,4 @@
-import { typeName, HouseType, setOverproductionBatteryToPowerPlantRatioInputType, setUnderproductionBatteryToPowerPlantRatioInputType } from './types';
+import { typeName, HouseType} from './types';
 import { houseResolver } from '../../resolvers/house';
 import {
 	GraphQLFloat,
@@ -23,7 +23,7 @@ const setUnderproductionBatteryToPowerPlantRatio = {
 		underproductionBatteryToPowerPlantRatio: { type: GraphQLFloat },
 	},
 	resolve(parent: any, args: any, context: GraphQLContext) {
-		return houseResolver.setOverproductionBatteryToPowerPlantRatio(context.simulator, context.user, args.underproductionBatteryToPowerPlantRatio);
+		return houseResolver.setUnderproductionBatteryToPowerPlantRatio(context.simulator, context.user, args.underproductionBatteryToPowerPlantRatio);
 	}
 };
 
