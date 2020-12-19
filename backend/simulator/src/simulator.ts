@@ -2,12 +2,8 @@ import { Prosumer } from './users/prosumer';
 import { Manager } from './users/manager';
 import { Environment } from './environment';
 import { ELECTRICITY_SELL_RATIO } from './utils/realLifeData';
-import { msToYMDHMSM } from './math/time';
-import { BaseUser } from './users/baseUser';
+import { ms_to_YMDHMSM } from './math/time';
 import { IMap } from './identifiable';
-import { BasePowerPlant } from './buildings/basePowerPlant';
-import { House } from './buildings/house';
-import { BaseBuilding } from './buildings/baseBuilding';
 
 export class Simulator {
 	// Time variables
@@ -49,7 +45,7 @@ export class Simulator {
 	}
 
 	private tempLog(): string {
-		const ymdhmsm = msToYMDHMSM(this.simulationTime);
+		const ymdhmsm = ms_to_YMDHMSM(this.simulationTime);
 		let logStr = `\t\t\t\t  Y: M: D: H: M: S: mS\n`
 			+ `New time step, simulation time = `
 			+ ymdhmsm.years.toString().padStart(2, ' ') + ':'
