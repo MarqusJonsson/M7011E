@@ -3,9 +3,13 @@
 	<span>Currency: </span> <span #currency></span> <br><br>
 	<span>Suggested electricity buy price: </span> <span #suggestBuyPrice></span> <br><br>
 	<span>Suggested electricity sell price: </span> <span #suggestSellPrice></span> <br><br>
-	<span>Current electricity price: </span> <span #electricityPrice></span> <br><br>
+	<span>Current electricity buy price: </span> <span #electricityBuyPrice></span> <br><br>
+	<span>Current electricity sell price: </span> <span #electricitySellPrice></span> <br><br>
 	<span>Market demand: </span> <span #totalDemand></span> <br><br>
-	<label for ="market-price">Set new market price</label>
-	<input type="text" id ="market-price"> <input type="submit" value="Submit">
+	<label for ="market-buy-price">Set new buy price</label>
+	<input type="text" id ="market-buy-price" #newElectricityBuyPrice placeholder="currency / kwh"> <br><br>
+	<label for ="market-sell-price">Set new sell price</label>
+	<input type="text" id ="market-sell-price" #newElectricitySellPrice placeholder="currency / kwh"> <br><br>
+	<input type="submit" #submitMarketPrices value="Update market prices">
 </div>
 
