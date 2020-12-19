@@ -27,25 +27,25 @@
 	user-select: none; /* Standard */
 }
 
-:host .alert-success{
+:host .alert-success {
 	background-color: #d4edda;
 	border-color: #c3e6cb;
 	color: #155724;
 }
 
-:host .alert-error{
+:host .alert-error {
 	background-color: #f8d7da;
 	border-color: #f5c6cb;
 	color: #721c24;
 }
 
-:host .alert-info{
+:host .alert-info {
 	background-color: #d1ecf1;
 	border-color: #bee5eb;
 	color: #0c5460;
 }
 
-:host .alert-warning{
+:host .alert-warning {
 	background-color: #fff3cd;
 	border-color: #ffeeba;
 	color: #85643f;
