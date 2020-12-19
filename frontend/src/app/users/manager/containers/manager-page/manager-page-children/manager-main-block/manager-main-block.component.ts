@@ -185,7 +185,7 @@ export class ManagerMainBlockComponent implements OnInit {
 		return loginStatusSvg;
 	}
 
-	public blockProsumer(prosumerId) {
+	public blockProsumer(prosumerId: number) {
 		const inputFieldContainer = document.createElement("div");
 		let inputField = document.createElement("input");
 		inputField.placeholder = "Block duration in seconds";
