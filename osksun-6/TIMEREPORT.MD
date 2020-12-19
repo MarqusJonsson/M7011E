@@ -20,3 +20,4 @@
 |2020-12-13| 7 | More setting up graphql queries so it can the values requested from the simulator can be displayed in both manager and prosumer GUI.
 |2020-12-15| 11.5 | Added more functionality to manager GUI and graphql queries. Also started working on adding mutation requests for our system.
 |2020-12-16| 13 | Added generic dialog component and service to frontend and finished mutation request for blocking specific prosumer from selling specified by input. Also worked on presentation and added more content that can be retrieved with graphql queries.
+|2020-12-17| 2.5 | Adjusted GUI for prosumer.

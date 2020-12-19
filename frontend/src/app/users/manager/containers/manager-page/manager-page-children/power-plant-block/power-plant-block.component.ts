@@ -28,18 +28,18 @@ export class PowerPlantBlockComponent implements OnInit {
   }
 
   public setProduction(value: number) {
-    this.production.nativeElement.innerText =  Ws_to_kWh(value).toFixed(displayValuePrecision) + " kWh";
+    this.production.nativeElement.innerText =  Ws_to_kWh(value).toFixed(displayValuePrecision) + " kW";
   }
 
   public setConsumption(value: number) {
-    this.consumption.nativeElement.innerText =  Ws_to_kWh(value).toFixed(displayValuePrecision) + " kWh";
+    this.consumption.nativeElement.innerText =  Ws_to_kWh(value).toFixed(displayValuePrecision) + " kW";
   }
 
   public setNetProduction() {
     let production = parseFloat(this.production.nativeElement.innerText);
     let consumption = parseFloat(this.consumption.nativeElement.innerText);
     let netProduction = production - consumption;
-    this.netProduction.nativeElement.innerText = netProduction.toFixed(displayValuePrecision) + " kWh";
+    this.netProduction.nativeElement.innerText = netProduction.toFixed(displayValuePrecision) + " kW";
   }
 
   public setBattery(value: number) {
