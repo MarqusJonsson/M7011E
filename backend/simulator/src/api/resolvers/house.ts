@@ -13,8 +13,11 @@ class HouseResolver {
 			id: house.id,
 			electricityConsumption: house.electricityConsumption / simulator.deltaTimeS,
 			electricityProduction: house.electricityProduction / simulator.deltaTimeS,
-			OverproductionBatteryToPowerPlantRatio: house.overproductionBatteryToPowerPlantRatio,
-			hasBlackout: house.hasBlackout
+			hasBlackout: house.hasBlackout,
+			overproductionBatteryToPowerPlantRatio: house.overproductionBatteryToPowerPlantRatio,
+			underproductionBatteryToPowerPlantRatio: house.underproductionBatteryToPowerPlantRatio,
+
+
 		}
 	}
 
