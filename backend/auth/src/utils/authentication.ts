@@ -60,10 +60,10 @@ function generateRefreshToken(payload: RefreshTokenPayload) {
 	});
 }
 
-function verifyRefreshToken(token: string, callback: jwt.VerifyCallback) {
+function verifyRefreshToken(token: string, callback: jwt.VerifyCallback, options?: jwt.VerifyOptions) {
 	if (refreshKeyPair == undefined) throw new Error('Missing refresh key pair');
 	jwt.verify(token, <jwt.Secret><unknown> refreshKeyPair.publicKey, {
-		algorithms: [signingAlgorithm]
+		...{algorithms: [signingAlgorithm]}, ...options || {} 
 	}, callback);
 }
 
