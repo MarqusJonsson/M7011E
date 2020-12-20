@@ -16,6 +16,7 @@ export class LogoutComponent implements OnInit {
 
 	logout() {
 		this.graphQLService.stopQueryInterval();
+		this.graphQLService.removeAllSubscriberCallbacks();
 		this.authService.logout().subscribe(() => {
 			this.router.navigateByUrl('/login'); // Redirect when ready
 		});
