@@ -13,23 +13,35 @@ class HouseResolver {
 			id: house.id,
 			electricityConsumption: house.electricityConsumption / simulator.deltaTimeS,
 			electricityProduction: house.electricityProduction / simulator.deltaTimeS,
-			batteryToPowerPlantRatio: house.batteryToPowerPlantRatio,
-			hasBlackout: house.hasBlackout
+			hasBlackout: house.hasBlackout,
+			overproductionBatteryToPowerPlantRatio: house.overproductionBatteryToPowerPlantRatio,
+			underproductionBatteryToPowerPlantRatio: house.underproductionBatteryToPowerPlantRatio,
+
+
 		}
 	}
 
-	updateBatteryToPowerPlantRatio = (simulator: Simulator, userIdentifier: Identifier, ratio: number) => {
+	setUnderproductionBatteryToPowerPlantRatio = (simulator: Simulator, userIdentifier: Identifier, ratio: number) => {
 		if (ratio < 0 || ratio > 1) throw new GraphQLError(GraphQLErrorName.INVALID_RATIO);
 		const prosumer: Prosumer | undefined = simulator.prosumers.uGet(userIdentifier);
 		if (prosumer === undefined) throw new GraphQLError(GraphQLErrorName.USER_NOT_FOUND);
-		prosumer.setBatteryToPowerPlantRatio(ratio);
+		prosumer.building.underproductionBatteryToPowerPlantRatio = ratio;
 		const house = prosumer.building;
 		return {
 			id: house.id,
-			electricityConsumption: house.electricityConsumption / simulator.deltaTimeS,
-			electricityProduction: house.electricityProduction / simulator.deltaTimeS,
-			batteryToPowerPlantRatio: house.batteryToPowerPlantRatio,
-			hasBlackout: house.hasBlackout
+			underproductionBatteryToPowerPlantRatio: house.underproductionBatteryToPowerPlantRatio,
+		}
+	}
+
+	setOverproductionBatteryToPowerPlantRatio = (simulator: Simulator, userIdentifier: Identifier, ratio: number) => {
+		if (ratio < 0 || ratio > 1) throw new GraphQLError(GraphQLErrorName.INVALID_RATIO);
+		const prosumer: Prosumer | undefined = simulator.prosumers.uGet(userIdentifier);
+		if (prosumer === undefined) throw new GraphQLError(GraphQLErrorName.USER_NOT_FOUND);
+		prosumer.building.overproductionBatteryToPowerPlantRatio = ratio;
+		const house = prosumer.building;
+		return {
+			id: house.id,
+			overproductionBatteryToPowerPlantRatio: house.overproductionBatteryToPowerPlantRatio,
 		}
 	}
 }

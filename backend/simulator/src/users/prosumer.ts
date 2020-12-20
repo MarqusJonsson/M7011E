@@ -7,10 +7,6 @@ export class Prosumer extends BaseUser<House> {
 	constructor(currency: number = 0, house: House, id?: number) {
 		super(Prosumer.name, currency, house, id);
 	}
-	
-	public setBatteryToPowerPlantRatio(ratio: number) {
-		this.building.batteryToPowerPlantRatio = ratio;
-	}
 
 	public buyElectricity(manager: Manager): void {
 		let payment: number = 0;

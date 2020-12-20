@@ -5,10 +5,12 @@ import { BaseGenerator } from '../generators/baseGenerator';
 import { AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND } from '../utils/realLifeData';
 
 export class House extends BaseBuilding {
-	private _batteryToPowerPlantRatio: number; // Ratio of how much goes to house battery (eg. 1.0 = 100% to house battery)
-	constructor(battery: Battery, geoData: GeoData, generators: BaseGenerator[], batteryToPowerPlantRatio: number) {
+	private _overproductionBatteryToPowerPlantRatio: number; // Ratio of how much goes to house battery when overproducing (eg. 1.0 = 100% to house battery)
+	private _underproductionBatteryToPowerPlantRatio: number = 1; // Ratio of how much goes to house battery when underproducing (eg. 1.0 = 100% to house battery)
+
+	constructor(battery: Battery, geoData: GeoData, generators: BaseGenerator[], overproductionBatteryToPowerPlantRatio: number) {
 		super(House.name, battery, geoData, generators);
-		this._batteryToPowerPlantRatio = batteryToPowerPlantRatio;
+		this._overproductionBatteryToPowerPlantRatio = overproductionBatteryToPowerPlantRatio;
 	}
 
 	public calculateConsumption(deltaTimeS: number): void {
@@ -24,8 +26,16 @@ export class House extends BaseBuilding {
 
 	public generateElectricity(pBattery: Battery) {
 		const totalProduction = this.electricityProduction;
-		const productionToBattery: number = totalProduction * this.batteryToPowerPlantRatio;
-		const productionToPowerPlant: number = totalProduction - productionToBattery;
+		let productionToBattery: number;
+		let productionToPowerPlant: number;
+		if (this.electricityConsumption - totalProduction < 0) {
+			productionToBattery = totalProduction * this.overproductionBatteryToPowerPlantRatio;
+			productionToPowerPlant = totalProduction - productionToBattery;
+		}
+		else {
+			productionToBattery = totalProduction * this.underproductionBatteryToPowerPlantRatio;
+			productionToPowerPlant = totalProduction * this.underproductionBatteryToPowerPlantRatio;
+		}
 		const hBattery: Battery = this.battery;
 		if (hBattery.buffer + productionToBattery <= hBattery.capacity) {
 			hBattery.buffer += productionToBattery;
@@ -54,14 +64,25 @@ export class House extends BaseBuilding {
 		}
 	}
 
-	public get batteryToPowerPlantRatio(): number {
-		return this._batteryToPowerPlantRatio;
+	public get overproductionBatteryToPowerPlantRatio(): number {
+		return this._overproductionBatteryToPowerPlantRatio;
 	}
 	
-	public set batteryToPowerPlantRatio(value: number) {
+	public set overproductionBatteryToPowerPlantRatio(value: number) {
 		if(value > 1 || value < 0) {
-			throw new Error('Value for batteryToPowerPlantRatio is not within range 0 to 1.')
+			throw new Error('Value for OverproductionBatteryToPowerPlantRatio is not within range 0 to 1.')
 		}
-		this._batteryToPowerPlantRatio = value;
+		this._overproductionBatteryToPowerPlantRatio = value;
+	}
+
+	public get underproductionBatteryToPowerPlantRatio(): number {
+		return this._underproductionBatteryToPowerPlantRatio;
+	}
+	
+	public set underproductionBatteryToPowerPlantRatio(value: number) {
+		if(value > 1 || value < 0) {
+			throw new Error('Value for underproductionBatteryToPowerPlantRatio is not within range 0 to 1.')
+		}
+		this._underproductionBatteryToPowerPlantRatio = value;
 	}
 }
