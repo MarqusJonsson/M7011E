@@ -162,11 +162,8 @@ export class Simulator {
 	}
 
 	private consumeElectricity() {
-		this.prosumers.forEach((prosumer) => {
-			prosumer.building.consumeElectricity()
-		});
-		this.managers.forEach((manager) => {
-			manager.building.consumeElectricity()
+		this.users.forEach((user) => {
+			user.building.consumeElectricity();
 		});
 	}
 
