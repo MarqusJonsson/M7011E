@@ -53,7 +53,7 @@ export class GraphqlService {
 		);
 	}
 
-	addSubscriberCallBack(callback: (data: any) => void) {
+	addSubscriberCallback(callback: (data: any) => void) {
 		this.subscriberCallBacks.push(callback);
 	}
 

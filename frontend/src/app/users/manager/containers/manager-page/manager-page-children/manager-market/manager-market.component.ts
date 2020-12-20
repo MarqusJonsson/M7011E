@@ -32,7 +32,7 @@ export class ManagerMarketComponent implements OnInit {
 	}
 
 	ngAfterViewInit() {
-		this.graphqlService.addSubscriberCallBack(this.onUpdate);
+		this.graphqlService.addSubscriberCallback(this.onUpdate);
 
 		this.submitMarketPrices.nativeElement.onclick = () => {this.updateMarketPrices()};
 	}

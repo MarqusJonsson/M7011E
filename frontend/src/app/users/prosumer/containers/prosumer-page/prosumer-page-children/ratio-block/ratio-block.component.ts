@@ -24,7 +24,7 @@ export class RatioBlockComponent implements OnInit {
 	}
 
 	ngAfterViewInit() {
-		this.graphqlService.addSubscriberCallBack(this.onUpdate);
+		this.graphqlService.addSubscriberCallback(this.onUpdate);
 		this.overproductionSubmit.nativeElement.onclick = () => {
 			this.graphqlService.mutate(setHouseOverproductionRatioMutation, {ratio: this.overproductionSliderValue}).subscribe()
 		}

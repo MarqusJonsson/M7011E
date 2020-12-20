@@ -16,7 +16,7 @@ export class ProsumerCurrencyBlockComponent implements OnInit {
 	}
 
 	ngAfterViewInit() {
-		this.graphqlService.addSubscriberCallBack(this.onUpdate);
+		this.graphqlService.addSubscriberCallback(this.onUpdate);
 	}
 
 	public setCurrency(value: number) {

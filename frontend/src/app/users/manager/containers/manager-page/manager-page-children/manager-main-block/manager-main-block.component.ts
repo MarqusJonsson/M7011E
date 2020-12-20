@@ -37,7 +37,7 @@ export class ManagerMainBlockComponent implements OnInit {
 	}
 
 	ngAfterViewInit() {
-		this.graphqlService.addSubscriberCallBack(this.onUpdate);
+		this.graphqlService.addSubscriberCallback(this.onUpdate);
 		this.hideElement(this.prosumerInfoContainer.nativeElement.id)
 		this.prosumerInfoCloseSymbol.nativeElement.onclick = () => {this.hideElement(this.prosumerInfoContainer.nativeElement.id);};
 	}

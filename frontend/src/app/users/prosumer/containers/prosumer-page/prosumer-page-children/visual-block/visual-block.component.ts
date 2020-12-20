@@ -22,7 +22,7 @@ export class VisualBlockComponent implements OnInit {
 	}
 
 	ngAfterViewInit() {
-		this.graphqlService.addSubscriberCallBack(this.onUpdate);
+		this.graphqlService.addSubscriberCallback(this.onUpdate);
 	}
 
 	public setProduction(value: number) {
