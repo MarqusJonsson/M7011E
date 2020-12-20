@@ -38,69 +38,42 @@ export class ManagerMainBlockComponent implements OnInit {
 
 	ngAfterViewInit() {
 		this.graphqlService.addSubscriberCallback(this.onUpdate);
-		this.hideElement(this.prosumerInfoContainer.nativeElement.id)
+		this.hideElement(this.prosumerInfoContainer.nativeElement.id);
 		this.prosumerInfoCloseSymbol.nativeElement.onclick = () => {this.hideElement(this.prosumerInfoContainer.nativeElement.id);};
 	}
 
 	public createProsumerList(prosumers): void {
-		this.prosumerList.nativeElement.innerText = "";
-		let blackoutStatus = true;
 		if (this.selectedProsumerId != null) {
 			this.graphqlService.query(prosumerQueryById, {id:this.selectedProsumerId}).subscribe((data: any) => {
 				const prosumer = data.prosumer;
-				this.setProsumerInfoBattery(prosumer.house.battery.buffer);
-				this.setProsumerInfoCurrency(prosumer.currency);
-				this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
-				this.setProsumerInfoProduction(prosumer.house.electricityProduction);
-				this.setProsumerInfoConsumption(prosumer.house.electricityConsumption);
-				this.setProsumerInfoIsBlocked(prosumer.isBlocked);
-				blackoutStatus = prosumer.house.hasBlackout;
+				this.setAllProsumerInfo(prosumer, "Prosumer " + this.selectedProsumerId);				
 			});
 		}
-			
+
 		for (let i = 0; i < prosumers.length; i++) {
-			const prosumerName = document.createElement('button');
-			prosumerName.innerText = `Prosumer ${prosumers[i].id}`;
-			prosumerName.onclick = () => {
-				this.selectedProsumerId = prosumers[i].id;
-				this.graphqlService.query(prosumerQueryById, {id: prosumers[i].id}).subscribe((data: any) => {
-					const prosumer = data.prosumer;
-					this.setProsumerInfoHeader(prosumerName.innerText);
-					this.setProsumerInfoCurrency(prosumer.currency);
-					this.setProsumerInfoBattery(prosumer.house.battery.buffer);
-					this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
-					this.setProsumerInfoProduction(prosumer.house.electricityProduction);
-					this.setProsumerInfoConsumption(prosumer.house.electricityConsumption);
-					this.setProsumerInfoIsBlocked(prosumer.isBlocked);
-					this.showElement(this.prosumerInfoContainer.nativeElement.id);
-					blackoutStatus = prosumer.house.hasBlackout;
-				});
-				
+			if (this.prosumerList.nativeElement.children.length === 0) {
+				this.createProsumerInfoEntry(prosumers[i].id, prosumers[i].house.hasBlackout);
 			}
-			const deleteImage = document.createElement('img');
-			deleteImage.src = "/assets/x-mark.svg";
-			deleteImage.alt = "Delete";
-
-			const blockImage = document.createElement('img');
-			blockImage.src = "/assets/stop.svg";
-			blockImage.onclick = () => {this.blockProsumer(prosumers[i].id)};
-			blockImage.alt = "Block";
-			
-			const blackoutSvg = this.createProsumerListBlackoutSVG();
-			blackoutSvg.classList.add("prosumer-list-blackout-status");
-			if(!blackoutStatus)
-				blackoutSvg.classList.add("online-status");
-
-			const onlineStatusSvg = this.createProsumerListLoginStatusSVG();
-
-			const item = document.createElement('li');
-			item.className = "p-list";
-			item.appendChild(blackoutSvg);
-			item.appendChild(prosumerName);
-			item.appendChild(blockImage);
-			item.appendChild(onlineStatusSvg);
-			item.appendChild(deleteImage);
-			this.prosumerList.nativeElement.appendChild(item);
+			else {
+				for (let j = 0; j < this.prosumerList.nativeElement.children.length; j++) {
+					if("Prosumer " + prosumers[i].id === this.prosumerList.nativeElement.children[j].textContent) {
+						let blackOutSvg = this.prosumerList.nativeElement.children[j].getElementsByClassName("online-status")[0];
+						if (prosumers[i].house.hasBlackout) {
+							if ( blackOutSvg !== undefined) {
+								blackOutSvg.classList.remove("online-status");
+							}
+						}
+						else {
+							if (blackOutSvg === undefined) {
+								blackOutSvg.classList.add("online-status");
+							}
+						}
+					}
+					else {
+						this.createProsumerInfoEntry(prosumers[i].id,  prosumers[i].house.hasBlackout);
+					}
+				}
+			}
 		}
 	}
 
@@ -130,6 +103,60 @@ export class ManagerMainBlockComponent implements OnInit {
 
 	public setProsumerInfoIsBlocked(value: boolean) {
 		this.prosumerInfoIsBlocked.nativeElement.innerText = value;
+	}
+
+	public setAllProsumerInfo(prosumer: any, prosumerName: any) {
+		this.setProsumerInfoHeader(prosumerName);
+		this.setProsumerInfoCurrency(prosumer.currency);
+		this.setProsumerInfoBattery(prosumer.house.battery.buffer);
+		this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
+		this.setProsumerInfoProduction(prosumer.house.electricityProduction);
+		this.setProsumerInfoConsumption(prosumer.house.electricityConsumption);
+		this.setProsumerInfoIsBlocked(prosumer.isBlocked);
+	}
+
+	public createProsumerInfoItem(prosumerId, prosumerButton, blackoutStatus): HTMLLIElement {
+		const deleteImage = document.createElement('img');
+		deleteImage.src = "/assets/x-mark.svg";
+		deleteImage.alt = "Delete";
+		
+		const blockImage = document.createElement('img');
+		blockImage.src = "/assets/stop.svg";
+		blockImage.onclick = () => {this.blockProsumer(prosumerId)};
+		blockImage.alt = "Block";
+		
+		const blackoutSvg = this.createProsumerListBlackoutSVG();
+		blackoutSvg.classList.add("prosumer-list-blackout-status");
+		if(!blackoutStatus)
+		blackoutSvg.classList.add("online-status");
+		
+		const onlineStatusSvg = this.createProsumerListLoginStatusSVG();
+		
+		const item = document.createElement('li');
+		item.className = "p-list";
+		item.appendChild(blackoutSvg);
+		item.appendChild(prosumerButton);;
+		item.appendChild(blockImage);
+		item.appendChild(onlineStatusSvg);
+		item.appendChild(deleteImage);
+		return item;
+
+	}
+
+	public createProsumerInfoEntry(prosumerId, blackoutStatus) {
+		const prosumerName = document.createElement('button');
+		prosumerName.innerText = `Prosumer ${prosumerId}`;
+		prosumerName.onclick = () => {
+			this.selectedProsumerId = prosumerId;
+			this.graphqlService.query(prosumerQueryById, {id: prosumerId}).subscribe((data: any) => {
+				const prosumer = data.prosumer;
+				this.setAllProsumerInfo(prosumer, prosumerName.innerText);
+				this.showElement(this.prosumerInfoContainer.nativeElement.id);
+				blackoutStatus = prosumer.house.hasBlackout;
+			});
+		}
+		const item = this.createProsumerInfoItem(prosumerId, prosumerName, blackoutStatus);
+		this.prosumerList.nativeElement.appendChild(item);
 	}
 
 
