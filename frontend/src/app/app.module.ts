@@ -34,7 +34,7 @@ import JwtInterceptor from './api/interceptors/jwt.interceptor';
 import { GraphQLModule } from './graphql.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './users/shared/containers/dialog/dialog.component';
-import { ConfirmDialogService } from './users/shared/services/confirm-dialog.service';
+import { UploadProfilePictureComponent } from './picture/containers/upload-profile-picture/upload-profile-picture.component';
 
 @NgModule({
 	declarations: [
@@ -57,6 +57,7 @@ import { ConfirmDialogService } from './users/shared/services/confirm-dialog.ser
 		ProsumerCurrencyBlockComponent,
 		DialogComponent,
 		LogoutComponent,
+		UploadProfilePictureComponent,
 	],
 	imports: [
 		BrowserModule,

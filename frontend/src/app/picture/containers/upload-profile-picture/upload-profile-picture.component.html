@@ -1,0 +1,13 @@
+<div *ngIf="!uploading">
+	<label class="button file-input-button">
+		Browse<input class="file-input" type="file" (change)="onSelectFile($event)"/>
+	</label>
+	<button class="button upload-button" [disabled]="!currentFile && !uploading" (click)="upload()">Upload</button>
+</div>
+<div *ngIf="uploading" class="progress">
+	<div class="progress-bar-back">
+		<div class="progress-bar-front" [ngStyle]="{width: progress + '%'}"></div>
+	</div>
+	<span class="progress-text">{{progress}}%</span>
+</div>
+<img *ngIf="currentFile" class="image-preview" [src]="url">

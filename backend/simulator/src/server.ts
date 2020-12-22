@@ -6,6 +6,7 @@ import { errorHandler } from './middleware/errorHandler';
 // GraphQL
 import { formatError, GraphQLError, GraphQLSchema } from 'graphql';
 import { graphqlHTTP } from 'express-graphql';
+import { graphqlUploadExpress } from 'graphql-upload';
 import { rootQuery } from './api/schemas/root/queries';
 import { rootMutation } from './api/schemas/root/mutations';
 import { Simulator } from './simulator';
@@ -34,7 +35,7 @@ export class Server {
 		// Setup middleware
 		this._app.use(bodyParser.json());
 		this._app.use(cors(['http://localhost:3002', 'http://localhost:4200']));
-		this._app.use('/graphiql', authenticateAccessToken, graphqlHTTP((req, res) => ({
+		this._app.use('/graphiql', authenticateAccessToken, graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 1}), graphqlHTTP((req, res) => ({
 			schema: schema,
 			context: setupGraphQLContext(req, simulator),
 			customFormatErrorFn: (error) => {
