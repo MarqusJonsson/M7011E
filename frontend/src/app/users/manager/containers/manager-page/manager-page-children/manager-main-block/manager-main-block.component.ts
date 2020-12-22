@@ -226,6 +226,11 @@ export class ManagerMainBlockComponent implements OnInit {
 						let item  = document.getElementById("prosumer-info-item_" + prosumerId);
 						if (item !== null) {
 							this.prosumerList.nativeElement.removeChild(item);
+							if (this.selectedProsumerId === prosumerId) {
+								this.selectedProsumerId = null;
+								this.hideElement(this.prosumerInfoContainer.nativeElement.id);
+
+							}
 						}
 					});
 				}	
