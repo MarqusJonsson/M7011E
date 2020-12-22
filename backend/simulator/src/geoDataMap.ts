@@ -1,5 +1,5 @@
 import { Location } from "./buildings/components/geoData";
-import { apply1DInterpolation, calc1DInterpolationConstants, geoDatabilinearInterpolation } from "./math/interpolation";
+import { geoDatabilinearInterpolation } from "./math/interpolation";
 import { ms_to_YMDHMSM, YMDHMSM } from "./math/time";
 
 export class GeoDataMapPair {

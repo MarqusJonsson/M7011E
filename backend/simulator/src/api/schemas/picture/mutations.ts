@@ -4,8 +4,6 @@ import {
 } from 'graphql';
 import { GraphQLContext } from '../graphQLContext';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
-import { createWriteStream, existsSync, fstat, mkdirSync, readdirSync, stat, unlinkSync } from 'fs';
-import { BadRequest } from '../../../utils/error';
 import { pictureResolver } from '../../resolvers/picture';
 
 

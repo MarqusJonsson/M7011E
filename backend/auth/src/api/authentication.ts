@@ -7,7 +7,6 @@ import { crypto } from '../utils/crypto';
 import express from 'express';
 import { StatusCode } from '../utils/statusCode';
 import { UsersRepository } from '../database/repositories';
-import { TokenExpiredError } from 'jsonwebtoken';
 
 function register(request: express.Request): Promise<PostResult> {
 	return new Promise((resolve, reject) => {

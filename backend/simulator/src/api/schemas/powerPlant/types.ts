@@ -2,13 +2,11 @@ import {
 	GraphQLObjectType,
 	GraphQLID,
 	GraphQLFloat,
-	GraphQLInputObjectType,
 	GraphQLBoolean,
 	GraphQLList,
 	GraphQLError
 } from 'graphql';
 import { Manager } from '../../../users/manager';
-import { Prosumer } from '../../../users/prosumer';
 import { batteryResolver } from '../../resolvers/battery';
 import { generatorResolver } from '../../resolvers/generator';
 import { geoDataResolver } from '../../resolvers/geoData';
@@ -16,7 +14,6 @@ import { BatteryType } from '../battery/types';
 import { GeneratorType } from '../generator/types';
 import { GeoDataType } from '../geoData/types';
 import { GraphQLContext } from '../graphQLContext';
-import { GraphQLErrorName } from '../graphQLErrors';
 
 const typeName = 'PowerPlant';
 

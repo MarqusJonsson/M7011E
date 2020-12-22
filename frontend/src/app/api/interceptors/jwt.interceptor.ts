@@ -1,6 +1,6 @@
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { catchError, filter, switchMap, take } from 'rxjs/operators';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { StatusCode } from '../statusCode';
 import { AuthService } from '../../auth/services/auth.service';

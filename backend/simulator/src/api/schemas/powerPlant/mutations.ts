@@ -1,8 +1,7 @@
 import { typeName, PowerPlantType} from './types';
 import { powerPlantResolver } from '../../resolvers/powerPlant';
 import {
-	GraphQLFloat,
-	GraphQLNonNull
+	GraphQLFloat
 } from 'graphql';
 import { GraphQLContext } from '../graphQLContext';
 
