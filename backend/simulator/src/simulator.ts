@@ -22,8 +22,10 @@ export class Simulator {
 	private _users: IMap<Manager | Prosumer>;
 	private _managers: IMap<Manager> = new IMap<Manager>();
 	private _prosumers: IMap<Prosumer> = new IMap<Prosumer>();
-	private _newProsumers: Prosumer[] = [];
-	private _newMangers: Manager[] = [];
+	private _addedProsumers: Prosumer[] = [];
+	private _addedManagers: Manager[] = [];
+	private _removedProsumers: Prosumer[] = [];
+	private _removedManagers: Manager[] = [];
 
 	constructor(environment: Environment, users: IMap<Manager | Prosumer>, samplingIntervalMiliSeconds: number, fixedTimeStep: boolean = false, fixedDeltaTime: number = 1000) {
 		this._environment = environment;
@@ -83,13 +85,20 @@ export class Simulator {
 		return logStr;
 	}
 	
-	public run() {
-		this.interval = <any> setInterval(() => {
-			this.update()
-		}, this.updateIntervalMiliSeconds);
+	public run(steps: number = -1) {
+		if (steps < 0) {
+			this.interval = <any> setInterval(() => {
+				this.update()
+			}, this.updateIntervalMiliSeconds);
+		} else if (steps > 0) {
+			for (let i = 0; i < steps; i++) {
+				this.update();
+			}
+		}
 	}
 
 	public update() {
+		this.removeUsers();
 		this.addUsers();
 		this.updateEnvironmentVariables();
 		this.updateElectricityConsumptionValues();
@@ -100,7 +109,7 @@ export class Simulator {
 		this.prosumersBuyElectricity();
 		this.consumeElectricity();
 		this._updateDeltaTime();
-		console.log(this.tempLog());
+		//console.log(this.tempLog());
 	}
 
 	private updateEnvironmentVariables() {
@@ -188,33 +197,65 @@ export class Simulator {
 	}
 
 	private addUsers() {
-		this._newProsumers.forEach((prosumer) => {
+		this._addedProsumers.forEach((prosumer) => {
 			this.prosumers.iSet(prosumer);
+			this.users.iSet(prosumer);
 		});
-		this._newMangers.forEach((manager) => {
+		this._addedManagers.forEach((manager) => {
 			this.managers.iSet(manager);
-		})
+			this.users.iSet(manager);
+		});
+		if (this._addedManagers.length > 0) {
+			// If at least one new manager was added, all connections needs to be recalculated
+			this.connectProsumersToManager(this.prosumers);
+		} else if (this._addedProsumers.length > 0) {
+			// If no new managers were added, the new prosumers must be connected to a manager
+			this.connectProsumersToManager(this._addedProsumers);
+		}
 		// Empty the arrays
-		this._newProsumers.length = 0;
-		this._newMangers.length = 0;
+		this._addedProsumers.length = 0;
+		this._addedManagers.length = 0;
 	}
 
 	// Adds a prosumer to the simulator
 	public addProsumer(prosumer: Prosumer) {
-		this.prosumers.iSet(prosumer);
-		this.users.iSet(prosumer);
-		this.connectProsumerToManger(prosumer);
+		this._addedProsumers.push(prosumer);
 	}
 
 	// Adds a manager to the simulator
 	public addManager(manager: Manager) {
-		this.managers.iSet(manager);
-		this.users.iSet(manager);
-		this.refreshProsumerManagerConnections();
+		this._addedManagers.push(manager);
+	}
+
+	private removeUsers() {
+		this._removedProsumers.forEach((prosumer) => {
+			this.disconnectProsumerFromManager(prosumer);
+			this.prosumers.iDelete(prosumer);
+			this.users.iDelete(prosumer);
+		});
+		let managerlessProsumers: Prosumer[] = [];
+		this._removedManagers.forEach((manager) => {
+			managerlessProsumers.push(...manager.prosumers.values());
+			this.managers.iDelete(manager);
+			this.users.iDelete(manager);
+		});
+		// Connect all prosumers who lost their manager to a new manager
+		this.connectProsumersToManager(managerlessProsumers);
+		// Empty the arrays
+		this._removedProsumers.length = 0;
+		this._removedManagers.length = 0;
+	}
+
+	public removeProsumer(prosumer: Prosumer) {
+		this._removedProsumers.push(prosumer);
+	}
+
+	public removeManager(manager: Manager) {
+		this._removedManagers.push(manager);
 	}
 
 	// Connects given prosumer to the geographically closest manager
-	private connectProsumerToManger(prosumer: Prosumer) {
+	private connectProsumerToManager(prosumer: Prosumer) {
 		const houseGeoData = prosumer.building.geoData;
 		const managersIterable: IterableIterator<Manager> = this.managers.values();
 		let closestManager: Manager = managersIterable.next().value;
@@ -230,10 +271,19 @@ export class Simulator {
 		closestManager.prosumers.iSet(prosumer);
 	}
 
-	// Refreshes all prosumer-manager connections
-	public refreshProsumerManagerConnections() {
-		this.prosumers.forEach((prosumer) => {
-			this.connectProsumerToManger(prosumer);
+	// Disconnects given prosumer from its given manager
+	private disconnectProsumerFromManager(prosumer: Prosumer) {
+		this._managers.forEach((manager) => {
+			if (manager.prosumers.iDelete(prosumer)) {
+				return;
+			}
+		})
+	}
+
+	// Connects all provided prosumers to a manager
+	public connectProsumersToManager(prosumers: IMap<Prosumer> | Prosumer[]) {
+		prosumers.forEach((prosumer: Prosumer) => {
+			this.connectProsumerToManager(prosumer);
 		});
 	}
 
