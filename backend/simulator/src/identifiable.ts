@@ -56,4 +56,8 @@ export class IMap<T extends Identifiable> extends Map<string, T> {
 	public uGet(identifier: Identifier): T | undefined {
 		return this.get(identifier.type + identifier.id);
 	}
+
+	public iDelete(identifiable: T): boolean {
+		return this.delete(identifiable.type + identifiable.id);
+	}
 }
