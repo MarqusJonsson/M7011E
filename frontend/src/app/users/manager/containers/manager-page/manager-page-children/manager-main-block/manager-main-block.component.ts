@@ -55,8 +55,10 @@ export class ManagerMainBlockComponent implements OnInit {
 				this.createProsumerInfoEntry(prosumers[i].id, prosumers[i].house.hasBlackout);
 			}
 			else {
+				let matchFound: boolean = false;
 				for (let j = 0; j < this.prosumerList.nativeElement.children.length; j++) {
 					if("Prosumer " + prosumers[i].id === this.prosumerList.nativeElement.children[j].textContent) {
+						matchFound = true;
 						let blackOutSvg = this.prosumerList.nativeElement.children[j].getElementsByClassName("online-status")[0];
 						if (prosumers[i].house.hasBlackout) {
 							if ( blackOutSvg !== undefined) {
@@ -65,14 +67,16 @@ export class ManagerMainBlockComponent implements OnInit {
 						}
 						else {
 							if (blackOutSvg === undefined) {
-								blackOutSvg.classList.add("online-status");
+									this.prosumerList.nativeElement.children[j].children[0].classList.add("online-status");
 							}
 						}
 					}
-					else {
-						this.createProsumerInfoEntry(prosumers[i].id,  prosumers[i].house.hasBlackout);
-					}
+
 				}
+				if ( matchFound === false) {
+					this.createProsumerInfoEntry(prosumers[i].id,  prosumers[i].house.hasBlackout);
+				}
+
 			}
 		}
 	}
