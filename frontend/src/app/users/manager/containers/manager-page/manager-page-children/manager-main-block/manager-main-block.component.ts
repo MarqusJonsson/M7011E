@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AlertService } from 'src/app/alert/services/alert.service';
-import { setProsumerSellTimeoutMutation } from 'src/app/api/models/mutations/prosumerMutations';
+import { deleteProsumerMutation, setProsumerSellTimeoutMutation } from 'src/app/api/models/mutations/prosumerMutations';
 import { prosumerQueryById } from 'src/app/api/models/prosumerContent';
 import { GraphqlService } from 'src/app/api/services/graphql.service';
 import { displayValuePrecision } from 'src/app/users/shared/pageConstants';
@@ -38,69 +38,42 @@ export class ManagerMainBlockComponent implements OnInit {
 
 	ngAfterViewInit() {
 		this.graphqlService.addSubscriberCallback(this.onUpdate);
-		this.hideElement(this.prosumerInfoContainer.nativeElement.id)
+		this.hideElement(this.prosumerInfoContainer.nativeElement.id);
 		this.prosumerInfoCloseSymbol.nativeElement.onclick = () => {this.hideElement(this.prosumerInfoContainer.nativeElement.id);};
 	}
 
 	public createProsumerList(prosumers): void {
-		this.prosumerList.nativeElement.innerText = "";
-		let blackoutStatus = true;
 		if (this.selectedProsumerId != null) {
 			this.graphqlService.query(prosumerQueryById, {id:this.selectedProsumerId}).subscribe((data: any) => {
 				const prosumer = data.prosumer;
-				this.setProsumerInfoBattery(prosumer.house.battery.buffer);
-				this.setProsumerInfoCurrency(prosumer.currency);
-				this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
-				this.setProsumerInfoProduction(prosumer.house.electricityProduction);
-				this.setProsumerInfoConsumption(prosumer.house.electricityConsumption);
-				this.setProsumerInfoIsBlocked(prosumer.isBlocked);
-				blackoutStatus = prosumer.house.hasBlackout;
+				this.setAllProsumerInfo(prosumer, "Prosumer " + this.selectedProsumerId);				
 			});
 		}
-			
+
 		for (let i = 0; i < prosumers.length; i++) {
-			const prosumerName = document.createElement('button');
-			prosumerName.innerText = `Prosumer ${prosumers[i].id}`;
-			prosumerName.onclick = () => {
-				this.selectedProsumerId = prosumers[i].id;
-				this.graphqlService.query(prosumerQueryById, {id: prosumers[i].id}).subscribe((data: any) => {
-					const prosumer = data.prosumer;
-					this.setProsumerInfoHeader(prosumerName.innerText);
-					this.setProsumerInfoCurrency(prosumer.currency);
-					this.setProsumerInfoBattery(prosumer.house.battery.buffer);
-					this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
-					this.setProsumerInfoProduction(prosumer.house.electricityProduction);
-					this.setProsumerInfoConsumption(prosumer.house.electricityConsumption);
-					this.setProsumerInfoIsBlocked(prosumer.isBlocked);
-					this.showElement(this.prosumerInfoContainer.nativeElement.id);
-					blackoutStatus = prosumer.house.hasBlackout;
-				});
-				
+			if (this.prosumerList.nativeElement.children.length === 0) {
+				this.createProsumerInfoEntry(prosumers[i].id, prosumers[i].house.hasBlackout);
 			}
-			const deleteImage = document.createElement('img');
-			deleteImage.src = "/assets/x-mark.svg";
-			deleteImage.alt = "Delete";
-
-			const blockImage = document.createElement('img');
-			blockImage.src = "/assets/stop.svg";
-			blockImage.onclick = () => {this.blockProsumer(prosumers[i].id)};
-			blockImage.alt = "Block";
-			
-			const blackoutSvg = this.createProsumerListBlackoutSVG();
-			blackoutSvg.classList.add("prosumer-list-blackout-status");
-			if(!blackoutStatus)
-				blackoutSvg.classList.add("online-status");
-
-			const onlineStatusSvg = this.createProsumerListLoginStatusSVG();
-
-			const item = document.createElement('li');
-			item.className = "p-list";
-			item.appendChild(blackoutSvg);
-			item.appendChild(prosumerName);
-			item.appendChild(blockImage);
-			item.appendChild(onlineStatusSvg);
-			item.appendChild(deleteImage);
-			this.prosumerList.nativeElement.appendChild(item);
+			else {
+				for (let j = 0; j < this.prosumerList.nativeElement.children.length; j++) {
+					if("Prosumer " + prosumers[i].id === this.prosumerList.nativeElement.children[j].textContent) {
+						let blackOutSvg = this.prosumerList.nativeElement.children[j].getElementsByClassName("online-status")[0];
+						if (prosumers[i].house.hasBlackout) {
+							if ( blackOutSvg !== undefined) {
+								blackOutSvg.classList.remove("online-status");
+							}
+						}
+						else {
+							if (blackOutSvg === undefined) {
+								blackOutSvg.classList.add("online-status");
+							}
+						}
+					}
+					else {
+						this.createProsumerInfoEntry(prosumers[i].id,  prosumers[i].house.hasBlackout);
+					}
+				}
+			}
 		}
 	}
 
@@ -132,6 +105,48 @@ export class ManagerMainBlockComponent implements OnInit {
 		this.prosumerInfoIsBlocked.nativeElement.innerText = value;
 	}
 
+	public setAllProsumerInfo(prosumer: any, prosumerName: any) {
+		this.setProsumerInfoHeader(prosumerName);
+		this.setProsumerInfoCurrency(prosumer.currency);
+		this.setProsumerInfoBattery(prosumer.house.battery.buffer);
+		this.setProsumerInfoCapacity(prosumer.house.battery.capacity);
+		this.setProsumerInfoProduction(prosumer.house.electricityProduction);
+		this.setProsumerInfoConsumption(prosumer.house.electricityConsumption);
+		this.setProsumerInfoIsBlocked(prosumer.isBlocked);
+	}
+
+	public createProsumerInfoItem(prosumerId, prosumerButton, blackoutStatus): HTMLLIElement {
+		const deleteSvg = this.createProsumerListDeleteSVG(prosumerId);
+		const blockImage = this.createProsumerListblockIMG(prosumerId);
+		const blackoutSvg = this.createProsumerListBlackoutSVG(blackoutStatus);
+		const onlineStatusSvg = this.createProsumerListLoginStatusSVG();
+		const item = document.createElement('li');
+		item.className = "p-list";
+		item.appendChild(blackoutSvg);
+		item.appendChild(prosumerButton);;
+		item.appendChild(blockImage);
+		item.appendChild(onlineStatusSvg);
+		item.appendChild(deleteSvg);
+		return item;
+
+	}
+
+	public createProsumerInfoEntry(prosumerId, blackoutStatus) {
+		const prosumerName = document.createElement('button');
+		prosumerName.innerText = `Prosumer ${prosumerId}`;
+		prosumerName.onclick = () => {
+			this.selectedProsumerId = prosumerId;
+			this.graphqlService.query(prosumerQueryById, {id: prosumerId}).subscribe((data: any) => {
+				const prosumer = data.prosumer;
+				this.setAllProsumerInfo(prosumer, prosumerName.innerText);
+				this.showElement(this.prosumerInfoContainer.nativeElement.id);
+				blackoutStatus = prosumer.house.hasBlackout;
+			});
+		}
+		const item = this.createProsumerInfoItem(prosumerId, prosumerName, blackoutStatus);
+		this.prosumerList.nativeElement.appendChild(item);
+	}
+
 
 	public setTemperature(value: number) {
 		this.temperature.nativeElement.innerText = value.toFixed(displayValuePrecision) + " C";
@@ -157,11 +172,14 @@ export class ManagerMainBlockComponent implements OnInit {
 		this.createProsumerList(data.manager.prosumers);
 	}
 
-	public createProsumerListBlackoutSVG(): SVGSVGElement{
+	public createProsumerListBlackoutSVG(blackoutStatus): SVGSVGElement{
 		const blackoutSvg = document.createElementNS('http://www.w3.org/2000/svg', "svg");
 		blackoutSvg.setAttribute("width", this.svgWidth);
 		blackoutSvg.setAttribute("height", this.svgHeight);
-		blackoutSvg.setAttribute("viewBox", this.svgViewBox)
+		blackoutSvg.setAttribute("viewBox", this.svgViewBox);
+		blackoutSvg.classList.add("prosumer-list-blackout-status");
+		if(!blackoutStatus)
+		blackoutSvg.classList.add("online-status");
 		const blackoutShape = document.createElementNS('http://www.w3.org/2000/svg', "path");
 		blackoutShape.setAttribute("d","M19 6.734c0 4.164-3.75 6.98-3.75 10.266h-6.5c0-3.286-3.75-6.103-3.75-10.266 0-4.343 3.498-6.734 6.996-6.734 3.502 0 7.004 2.394 7.004 6.734zm-4.5 11.266h-5c-.276 0-.5.224-.5.5s.224.5.5.5h5c.276 0 .5-.224.5-.5s-.224-.5-.5-.5zm0 2h-5c-.276 0-.5.224-.5.5s.224.5.5.5h5c.276 0 .5-.224.5-.5s-.224-.5-.5-.5zm.25 2h-5.5l1.451 1.659c.19.216.465.341.753.341h1.093c.288 0 .562-.125.752-.341l1.451-1.659z");		
 		blackoutSvg.appendChild(blackoutShape);
@@ -170,7 +188,7 @@ export class ManagerMainBlockComponent implements OnInit {
 	}
 
 	public createProsumerListLoginStatusSVG(): SVGSVGElement{
-		const loginStatusSvg = document.createElementNS('http://www.w3.org/2000/svg', "svg");;
+		const loginStatusSvg = document.createElementNS('http://www.w3.org/2000/svg', "svg");
 		loginStatusSvg.setAttribute("width", this.svgWidth);
 		loginStatusSvg.setAttribute("height", this.svgHeight);
 		loginStatusSvg.setAttribute("viewBox", this.svgViewBox);
@@ -182,16 +200,49 @@ export class ManagerMainBlockComponent implements OnInit {
 		return loginStatusSvg;
 	}
 
+	public createProsumerListDeleteSVG(prosumerId): SVGSVGElement {
+		const deleteSvg =  document.createElementNS('http://www.w3.org/2000/svg', "svg");
+		deleteSvg.onclick = () => {
+			const dialogData = {
+				title: `Delete prosumer ${prosumerId}`,
+				message: '',
+				cancelText: 'Cancel',
+				confirmText: 'Confirm',
+			  };
+			  this.dialogService.open(dialogData);
+			  this.dialogService.confirmed().subscribe(confirmed => {
+				if (confirmed) {
+						this.graphqlService.mutate(deleteProsumerMutation, {id: prosumerId}).subscribe();
+				}	
+			 });
+		}
+		deleteSvg.setAttribute("width", this.svgWidth);
+		deleteSvg.setAttribute("height", this.svgHeight);
+		deleteSvg.setAttribute("viewBox", this.svgViewBox);
+		const deleteShape = document.createElementNS('http://www.w3.org/2000/svg', "path");
+		deleteShape.setAttribute("d", "M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z");
+		deleteSvg.appendChild(deleteShape);
+		return deleteSvg;
+	}
+
+	createProsumerListblockIMG(prosumerId: any): HTMLImageElement {
+		const blockImage = document.createElement('img');
+		blockImage.src = "/assets/stop.svg";
+		blockImage.onclick = () => {this.blockProsumer(prosumerId)};
+		blockImage.alt = "Block";
+		return blockImage;
+	}
+
 	public blockProsumer(prosumerId: number) {
 		const inputFieldContainer = document.createElement("div");
 		let inputField = document.createElement("input");
 		inputField.placeholder = "Block duration in seconds";
 		inputFieldContainer.appendChild(inputField);
 		const dialogData = {
-			title: 'Confirm Block',
+			title: `Block prosumer ${prosumerId}`,
 			message: '',
 			cancelText: 'Cancel',
-			confirmText: 'Submit',
+			confirmText: 'Confirm',
 			extraField: inputFieldContainer
 		  };
 		  this.dialogService.open(dialogData);
@@ -201,7 +252,7 @@ export class ManagerMainBlockComponent implements OnInit {
 				if(!isNaN(input))
 					this.graphqlService.mutate(setProsumerSellTimeoutMutation, { id: prosumerId, seconds: input}).subscribe();
 				else {
-					this.alertService.error("Invalid input, prosumer block canceled", {autoClose: true});
+					this.alertService.error("Invalid input, prosumer block aborted", {autoClose: true});
 				}
 					
 			}

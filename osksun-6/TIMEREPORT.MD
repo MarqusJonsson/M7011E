@@ -22,3 +22,4 @@
 |2020-12-16| 13 | Added generic dialog component and service to frontend and finished mutation request for blocking specific prosumer from selling specified by input. Also worked on presentation and added more content that can be retrieved with graphql queries.
 |2020-12-17| 2.5 | Adjusted GUI for prosumer.
 |2020-12-19| 9 | Started splitting our single ratio for battery/powerplant electricity propagation into ratios for overproduction and underproduction. Also setup GraphQL mutation requests for the ratios.
+|2020-12-20| 4 | Restructured and optimized the display of prosumer list in managar GUI.

@@ -28,7 +28,7 @@ export class House extends BaseBuilding {
 		const totalProduction = this.electricityProduction;
 		let productionToBattery: number;
 		let productionToPowerPlant: number;
-		if (this.electricityConsumption - totalProduction < 0) {
+		if (totalProduction - this.electricityConsumption > 0) {
 			productionToBattery = totalProduction * this.overproductionBatteryToPowerPlantRatio;
 			productionToPowerPlant = totalProduction - productionToBattery;
 		}

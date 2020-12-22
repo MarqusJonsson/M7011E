@@ -17,11 +17,13 @@ export class Prosumer extends BaseUser<House> {
 		const pBattery = manager.building.battery;
 		if (houseDemand > 0){
 			if (currencyDifference >= 0){
+				// Power plant has more than enough electricity, buy everything
 				if (houseDemand <= pBattery.buffer){
 					payment = houseDemand * electricityBuyPrice;
 					pBattery.buffer -= houseDemand;
 					hBattery.buffer += houseDemand;
 				}
+				// Buy electricity that is available from power plant
 				else {
 					payment = pBattery.buffer * electricityBuyPrice;
 					hBattery.buffer += pBattery.buffer;
