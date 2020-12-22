@@ -24,7 +24,7 @@ export class ManagerMainBlockComponent implements OnInit {
 	@ViewChild('prosumerInfoConsumption') prosumerInfoConsumption:ElementRef;
 	@ViewChild('prosumerInfoIsBlocked') prosumerInfoIsBlocked:ElementRef;
 	@ViewChild('prosumerInfoCloseSymbol') prosumerInfoCloseSymbol:ElementRef;
-
+	@ViewChild('prosumerInfoHasBlackout') prosumerInfoHasBlackout: ElementRef;
 	private selectedProsumerId = null;
 	private svgWidth = "24";
 	private svgHeight = "24";
@@ -109,6 +109,10 @@ export class ManagerMainBlockComponent implements OnInit {
 		this.prosumerInfoIsBlocked.nativeElement.innerText = value;
 	}
 
+	public setProsumerInfoHasBlackout(value: boolean) {
+		this.prosumerInfoHasBlackout.nativeElement.innerText = value
+	}
+
 	public setAllProsumerInfo(prosumer: any, prosumerName: any) {
 		this.setProsumerInfoHeader(prosumerName);
 		this.setProsumerInfoCurrency(prosumer.currency);
@@ -117,6 +121,7 @@ export class ManagerMainBlockComponent implements OnInit {
 		this.setProsumerInfoProduction(prosumer.house.electricityProduction);
 		this.setProsumerInfoConsumption(prosumer.house.electricityConsumption);
 		this.setProsumerInfoIsBlocked(prosumer.isBlocked);
+		this.setProsumerInfoHasBlackout(prosumer.house.hasBlackout);
 	}
 
 	public createProsumerInfoItem(prosumerId, prosumerButton, blackoutStatus): HTMLLIElement {
