@@ -5,7 +5,7 @@ export const setProsumerSellTimeoutMutation = `mutation setProsumerSellTimeoutMu
 	}
 }`;
 
-export const deleteProsumerMutation = `mutation deleteProsumerMutation ($id ID!) {
+export const deleteProsumerMutation = `mutation deleteProsumerMutation ($id: ID!) {
 	deleteProsumer(id: $id) {
 		id
 	}

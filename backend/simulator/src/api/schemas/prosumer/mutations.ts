@@ -23,6 +23,22 @@ const setProsumerSellTimeout = {
 	}
 };
 
+const deleteProsumer = {
+	type: ProsumerType,
+	description: `Deletes the ${typeName} and the house belonging to it.`,
+	args: {
+		id: { type: GraphQLID}
+	},
+	resolve(parent: any, args: any, context: GraphQLContext) {
+		return prosumerResolver.deleteProsumer(
+			context.simulator,
+			context.user,
+			args.id
+		);
+	}
+};
+
 export {
-	setProsumerSellTimeout
+	setProsumerSellTimeout,
+	deleteProsumer
 };

@@ -41,6 +41,15 @@ class ProsumerResolver {
 			isBlocked: prosumer.isBlocked
 		}
 	}
+
+	deleteProsumer = (simulator: Simulator, userIdentifier: Identifier, id: number) => {
+		const prosumer: Prosumer | undefined = simulator.prosumers.uGet(new Identifier(Prosumer.name, id));
+		if (prosumer === undefined) throw new GraphQLError(GraphQLErrorName.PROSUMER_NOT_FOUND);
+		simulator.removeProsumer(prosumer);
+		return {
+			id: prosumer.id
+		}
+	}
 }
 
 export const prosumerResolver = new ProsumerResolver();
