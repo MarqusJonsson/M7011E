@@ -9,6 +9,7 @@ import { GetResult, DeleteResult, PostResult, PutResult } from './api/result';
 import { authentication as authenticationAPI } from './api/authentication';
 import { authentication } from './utils/authentication';
 import { StatusCode } from './utils/statusCode';
+import { users as usersAPI } from './api/users';
 dotenv.config();
 
 // Setup server
@@ -42,6 +43,7 @@ database.task((t) => {
 				POST	('/login', authenticationAPI.login);
 				POST	('/refresh-access-token', authenticationAPI.refreshAccessToken);
 				DELETE	('/logout', authenticationAPI.logout);
+				DELETE	('/users/:id', usersAPI.delete);
 				// Setup error handler middleware
 				app.use(errorHandler);
 				// Start server
