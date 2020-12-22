@@ -3,7 +3,7 @@ import { Manager } from './users/manager';
 import { Environment } from './environment';
 import { ELECTRICITY_SELL_RATIO } from './utils/realLifeData';
 import { ms_to_YMDHMSM } from './math/time';
-import { IMap } from './identifiable';
+import { Identifier, IMap } from './identifiable';
 
 export class Simulator {
 	// Time variables
@@ -24,8 +24,8 @@ export class Simulator {
 	private _prosumers: IMap<Prosumer> = new IMap<Prosumer>();
 	private _addedProsumers: Prosumer[] = [];
 	private _addedManagers: Manager[] = [];
-	private _removedProsumers: Prosumer[] = [];
-	private _removedManagers: Manager[] = [];
+	private _removedProsumers: Identifier[] = [];
+	private _removedManagers: Identifier[] = [];
 
 	constructor(environment: Environment, users: IMap<Manager | Prosumer>, samplingIntervalMiliSeconds: number, fixedTimeStep: boolean = false, fixedDeltaTime: number = 1000) {
 		this._environment = environment;
@@ -235,9 +235,12 @@ export class Simulator {
 		});
 		let managerlessProsumers: Prosumer[] = [];
 		this._removedManagers.forEach((manager) => {
-			managerlessProsumers.push(...manager.prosumers.values());
-			this.managers.iDelete(manager);
-			this.users.iDelete(manager);
+			const _manager = this.managers.uGet(manager);
+			if (_manager !== undefined) {
+				managerlessProsumers.push(..._manager.prosumers.values());
+				this.managers.iDelete(manager);
+				this.users.iDelete(manager);
+			}
 		});
 		// Connect all prosumers who lost their manager to a new manager
 		this.connectProsumersToManager(managerlessProsumers);
@@ -246,12 +249,14 @@ export class Simulator {
 		this._removedManagers.length = 0;
 	}
 
-	public removeProsumer(prosumer: Prosumer) {
-		this._removedProsumers.push(prosumer);
+	public removeProsumer(identifier: Identifier) {
+		if (identifier.type !== Prosumer.name) throw new Error('Tried to remove non prosumer when calling removeProsumer');
+		this._removedProsumers.push(identifier);
 	}
 
-	public removeManager(manager: Manager) {
-		this._removedManagers.push(manager);
+	public removeManager(identifier: Identifier) {
+		if (identifier.type !== Manager.name) throw new Error('Tried to remove non prosumer when calling removeManager');
+		this._removedManagers.push(identifier);
 	}
 
 	// Connects given prosumer to the geographically closest manager
@@ -272,7 +277,7 @@ export class Simulator {
 	}
 
 	// Disconnects given prosumer from its given manager
-	private disconnectProsumerFromManager(prosumer: Prosumer) {
+	private disconnectProsumerFromManager(prosumer: Identifier) {
 		this._managers.forEach((manager) => {
 			if (manager.prosumers.iDelete(prosumer)) {
 				return;

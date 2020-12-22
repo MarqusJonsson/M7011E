@@ -57,7 +57,7 @@ export class IMap<T extends Identifiable> extends Map<string, T> {
 		return this.get(identifier.type + identifier.id);
 	}
 
-	public iDelete(identifiable: T): boolean {
-		return this.delete(identifiable.type + identifiable.id);
+	public iDelete(identifier: Identifier): boolean {
+		return this.delete(identifier.type + identifier.id);
 	}
 }
