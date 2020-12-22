@@ -24,7 +24,7 @@ export class ManagerMainBlockComponent implements OnInit {
 	@ViewChild('prosumerInfoConsumption') prosumerInfoConsumption:ElementRef;
 	@ViewChild('prosumerInfoIsBlocked') prosumerInfoIsBlocked:ElementRef;
 	@ViewChild('prosumerInfoCloseSymbol') prosumerInfoCloseSymbol:ElementRef;
-
+	@ViewChild('prosumerInfoHasBlackout') prosumerInfoHasBlackout: ElementRef;
 	private selectedProsumerId = null;
 	private svgWidth = "24";
 	private svgHeight = "24";
@@ -55,8 +55,10 @@ export class ManagerMainBlockComponent implements OnInit {
 				this.createProsumerInfoEntry(prosumers[i].id, prosumers[i].house.hasBlackout);
 			}
 			else {
+				let matchFound: boolean = false;
 				for (let j = 0; j < this.prosumerList.nativeElement.children.length; j++) {
 					if("Prosumer " + prosumers[i].id === this.prosumerList.nativeElement.children[j].textContent) {
+						matchFound = true;
 						let blackOutSvg = this.prosumerList.nativeElement.children[j].getElementsByClassName("online-status")[0];
 						if (prosumers[i].house.hasBlackout) {
 							if ( blackOutSvg !== undefined) {
@@ -65,14 +67,16 @@ export class ManagerMainBlockComponent implements OnInit {
 						}
 						else {
 							if (blackOutSvg === undefined) {
-								blackOutSvg.classList.add("online-status");
+									this.prosumerList.nativeElement.children[j].children[0].classList.add("online-status");
 							}
 						}
 					}
-					else {
-						this.createProsumerInfoEntry(prosumers[i].id,  prosumers[i].house.hasBlackout);
-					}
+
 				}
+				if ( matchFound === false) {
+					this.createProsumerInfoEntry(prosumers[i].id,  prosumers[i].house.hasBlackout);
+				}
+
 			}
 		}
 	}
@@ -105,6 +109,10 @@ export class ManagerMainBlockComponent implements OnInit {
 		this.prosumerInfoIsBlocked.nativeElement.innerText = value;
 	}
 
+	public setProsumerInfoHasBlackout(value: boolean) {
+		this.prosumerInfoHasBlackout.nativeElement.innerText = value
+	}
+
 	public setAllProsumerInfo(prosumer: any, prosumerName: any) {
 		this.setProsumerInfoHeader(prosumerName);
 		this.setProsumerInfoCurrency(prosumer.currency);
@@ -113,6 +121,7 @@ export class ManagerMainBlockComponent implements OnInit {
 		this.setProsumerInfoProduction(prosumer.house.electricityProduction);
 		this.setProsumerInfoConsumption(prosumer.house.electricityConsumption);
 		this.setProsumerInfoIsBlocked(prosumer.isBlocked);
+		this.setProsumerInfoHasBlackout(prosumer.house.hasBlackout);
 	}
 
 	public createProsumerInfoItem(prosumerId, prosumerButton, blackoutStatus): HTMLLIElement {
@@ -122,6 +131,8 @@ export class ManagerMainBlockComponent implements OnInit {
 		const onlineStatusSvg = this.createProsumerListLoginStatusSVG();
 		const item = document.createElement('li');
 		item.className = "p-list";
+		item.id = "prosumer-info-item_" + prosumerId;
+		// deleteSvg needs to be appended first because of how online status css class gets added in createProsumerList
 		item.appendChild(blackoutSvg);
 		item.appendChild(prosumerButton);;
 		item.appendChild(blockImage);
@@ -178,8 +189,7 @@ export class ManagerMainBlockComponent implements OnInit {
 		blackoutSvg.setAttribute("height", this.svgHeight);
 		blackoutSvg.setAttribute("viewBox", this.svgViewBox);
 		blackoutSvg.classList.add("prosumer-list-blackout-status");
-		if(!blackoutStatus)
-		blackoutSvg.classList.add("online-status");
+		if(!blackoutStatus) blackoutSvg.classList.add("online-status");
 		const blackoutShape = document.createElementNS('http://www.w3.org/2000/svg', "path");
 		blackoutShape.setAttribute("d","M19 6.734c0 4.164-3.75 6.98-3.75 10.266h-6.5c0-3.286-3.75-6.103-3.75-10.266 0-4.343 3.498-6.734 6.996-6.734 3.502 0 7.004 2.394 7.004 6.734zm-4.5 11.266h-5c-.276 0-.5.224-.5.5s.224.5.5.5h5c.276 0 .5-.224.5-.5s-.224-.5-.5-.5zm0 2h-5c-.276 0-.5.224-.5.5s.224.5.5.5h5c.276 0 .5-.224.5-.5s-.224-.5-.5-.5zm.25 2h-5.5l1.451 1.659c.19.216.465.341.753.341h1.093c.288 0 .562-.125.752-.341l1.451-1.659z");		
 		blackoutSvg.appendChild(blackoutShape);
@@ -212,7 +222,17 @@ export class ManagerMainBlockComponent implements OnInit {
 			  this.dialogService.open(dialogData);
 			  this.dialogService.confirmed().subscribe(confirmed => {
 				if (confirmed) {
-						this.graphqlService.mutate(deleteProsumerMutation, {id: prosumerId}).subscribe();
+					this.graphqlService.mutate(deleteProsumerMutation, {id: prosumerId}).subscribe( () => {
+						let item  = document.getElementById("prosumer-info-item_" + prosumerId);
+						if (item !== null) {
+							this.prosumerList.nativeElement.removeChild(item);
+							if (this.selectedProsumerId === prosumerId) {
+								this.selectedProsumerId = null;
+								this.hideElement(this.prosumerInfoContainer.nativeElement.id);
+
+							}
+						}
+					});
 				}	
 			 });
 		}

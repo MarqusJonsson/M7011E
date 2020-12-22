@@ -23,3 +23,4 @@
 |2020-12-17| 2.5 | Adjusted GUI for prosumer.
 |2020-12-19| 9 | Started splitting our single ratio for battery/powerplant electricity propagation into ratios for overproduction and underproduction. Also setup GraphQL mutation requests for the ratios.
 |2020-12-20| 4 | Restructured and optimized the display of prosumer list in managar GUI.
+|2020-12-22| 7 | Fix varios bugs in manager GUI and made it possible to delete prosumers from the simulation.

@@ -1,8 +1,8 @@
 import { GraphQLObjectType } from 'graphql';
 import { setOverproductionBatteryToPowerPlantRatio, setUnderproductionBatteryToPowerPlantRatio } from '../house/mutations';
 import { updateElectricityPrices } from '../powerPlant/mutations';
-import { setProsumerSellTimeout } from '../prosumer/mutations';
 import { uploadProfilePicture } from '../picture/mutations';
+import { deleteProsumer, setProsumerSellTimeout } from '../prosumer/mutations';
 
 const rootMutation = new GraphQLObjectType({
 	name: 'RootMutation',
@@ -10,8 +10,9 @@ const rootMutation = new GraphQLObjectType({
 		setOverproductionBatteryToPowerPlantRatio: setOverproductionBatteryToPowerPlantRatio,
 		setUnderproductionBatteryToPowerPlantRatio: setUnderproductionBatteryToPowerPlantRatio,
 		updateElectricityPrices: updateElectricityPrices,
-		setProsumerSellTimeout: setProsumerSellTimeout
 		uploadProfilePicture: uploadProfilePicture,
+		setProsumerSellTimeout: setProsumerSellTimeout,
+		deleteProsumer: deleteProsumer
 	}
 });
 
