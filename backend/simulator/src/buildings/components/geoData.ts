@@ -2,32 +2,48 @@ import { Environment } from '../../environment';
 import { Identifiable } from '../../identifiable';
 import { randomFromInterval } from '../../math/random';
 
-const GEO_DATA_MAX = 360;
-const GEO_DATA_MIN = 0;
+export class Location {
+	static readonly MAX = 360;
+	static readonly MIN = 0;
+
+	constructor(
+		private _longitude: number,
+		private _latitude: number,
+		private _altitude: number
+	) {};
+
+	public get longitude() {
+		return this._longitude;
+	}
+
+	public get latitude() {
+		return this._latitude;
+	}
+
+	public get altitude() {
+		return this._altitude;
+	}
+}
+
 export class GeoData extends Identifiable {
-	private _longitude: number;
-	private _latitude: number;
-	private _altitude: number;
 	private _windSpeed: number;
 	private _temperature: number;
-	
+	private _location: Location;
+
 	constructor(
-		longitude: number = randomFromInterval(GEO_DATA_MIN, GEO_DATA_MAX),
-		latitude: number = randomFromInterval(GEO_DATA_MIN, GEO_DATA_MAX),
-		altitude: number = randomFromInterval(GEO_DATA_MIN, GEO_DATA_MAX)
-		) {
+		longitude: number = randomFromInterval(Location.MIN, Location.MAX),
+		latitude: number = randomFromInterval(Location.MIN, Location.MAX),
+		altitude: number = randomFromInterval(Location.MIN, Location.MAX)
+	) {
 		super(GeoData.name);
-		this._longitude = longitude;
-		this._latitude = latitude;
-		this._altitude = altitude;
+		this._location = new Location(longitude, latitude, altitude);
 		this._windSpeed = 0;
 		this._temperature = 0;
 	}
 
 	public sampleEnviornmentVariables(environment: Environment, simulationTime: number) {
-		const simulationDate = new Date(simulationTime);
-		this.windSpeed = environment.sampleWindSpeed(this.longitude, this.latitude);
-		this.temperature = environment.sampleTemperature(this.longitude, this.latitude, simulationDate.getMonth());
+		this.windSpeed = environment.sampleWindSpeed(this.longitude, this.latitude, simulationTime);
+		this.temperature = environment.sampleTemperature(this.longitude, this.latitude, simulationTime);
 	}
 
 	public distance(target: GeoData): number {
@@ -38,27 +54,15 @@ export class GeoData extends Identifiable {
 	}
 	
 	public get longitude(): number {
-		return this._longitude;
-	}
-	
-	public set longitude(longitude: number) {
-		this._longitude = longitude;
+		return this._location.longitude;
 	}
 	
 	public get latitude(): number {
-		return this._latitude;
+		return this._location.latitude;
 	}
 
-	public set latitude(latitude: number) {
-		this._latitude = latitude;
-	}
-	
 	public get altitude(): number {
-		return this._altitude;
-	}
-
-	public set altitude(altitude: number) {
-		this._altitude = altitude;
+		return this._location.altitude;
 	}
 
 	public get windSpeed(): number {

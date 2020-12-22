@@ -1,4 +1,4 @@
-import { GeoData } from '../buildings/components/geoData';
+import { Location } from '../buildings/components/geoData';
 
 export function calc1DInterpolationConstants(x1: number, x2: number, x: number): number[] {
 	const dist_x1_x2 = x2 - x1;
@@ -27,7 +27,7 @@ export function bilinearInterpolation(q11_x: number, q11_y: number, h11: number,
 	return hp;
 }
 
-export function geoDatabilinearInterpolation(q11: GeoData, q11Value: number, q21: GeoData, q21Value: number, q12: GeoData, q12Value: number, q22:GeoData, q22Value: number, p: GeoData){
+export function geoDatabilinearInterpolation(q11: Location, q11Value: number, q21: Location, q21Value: number, q12: Location, q12Value: number, q22:Location, q22Value: number, p: Location){
 	return bilinearInterpolation(q11.longitude, q11.latitude, q11Value, q21.longitude, q21.latitude, q21Value, q12.longitude, q12.latitude, q12Value, q22.longitude, q22.latitude, q22Value, p.longitude, p.latitude);
 }
 

@@ -17,7 +17,7 @@ export class GeoDataMapPair {
 		this.previous = new GeoDataMap(longitudePoints, latitudePoints, altitudePoints, time, sampleDataPoint);
 		this.next = new GeoDataMap(longitudePoints, latitudePoints, altitudePoints, time + this.sampleTimeDelta_ms, sampleDataPoint);
 	}
-
+	// TODO: Needs cleanup
 	public sample(time: number, normalizedLocation: Location): number {
 		if (!(this.previous.time < time && this.next.time > time)) {
 			this.previous.setupDataPoints(this.longitudePoints, this.latitudePoints, this.altitudePoints, time, this.sampleDataPoint)
