@@ -1,6 +1,9 @@
 # VSCode
 .vscode
 
+# Pictures directory
+pictures/
+
 # Private/Public keys
 *.key
 
