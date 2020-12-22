@@ -36,8 +36,11 @@ environment.monthMeanTemperatureDistributions = monthMeanTemperatureDistribution
 const users: IMap<Manager | Prosumer> = new IMap<Manager | Prosumer>();
 // Create prosumers with one house each
 const nProsumers = 0;
+let prosumers = [] as Prosumer[];
 for (let i = 0; i < nProsumers; i++) {
-	users.iSet(faker.createProsumer());
+	const prosumer = faker.createProsumer();
+	users.iSet(prosumer);
+	prosumers.push(prosumer)
 }
 // Create managers with one power plant each
 const nManagers = 1;
@@ -48,6 +51,6 @@ const samplingIntervalMiliSeconds = 1000;
 const fixedTimeStep = false;
 const fixedDeltaTime = 1000 * 3600 * 24 * 1;
 const simulator = new Simulator(environment, users, samplingIntervalMiliSeconds, fixedTimeStep, fixedDeltaTime);
-simulator.refreshProsumerManagerConnections();
+simulator.connectProsumersToManager(prosumers);
 new Server(simulator);
 simulator.run();
