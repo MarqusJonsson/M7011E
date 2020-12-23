@@ -20,6 +20,8 @@ export enum UserRole {
 	providedIn: 'root'
 })
 export class AuthService {
+	private user: {id: number, role: UserRole};
+
 	public static getAccessToken() {
 		return localStorage.getItem(ACCESS_TOKEN);
 	}
@@ -44,14 +46,6 @@ export class AuthService {
 
 	public static setAccessToken(value: string) {
 		localStorage.setItem(ACCESS_TOKEN, value);
-	}
-
-	public getUser() {
-		const payload = this.jwtHelper.decodeToken(AuthService.getRefreshToken());
-		if (payload) {
-			return payload.user;
-		}
-		return null;
 	}
 
 	constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {}
@@ -107,12 +101,29 @@ export class AuthService {
 			}));
 	}
 
-	public getRole(): number {
-		const payload = this.jwtHelper.decodeToken(AuthService.getRefreshToken());
-		if (payload) {
-			return payload.user.role;
+	public getUser() {
+		if (this.user === undefined) {
+			const payload = this.jwtHelper.decodeToken(AuthService.getRefreshToken());
+			if (!payload) {
+				return null;
+			}
+			this.user = payload.user;
 		}
-		return -1;
+		return this.user;
+	}
+	
+	public getRole(): number {
+		if (this.user === undefined) {
+			this.getUser();
+		}
+		return this.user.role;
+	}
+
+	public getId(): number {
+		if (this.user === undefined) {
+			this.getUser();
+		}
+		return this.user.id;
 	}
 
 	public authorizedProsumer(): boolean {

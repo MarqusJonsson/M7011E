@@ -2,7 +2,7 @@ import express from 'express';
 import crypto from 'crypto';
 import fs from 'fs';
 import jwt from 'jsonwebtoken';
-import { BadRequest, Unauthorized } from './utils/error';
+import { BadRequest, Unauthorized } from '../utils/error';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
