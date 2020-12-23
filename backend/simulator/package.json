@@ -4,10 +4,10 @@
 	"description": "",
 	"main": "main.ts",
 	"scripts": {
-		"start": "ts-node src/main.ts ",
-		"server": "ts-node src/server.ts",
-		"resetdb": "ts-node src/db/reset.ts",
-		"populatedb": "ts-node src/db/populate.ts",
+		"startts": "ts-node src/main.ts",
+		"start": "node out/main.js",
+		"prestart": "npm run build",
+		"build": "tsc",
 		"test": "mocha -r ts-node/register test/**/*.test.ts",
 		"coverage": "nyc npm run test"
 	},
@@ -28,11 +28,11 @@
 		"cross-env": "^7.0.2",
 		"mocha": "^8.2.1",
 		"nyc": "^15.1.0",
-		"ts-gaussian": "^2.0.2",
 		"ts-node": "^9.0.0",
 		"typescript": "^4.0.5"
 	},
 	"dependencies": {
+		"ts-gaussian": "^2.0.2",
 		"body-parser": "^1.19.0",
 		"cors": "^2.8.5",
 		"dotenv": "^8.2.0",
