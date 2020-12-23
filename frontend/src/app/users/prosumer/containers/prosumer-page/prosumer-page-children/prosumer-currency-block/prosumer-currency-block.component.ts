@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GraphqlService } from 'src/app/api/services/graphql.service';
 import { displayValuePrecision } from 'src/app/users/shared/pageConstants';
+import { Ws_per_kWh } from 'src/app/utils/electricity';
 
 @Component({
   selector: 'prosumer-currency-block',
@@ -9,7 +10,9 @@ import { displayValuePrecision } from 'src/app/users/shared/pageConstants';
 })
 export class ProsumerCurrencyBlockComponent implements OnInit {
 	@ViewChild('currency') currency:ElementRef;
-	@ViewChild('marketPrice') marketPrice:ElementRef;
+	@ViewChild('marketBuyPrice') marketBuyPrice:ElementRef;
+	@ViewChild('marketSellPrice') marketSellPrice:ElementRef;
+
 	constructor(private graphqlService: GraphqlService) { }
 
 	ngOnInit(): void {
@@ -23,13 +26,19 @@ export class ProsumerCurrencyBlockComponent implements OnInit {
 		this.currency.nativeElement.innerText = value.toFixed(displayValuePrecision);
 	}
 
-	public setMarketPrice(value: number) {
-		this.marketPrice.nativeElement.innerText = (value * 3600000).toFixed(displayValuePrecision) + " currency/kWh";
+	public setMarketBuyPrice(value: number) {
+		this.marketBuyPrice.nativeElement.innerText = (value *  Ws_per_kWh).toFixed(displayValuePrecision) + " currency/kWh";
+	}
+
+	public setMarketSellPrice(value: number) {
+		this.marketSellPrice.nativeElement.innerText = (value *  Ws_per_kWh).toFixed(displayValuePrecision) + " currency/kWh";
 	}
 
 	public onUpdate = (data: any) => {
 		this.setCurrency(data.prosumer.currency);
-		this.setMarketPrice(data.prosumer.house.powerPlant.electricityBuyPrice);
+		this.setMarketBuyPrice(data.prosumer.house.powerPlant.electricityBuyPrice);
+		this.setMarketSellPrice(data.prosumer.house.powerPlant.electricitySellPrice);
+
 	}
 
 }

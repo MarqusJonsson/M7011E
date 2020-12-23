@@ -5,29 +5,29 @@ import {
 } from 'graphql';
 import { GraphQLContext } from '../graphQLContext';
 
-const setOverproductionBatteryToPowerPlantRatio = {
+const setOverproductionRatio = {
 	type: HouseType,
-	description: `setting the battery to power plant ratio of the ${typeName} during over production.`,
+	description: `setting the battery to power plant ratio of the ${typeName} during overproduction.`,
 	args: {
-		overproductionBatteryToPowerPlantRatio: { type: GraphQLFloat },
+		overproductionRatio: { type: GraphQLFloat },
 	},
 	resolve(parent: any, args: any, context: GraphQLContext) {
-		return houseResolver.setOverproductionBatteryToPowerPlantRatio(context.simulator, context.user, args.overproductionBatteryToPowerPlantRatio);
+		return houseResolver.setOverproductionRatio(context.simulator, context.user, args.overproductionRatio);
 	}
 };
 
-const setUnderproductionBatteryToPowerPlantRatio = {
+const setUnderproductionRatio = {
 	type: HouseType,
-	description: `setting the battery to power plant ratio of the ${typeName} during under production.`,
+	description: `setting battery buffer usage to market electricity usage ratio of the ${typeName} during underproduction.`,
 	args: {
-		underproductionBatteryToPowerPlantRatio: { type: GraphQLFloat },
+		underproductionRatio: { type: GraphQLFloat },
 	},
 	resolve(parent: any, args: any, context: GraphQLContext) {
-		return houseResolver.setUnderproductionBatteryToPowerPlantRatio(context.simulator, context.user, args.underproductionBatteryToPowerPlantRatio);
+		return houseResolver.setUnderproductionRatio(context.simulator, context.user, args.underproductionRatio);
 	}
 };
 
 export {
-	setOverproductionBatteryToPowerPlantRatio,
-	setUnderproductionBatteryToPowerPlantRatio
+	setOverproductionRatio,
+	setUnderproductionRatio
 };
