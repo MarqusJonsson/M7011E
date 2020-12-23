@@ -22,6 +22,7 @@ export class Server {
 		this._app.use(bodyParser.json());
 		this._app.use(cors(['http://localhost:3002', 'http://localhost:4200']));
 		this._app.use('/graphiql', accessTokenRequired, graphQLUpload(), graphQLHTTP(simulator));
+		this._app.get('/profile-picture/:userId', accessTokenRequired, profilePicture);
 		this._app.use(errorHandler);
 		// Start server
 		this._app.listen(PORT, () => console.log(`Simulator server listening on port ${PORT}`));

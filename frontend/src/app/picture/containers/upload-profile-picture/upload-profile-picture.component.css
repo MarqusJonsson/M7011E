@@ -1,3 +1,8 @@
+:host {
+	--profile-picture-width: 300px;
+	--profile-picture-height: 200px;
+}
+
 :host .button {
 	display: inline-block;
 	min-width: 100px;
@@ -23,14 +28,14 @@
 
 :host .upload-button {
 	height: 34px;
-	width: 195px;
+	width: calc( var(--profile-picture-width) / 2 - 5px);
 	margin: 0 0 5px 5px;
 }
 
 :host .button.file-input-button {
 	line-height: 34px;
 	height: 34px;
-	width: 195px;
+	width: calc( var(--profile-picture-width) / 2 - 5px);
 	margin: 0 5px 5px 0;
 }
 
@@ -45,7 +50,7 @@
 
 :host > .progress > .progress-bar-back {
 	display: inline-block;
-	width: 350px;
+	width: calc( var(--profile-picture-width) - 50px );
 	height: 34px;
 	margin: 0 10px 5px 0;
 	background-color: #000000;
@@ -67,12 +72,11 @@
 	vertical-align: middle;
 }
 
-:host > .image-preview {
+.profile-picture-preview {
 	display: block;
-	height: 400px;
-	width: 400px;
+	height: 200px;
+	width: var(--profile-picture-width);
 	border: none;
-	/* Center and crop */
-	-o-object-fit: cover;
-	object-fit: cover;
+	object-fit: contain;
+	-o-object-fit: contain;
 }

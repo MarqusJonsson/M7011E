@@ -10,4 +10,7 @@
 	</div>
 	<span class="progress-text">{{progress}}%</span>
 </div>
-<img *ngIf="currentFile" class="image-preview" [src]="url">
+<div *ngIf="currentFile">
+	<p>Selected profile picture preview</p>
+	<img class="profile-picture-preview" [src]="url">
+</div>

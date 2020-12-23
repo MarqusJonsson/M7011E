@@ -1,0 +1,14 @@
+:host {
+	--profile-picture-width: 300px;
+	--profile-picture-height: 200px;
+}
+
+.profile-picture {
+	display: block;
+	width: var(--profile-picture-width);
+	height: var(--profile-picture-height);
+	object-fit: contain;
+	-o-object-fit: contain;
+	text-align: center;
+	line-height: var(--profile-picture-height);
+}

@@ -35,6 +35,7 @@ import { GraphQLModule } from './graphql.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './users/shared/containers/dialog/dialog.component';
 import { UploadProfilePictureComponent } from './picture/containers/upload-profile-picture/upload-profile-picture.component';
+import { ProfilePictureComponent } from './users/shared/containers/profile-picture/profile-picture.component';
 
 @NgModule({
 	declarations: [
@@ -58,6 +59,7 @@ import { UploadProfilePictureComponent } from './picture/containers/upload-profi
 		DialogComponent,
 		LogoutComponent,
 		UploadProfilePictureComponent,
+		ProfilePictureComponent,
 	],
 	imports: [
 		BrowserModule,
