@@ -11,8 +11,9 @@ import { CoalPowerPlant } from '../buildings/coalPowerPlant'
 import { CoalGenerator } from '../generators/coalGenerator'
 import { BaseUser } from '../users/baseUser'
 import { Manager } from '../users/manager'
+import { BaseBuilding } from '../buildings/baseBuilding'
 
-export function populate(users: BaseUser[]) {
+export function populate(users: BaseUser<House | BaseBuilding>[]) {
 	Promise.all([
 		userTypeResolver.create(Prosumer.name),
 		userTypeResolver.create(Manager.name),
@@ -39,7 +40,7 @@ export function populate(users: BaseUser[]) {
 						prosumerType.id
 					).then((dbProsumer) => {
 						// Create prosumer houses in database
-						const house = prosumer.house;
+						const house = prosumer.building;
 						buildingResolver.create(
 							house.battery.buffer,
 							house.battery.capacity,
@@ -68,7 +69,7 @@ export function populate(users: BaseUser[]) {
 						managerType.id
 					).then((dbManager) => {
 						// Create manager powerPlants in database
-						const powerPlant = manager.powerPlant;
+						const powerPlant = manager.building;
 						buildingResolver.create(
 							powerPlant.battery.buffer,
 							powerPlant.battery.capacity,
