@@ -55,12 +55,12 @@ export class RatioBlockComponent implements OnInit {
 	private onUpdate = (data: any) => {
 		const netProduction = data.prosumer.house.electricityProduction - data.prosumer.house.electricityConsumption;
 		if(netProduction >= 0) {
-			this.setElectricityToBattery(data.prosumer.house.electricityProduction, data.prosumer.house.overproductionBatteryToPowerPlantRatio);
-			this.setElectricityToPowerPlant(data.prosumer.house.electricityProduction, data.prosumer.house.overproductionBatteryToPowerPlantRatio);
+			this.setElectricityToBattery(data.prosumer.house.electricityProduction, data.prosumer.house.overproductionRatio);
+			this.setElectricityToPowerPlant(data.prosumer.house.electricityProduction, data.prosumer.house.overproductionRatio);
 		}
 		else {
-			this.setElectricityToBattery(data.prosumer.house.electricityProduction, data.prosumer.house.underproductionBatteryToPowerPlantRatio);
-			this.setElectricityToPowerPlant(data.prosumer.house.electricityProduction, data.prosumer.house.underproductionBatteryToPowerPlantRatio);
+			this.setElectricityToBattery(data.prosumer.house.electricityProduction, data.prosumer.house.underproductionRatio);
+			this.setElectricityToPowerPlant(data.prosumer.house.electricityProduction, data.prosumer.house.underproductionRatio);
 		}
 			
 	}
