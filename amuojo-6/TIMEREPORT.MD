@@ -20,3 +20,8 @@
 | 2020-12-13 | 7 | <ul><li>Cleanup usage of user data which is sent to simulator server and used jwt payload instead.</li><li>Made it so the simulator automatically creates user in simulator if requesting useris not already in the simulator.</li></ul> |
 | 2020-12-15 | 8 | <ul><li>Setup query interval for fetching data to frontend pages.</li><li>Started working on creating geo data maps which will be interpolated on using trilinear interpolation to get values for data such as temperature and wind speed to be dependant on geograpic location.</li></ul> |
 | 2020-12-15 | 13 | <ul><li>Worked on presentation.</li><li>Continued working with the geo data maps.</li></ul> |
+| 2020-12-16 | 12 | <ul><li>Continued to work on presentation.</li><li>Added purgining of expired refresh tokens.</li></ul> |
+| 2020-12-19 | 8 | <ul><li>Worked on finding and fixing bugs related to handling of JWTs.</li><li>Created component for logout button.</li></ul> |
+| 2020-12-20 | 3 | <ul><li>Started working on allowing users to upload profile pictures.</li></ul> |
+| 2020-12-22 | 7 | <ul><li>Continued working on allowing uses to upload profile pictures.</li></ul> |
+| 2020-12-23 | 6 | <ul><li>Created components for viewing and uploading images.</li></ul> |
