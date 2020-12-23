@@ -34,7 +34,8 @@ class PowerPlantResolver {
 					electricityBuyPrice: powerPlant.electricityBuyPrice,
 					electricitySellPrice: powerPlant.electricitySellPrice,
 					hasBlackout: powerPlant.hasBlackout,
-					totalDemand: powerPlant.totalDemand / simulator.deltaTimeS
+					totalDemand: powerPlant.totalDemand / simulator.deltaTimeS,
+					productionOutputRatio: powerPlant.productionOutputRatio
 				};
 			}
 			default:
@@ -54,6 +55,15 @@ class PowerPlantResolver {
 			modelledElectricityBuyPrice: powerPlant.modelledElectricityBuyPrice,
 			electricitySellPrice: powerPlant.electricitySellPrice,
 			electricityBuyPrice: powerPlant.electricityBuyPrice,
+		}
+	}
+
+	updateProductionOutputRatio = (simulator: Simulator, userIdentifier: Identifier, productionOutPutRatio: number) => {
+		const manager: Manager | undefined = simulator.managers.uGet(userIdentifier);
+		if (manager === undefined) throw new GraphQLError(GraphQLErrorName.USER_NOT_FOUND);
+		manager.building.productionOutputRatio = productionOutPutRatio;	
+		return {
+			productionOutputRatio: manager.building.productionOutputRatio
 		}
 	}
 }

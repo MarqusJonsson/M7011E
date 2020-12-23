@@ -4,3 +4,9 @@ export const updateElectricityPrices = `mutation updateElectricityPrices ($elect
 		electricitySellPrice
 	}
 }`;
+
+export const updateProductionOutputRatioMutation = `mutation updateProductionOutputRatio ($productionOutputRatio: Float!) {
+	updateProductionOutputRatio(productionOutputRatio: $productionOutputRatio) {
+		productionOutputRatio
+	}
+}`

@@ -9,11 +9,12 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	private _modelledElectricitySellPrice: number = 0;
 	private _electricityBuyPrice: number = 1.5 / Ws_per_kWh;
 	private _electricitySellPrice: number = 1.5 / Ws_per_kWh;
-	private _startUpTime: number = 30;
+	private _startUpTimeS: number = 30;
 	private _productionLowerCutOff: number = 0.2;
 	private _productionUpperCutOff: number = 0.6;
 	private _productionFlag: boolean = true;
 	private _totalDemand: number = 0;
+	private _productionOutputRatio = 1;
 
 	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[]) {
 		super(type, battery, geoData, generators);
@@ -22,25 +23,25 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	public generateElectricity(): void {
 		const battery: Battery = this.battery;
 		if (this.productionFlag) {
-			const batteryElectricityAfterGeneration = battery.buffer + this.electricityProduction;
+			const batteryElectricityAfterGeneration = battery.buffer + this.electricityProduction * this.productionOutputRatio;
 			if (batteryElectricityAfterGeneration <= battery.capacity) {
 				battery.buffer = batteryElectricityAfterGeneration;
-				if (battery.buffer > battery.capacity * this.productionUpperCufOff){
-					this.productionFlag = false;
-				}
 			} 
 			else {
-				battery.buffer = battery.capacity;
-				this.productionFlag = false;
-			}
+				battery.buffer = battery.capacity;			}
 		} 
-		else if (battery.buffer <= battery.capacity * this.productionLowerCufOff){
-			this.productionFlag = true;
-		}
 	}
 
 	public calculateElectricityPrice(amount: number): number {
 		return amount * this.electricitySellPrice;
+	}
+
+	public start() {
+		this.productionFlag = true;
+	}
+
+	public stop() {
+		this.productionFlag = false;
 	}
 
 	public get electricityBuyPrice(): number{
@@ -76,11 +77,11 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	}
 
 	public get startUpTime(): number {
-		return this._startUpTime;
+		return this._startUpTimeS;
 	}
 
 	public set startUpTime(value: number) {
-		this._startUpTime = value;
+		this._startUpTimeS = value;
 	}
 
 	public get productionLowerCufOff(): number {
@@ -113,5 +114,13 @@ export abstract class BasePowerPlant extends BaseBuilding {
 
 	public set totalDemand(value: number) {
 		this._totalDemand = value;
+	}
+
+	public get productionOutputRatio(): number {
+		return this._productionOutputRatio;
+	}
+
+	public set productionOutputRatio(value: number) {
+		this._productionOutputRatio = value;
 	}
 }
