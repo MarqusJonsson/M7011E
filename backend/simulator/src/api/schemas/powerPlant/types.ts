@@ -57,6 +57,10 @@ const PowerPlantType = new GraphQLObjectType({
 			type: GraphQLFloat,
 			description: `The total electricity demand from buildings connected to the ${typeName}.`
 		},
+		productionOutputRatio: {
+			type: GraphQLFloat,
+			description: `Ratio for electricity production of the ${typeName}.`
+		},
 		battery: {
 			type: BatteryType,
 			description: `The battery of the ${typeName}.`,

@@ -48,7 +48,7 @@ const HouseType = new GraphQLObjectType({
 
 		underproductionRatio: {
 			type: GraphQLFloat,
-			description: `The ratio describing how big of an portion of the produced `
+			description: `The ratio describing how big of an portion of the  `
 				+ `electricity should be taken from the battery of the ${typeName}, versus `
 				+ `how much should be bought from the power plant during underproduction. The ratio is in a scale from 0 to 1.`
 		},

@@ -4,6 +4,7 @@ import {
 	GraphQLFloat
 } from 'graphql';
 import { GraphQLContext } from '../graphQLContext';
+import { resolve } from 'path';
 
 const updateElectricityPrices = {
 	type: PowerPlantType,
@@ -23,6 +24,22 @@ const updateElectricityPrices = {
 	}
 };
 
+const updateProductionOutputRatio = {
+	type: PowerPlantType,
+	description: `Update the ratio for the ${typeName} electricity production.`,
+	args: {
+		productionOutputRatio: { type: GraphQLFloat}
+	},
+	resolve(parent: any, args: any, context: GraphQLContext) {
+		return powerPlantResolver.updateProductionOutputRatio(
+			context.simulator,
+			context.user,
+			args.productionOutputRatio
+		);
+	}
+}
+
 export {
-	updateElectricityPrices
+	updateElectricityPrices,
+	updateProductionOutputRatio
 };

@@ -5,6 +5,8 @@
 	<span>Consumption: </span><span #consumption></span><br><br>
 	<span>Net production: </span><span #netProduction></span> <br><br>
 	<span>Power plant status: </span><span #status></span> <br><br>
-	<mat-slider min="0" max="1" step="0.1" value="1" thumbLabel = "true"></mat-slider>
+	<span>Production output ratio</span>
+	<mat-slider min="0" max="1" step="0.1" value="1" thumbLabel = "true" (input)="productionOutputRatioSliderValueChange($event)"></mat-slider>
+	<button #productionOutputRatioButton> Update ratio</button>
 
 </div>

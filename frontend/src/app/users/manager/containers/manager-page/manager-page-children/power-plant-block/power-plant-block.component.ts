@@ -1,4 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatSliderChange } from '@angular/material/slider';
+import { updateProductionOutputRatioMutation } from 'src/app/api/models/mutations/powerPlantMutations';
 import { GraphqlService } from 'src/app/api/services/graphql.service';
 import { displayValuePrecision } from 'src/app/users/shared/pageConstants';
 import { Ws_to_kWh } from 'src/app/utils/electricity';
@@ -9,14 +11,16 @@ import { Ws_to_kWh } from 'src/app/utils/electricity';
   styleUrls: ['./power-plant-block.component.css']
 })
 export class PowerPlantBlockComponent implements OnInit {
-  @ViewChild('production') production:ElementRef;
-  @ViewChild('consumption') consumption:ElementRef;
-  @ViewChild('netProduction') netProduction:ElementRef;
-  @ViewChild('battery') battery:ElementRef;
-  @ViewChild('batteryCapacity') batteryCapacity:ElementRef;
-  @ViewChild('status') status:ElementRef;
+  private productionOutputRatioSliderValue = 1;
+  @ViewChild('production') production: ElementRef;
+  @ViewChild('consumption') consumption: ElementRef;
+  @ViewChild('netProduction') netProduction: ElementRef;
+  @ViewChild('battery') battery: ElementRef;
+  @ViewChild('batteryCapacity') batteryCapacity: ElementRef;
+  @ViewChild('status') status: ElementRef;
+  @ViewChild('productionOutputRatioButton') productionOutputRatioButton: ElementRef
 
-  constructor(private hostElement: ElementRef, private graphqlService: GraphqlService) { }
+  constructor(private graphqlService: GraphqlService) { }
 
   ngOnInit(): void {
 
@@ -24,6 +28,9 @@ export class PowerPlantBlockComponent implements OnInit {
 
   ngAfterViewInit() {
     this.graphqlService.addSubscriberCallback(this.onUpdate);
+    this.productionOutputRatioButton.nativeElement.onclick = () => {
+      this.graphqlService.mutate(updateProductionOutputRatioMutation, {productionOutputRatio: this.productionOutputRatioSliderValue}).subscribe()
+    }
 
   }
 
@@ -57,10 +64,15 @@ export class PowerPlantBlockComponent implements OnInit {
     this.status.nativeElement.innerText = "Blackout"; 
   }
 
+  public productionOutputRatioSliderValueChange(event: MatSliderChange) {
+		this.productionOutputRatioSliderValue = event.value;
+ 	}
+
+
   public onUpdate = (data: any) => {
     this.setBattery(data.manager.powerPlant.battery.buffer);
     this.setBatteryCapacity(data.manager.powerPlant.battery.capacity);
-    this.setProduction(data.manager.powerPlant.electricityProduction);
+    this.setProduction(data.manager.powerPlant.electricityProduction * data.manager.powerPlant.productionOutputRatio);
     this.setConsumption(data.manager.powerPlant.electricityConsumption)
     this.setNetProduction();
     this.setStatus(data.manager.powerPlant.hasBlackout);
