@@ -84,7 +84,7 @@ export class Simulator {
 		});
 		return logStr;
 	}
-	
+
 	public run(steps: number = -1) {
 		if (steps < 0) {
 			this.interval = <any> setInterval(() => {

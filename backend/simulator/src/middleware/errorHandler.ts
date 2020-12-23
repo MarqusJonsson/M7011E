@@ -1,17 +1,16 @@
+import express from 'express';
 import { GeneralError } from '../utils/error';
 
-const errorHandler = (err: any, req: any, res: any, next: any) => {
-	if (err instanceof GeneralError) {
-		return res.status(err.getCode()).json({
+export function errorHandler(error: any, request: express.Request, response: express.Response, next: express.NextFunction) {
+	if (error instanceof GeneralError) {
+		return response.status(error.getCode()).json({
 			status: 'error',
-			message: err.message
+			message: error.message
 		});
 	}
 
-	return res.status(500).json({
+	return response.status(500).json({
 		status: 'error',
-		message: err.message
+		message: error.message
 	});
 };
-
-export { errorHandler };

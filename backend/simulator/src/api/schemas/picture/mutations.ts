@@ -6,7 +6,6 @@ import { GraphQLContext } from '../graphQLContext';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { pictureResolver } from '../../resolvers/picture';
 
-
 const uploadProfilePicture = {
 	type: GraphQLBoolean,
 	description: `Uploads an ${typeName} file.`,
