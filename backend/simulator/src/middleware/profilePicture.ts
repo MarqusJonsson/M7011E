@@ -22,11 +22,15 @@ export function profilePicture(request: express.Request, response: express.Respo
 	if (user.id !== resourceOwnerId) {
 		throw new Forbidden('Access denied');
 	}
-	getProfilePicturePath(`user-files/pictures/${roleName}/${resourceOwnerId}`)
+	getProfilePicturePath(`${process.cwd()}/user-files/pictures/${roleName}/${resourceOwnerId}`)
 		.then((profilePicturePath) => {
-			response.sendFile(profilePicturePath, { root: __dirname + '..\\..\\..\\..\\'}); // TODO: Fix root path, probably incorrect
+			response.sendFile(profilePicturePath, (error) => {
+				if (error !== undefined) {
+					console.error(error);
+				}
+			});
 		})
 		.catch((error) => {
-			response.sendStatus(204); // TODO: Replace with exported constant
+			response.sendStatus(204); // TODO: Replace status code with exported constant
 		});
 }

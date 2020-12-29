@@ -14,7 +14,7 @@ class PictureResolver {
 			if (file.mimetype.match(ALLOWED_MIME_TYPES_REGEX) === null) {
 				reject(new BadRequest("Invalid file type"));
 			}
-			const directory = `user-files/pictures/${userIdentifier.type}/${userIdentifier.id}`;
+			const directory = `${process.cwd()}/user-files/pictures/${userIdentifier.type}/${userIdentifier.id}/`;
 			// Make sure directory exists
 			createDir(directory)
 				.then((directoryCreated) => {
@@ -24,23 +24,23 @@ class PictureResolver {
 							.then(() => {
 								// Store the new profile-picture
 								file.createReadStream()
-								.pipe(createWriteStream(directory + '/' + profilePictureFilename + '.' + getFileExtension(file.filename)))
+								.pipe(createWriteStream(directory + profilePictureFilename + '.' + getFileExtension(file.filename)))
 								.on("finish", () => resolve(true))
-								.on("error", () => reject())
+								.on("error", () => reject(false))
 							})
 							.catch((error) => {
-								reject(error);
+								reject(false);
 							})
 					} else {
 						// Store the new profile-picture
 						file.createReadStream()
-							.pipe(createWriteStream(directory + '/' + profilePictureFilename + '.' + getFileExtension(file.filename)))
+							.pipe(createWriteStream(directory + profilePictureFilename + '.' + getFileExtension(file.filename)))
 							.on("finish", () => resolve(true))
-							.on("error", () => reject())
+							.on("error", () => reject(false))
 					}
 				})
 				.catch((error) => {
-					reject(error);
+					reject(false);
 				})
 		});
 	}
