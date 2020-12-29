@@ -23,9 +23,6 @@ export class PowerPlantBlockComponent implements OnInit {
 	@ViewChild('actionTimeDelayDescription') actionTimeDelayDescription: ElementRef;
 	@ViewChild('stopProduction') stopProduction: ElementRef;
 	@ViewChild('startProduction') startProduction: ElementRef;
-
-
-
 	constructor(private graphqlService: GraphqlService) { }
 
 	ngOnInit(): void {

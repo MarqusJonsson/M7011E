@@ -9,13 +9,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class DialogComponent implements OnInit {
 	@ViewChild('inputFieldContainer') inputFieldContainer: ElementRef;
-	constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data: {
+	constructor(@Inject(MAT_DIALOG_DATA) public data: {
 		cancelText: string,
 		confirmText: string,
 		message: string,
 		title: string,
 		extraField: HTMLDivElement
-}, @Optional()private dialogRef: MatDialogRef<DialogComponent>){}
+}, private dialogRef: MatDialogRef<DialogComponent>){}
 
 	ngOnInit(): void {
 
