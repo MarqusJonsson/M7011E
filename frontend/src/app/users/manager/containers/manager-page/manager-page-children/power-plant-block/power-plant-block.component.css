@@ -11,3 +11,7 @@
 .sub-block {
 	background-color: lightseagreen;
 }
+
+.hidden-at-start {
+	display: none;
+}
