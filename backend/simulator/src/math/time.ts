@@ -35,3 +35,5 @@ export function ms_to_YMDHMSM(ms: number): YMDHMSM {
 		msDate.getMilliseconds()
 	);
 }
+
+export const powerPlantActionDelayS = 30;

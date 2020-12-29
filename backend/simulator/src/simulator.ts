@@ -108,8 +108,9 @@ export class Simulator {
 		this.prosumersSellElectricity();
 		this.prosumersBuyElectricity();
 		this.consumeElectricity();
+		this.updatePowerPlantDelayTime();
 		this._updateDeltaTime();
-		//console.log(this.tempLog());
+		console.log(this.tempLog());
 	}
 
 	private updateEnvironmentVariables() {
@@ -290,6 +291,23 @@ export class Simulator {
 		prosumers.forEach((prosumer: Prosumer) => {
 			this.connectProsumerToManager(prosumer);
 		});
+	}
+
+	public updatePowerPlantDelayTime() {
+		this._managers.forEach((manager) => {
+			if (manager.building.getAction() !== undefined) {
+				manager.building.delayTimeS -= this.deltaTimeS;
+				if(manager.building.delayTimeS <= 0) {
+					manager.building.performAction();
+					manager.building.clearAction();
+				}
+			}
+			else {
+				manager.building.performAction();
+				manager.building.clearAction();
+			}
+		})
+		
 	}
 
 	private get updateIntervalMiliSeconds(): number {
