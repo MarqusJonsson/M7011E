@@ -29,6 +29,23 @@ export class RefreshTokenRepository extends BaseWithHistoryRepository<RefreshTok
 		});
 	}
 
+	public deleteAllWithUserId(id: number, t?: pgPromise.ITask<any>): Promise<null> {
+		return new Promise((resolve, reject) => {
+			const db = t || this.database;
+			return db.txIf((t_: pgPromise.ITask<any>) => {
+				return db.none(`
+					DELETE FROM ${this.historyRepository.tableName}
+					WHERE id IN (
+						SELECT histories_id from ${this.tableName}
+						WHERE users_id = $1
+					)`, id)
+				.then(() => {
+					resolve(null);
+				}).catch((error) => { reject(toResponseError(error)); });
+			}).catch((error) => { reject(toResponseError(error)); });
+		});
+	}
+
 	public insert(id: number, token: string, userId: number, t?: pgPromise.ITask<any>): Promise<number> {
 		return new Promise((resolve, reject) => {
 			const db = t || this.database;

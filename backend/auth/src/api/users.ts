@@ -52,8 +52,10 @@ function delete_(request: express.Request): Promise<DeleteResult> {
 		if (!validation.validateId(id)) {
 			reject(new ResponseError('Malformed input', StatusCode.BAD_REQUEST));
 		} else {
-			database.users.delete(id).then((userId) => {
-				resolve(new DeleteResult({ user: { id: userId } }));
+			database.refreshTokens.deleteAllWithUserId(id).then(() => {
+				database.users.delete(id).then((userId) => {
+					resolve(new DeleteResult({ user: { id: userId } }));
+				}).catch((error) => { reject(error); });
 			}).catch((error) => { reject(error); });
 		}
 	});
