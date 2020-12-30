@@ -11,8 +11,6 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	private _electricityBuyPrice: number = 1.5 / Ws_per_kWh;
 	private _electricitySellPrice: number = 1.5 / Ws_per_kWh;
 	private _delayTimeS: number = 0;
-	private _productionLowerCutOff: number = 0.2;
-	private _productionUpperCutOff: number = 0.6;
 	private _productionFlag: boolean = true;
 	private _totalDemand: number = 0;
 	private _productionOutputRatio = 1;
@@ -114,22 +112,6 @@ export abstract class BasePowerPlant extends BaseBuilding {
 
 	public set delayTimeS(value: number) {
 		this._delayTimeS = value;
-	}
-
-	public get productionLowerCufOff(): number {
-		return this._productionLowerCutOff;
-	}
-
-	public set productionLowerCutOff(value: number) {
-		this._productionLowerCutOff = value;
-	}
-
-	public get productionUpperCufOff(): number {
-		return this._productionUpperCutOff;
-	}
-
-	public set productionUpperCutOff(value: number) {
-		this._productionUpperCutOff = value;
 	}
 
 	public get productionFlag(): boolean {
