@@ -15,6 +15,6 @@ export class ManagerPageComponent implements OnInit {
 	}
 
 	ngAfterViewInit() {
-		this.graphqlService.startQueryInterval(managerQuery, 1000);
+		this.graphqlService.startQueryInterval(managerQuery, 5000);
 	}
 }
