@@ -61,13 +61,21 @@ export class GraphqlService {
 		this.subscriberCallBacks.length = 0;
 	}
 
-	mutate(mutation: any, variables: any) {
-		return this.apollo.mutate({
-			mutation: gql`${mutation}`,
-			variables: variables
-		}).pipe(map((response: any) => {
+	mutate(mutation: any, variables?: any) {
+		if (variables !== undefined) {
+			return this.apollo.mutate({
+				mutation: gql`${mutation}`,
+				variables: variables
+			}).pipe(map((response: any) => {
 				return response.data;
-			})
-		);
+			}));
+		}
+		else {
+			return this.apollo.mutate({
+				mutation: gql`${mutation}`
+			}).pipe(map((response: any) => {
+				return response.data;
+			}));
+		}
 	}
 }

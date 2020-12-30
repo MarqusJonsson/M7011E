@@ -25,3 +25,4 @@
 |2020-12-20| 4 | Restructured and optimized the display of prosumer list in managar GUI.
 |2020-12-22| 7 | Fix various bugs in manager GUI and made it possible to delete prosumers from the simulation.
 |2020-12-23| 7 | Added a production output ratio for powerplants and fixed a misunderstanding of logic for what to do during underproduction. Also started working giving managers ability to stop/start powerplants with countdown being displayed.
+|2020-12-29| 7 | Finished functionality for managers being able to stop and start power plants with countdown for delay until action is executed.

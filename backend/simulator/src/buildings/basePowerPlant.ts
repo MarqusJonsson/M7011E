@@ -3,18 +3,20 @@ import {Battery} from './components/battery';
 import {GeoData} from './components/geoData';
 import {BaseGenerator} from '../generators/baseGenerator';
 import { Ws_per_kWh } from '../math/electricity';
+import { powerPlantActionDelayS } from '../math/time';
 
 export abstract class BasePowerPlant extends BaseBuilding {
 	private _modelledElectricityBuyPrice: number = 0;
 	private _modelledElectricitySellPrice: number = 0;
 	private _electricityBuyPrice: number = 1.5 / Ws_per_kWh;
 	private _electricitySellPrice: number = 1.5 / Ws_per_kWh;
-	private _startUpTimeS: number = 30;
+	private _delayTimeS: number = 0;
 	private _productionLowerCutOff: number = 0.2;
 	private _productionUpperCutOff: number = 0.6;
 	private _productionFlag: boolean = true;
 	private _totalDemand: number = 0;
 	private _productionOutputRatio = 1;
+	private _action: Function | undefined = undefined;
 
 	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[]) {
 		super(type, battery, geoData, generators);
@@ -28,8 +30,28 @@ export abstract class BasePowerPlant extends BaseBuilding {
 				battery.buffer = batteryElectricityAfterGeneration;
 			} 
 			else {
-				battery.buffer = battery.capacity;			}
+				battery.buffer = battery.capacity;
+			}
 		} 
+	}
+
+	public consumeElectricity() {
+		if (this.productionFlag) {
+			const remainingElectricity = this.battery.buffer - this.electricityConsumption;
+			if (!this.hasBlackout) {
+				if (remainingElectricity < 0) {
+					this.hasBlackout = true;
+					this.battery.buffer = 0;
+				}
+				else {
+					this.battery.buffer = remainingElectricity;
+				}
+			}
+			else if (remainingElectricity >= 0) {
+				this.hasBlackout = false;
+				this.battery.buffer = remainingElectricity;
+			}	
+		}
 	}
 
 	public calculateElectricityPrice(amount: number): number {
@@ -37,11 +59,21 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	}
 
 	public start() {
-		this.productionFlag = true;
+		if (this._action === undefined) {
+			this.delayTimeS = powerPlantActionDelayS;
+			this._action = function(): void {
+				this.productionFlag = true;
+			}
+		}
 	}
 
 	public stop() {
-		this.productionFlag = false;
+		if (this._action === undefined) {
+			this.delayTimeS = powerPlantActionDelayS;
+			this._action = function(): void {
+				this.productionFlag = false;
+			}
+		}
 	}
 
 	public get electricityBuyPrice(): number{
@@ -76,12 +108,12 @@ export abstract class BasePowerPlant extends BaseBuilding {
 		this._modelledElectricitySellPrice = value;
 	}
 
-	public get startUpTime(): number {
-		return this._startUpTimeS;
+	public get delayTimeS(): number {
+		return this._delayTimeS;
 	}
 
-	public set startUpTime(value: number) {
-		this._startUpTimeS = value;
+	public set delayTimeS(value: number) {
+		this._delayTimeS = value;
 	}
 
 	public get productionLowerCufOff(): number {
@@ -123,4 +155,17 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	public set productionOutputRatio(value: number) {
 		this._productionOutputRatio = value;
 	}
+
+	public getAction(): Function | undefined {
+		return this._action;
+	}
+
+	public performAction() {
+		if (this._action !== undefined) this._action();
+	}
+
+	public clearAction() {
+		this._action = undefined;
+	}
+
 }

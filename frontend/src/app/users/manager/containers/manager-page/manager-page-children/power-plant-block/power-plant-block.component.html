@@ -7,6 +7,9 @@
 	<span>Power plant status: </span><span #status></span> <br><br>
 	<span>Production output ratio</span>
 	<mat-slider min="0" max="1" step="0.1" value="1" thumbLabel = "true" (input)="productionOutputRatioSliderValueChange($event)"></mat-slider>
-	<button #productionOutputRatioButton> Update ratio</button>
+	<button #productionOutputRatioButton> Update ratio</button><br><br>
+	<span class = "hidden-at-start" #actionTimeDelayDescription>Action time delay: </span><span class = "hidden-at-start" #actionTimeDelay></span> <br><br>
+	<button #startProduction>Start production</button><button #stopProduction>Stop production</button>
+
 
 </div>

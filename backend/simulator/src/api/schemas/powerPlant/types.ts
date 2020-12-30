@@ -61,6 +61,17 @@ const PowerPlantType = new GraphQLObjectType({
 			type: GraphQLFloat,
 			description: `Ratio for electricity production of the ${typeName}.`
 		},
+
+		productionFlag: {
+			type: GraphQLBoolean,
+			description: `Flag indicating whether the ${typeName} is running or stopped.`
+		},
+
+		delayTimeS: {
+			type: GraphQLFloat,
+			description: `Delay for actions given to the ${typeName}.`
+		},
+
 		battery: {
 			type: BatteryType,
 			description: `The battery of the ${typeName}.`,

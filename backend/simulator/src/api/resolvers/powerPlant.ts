@@ -35,7 +35,9 @@ class PowerPlantResolver {
 					electricitySellPrice: powerPlant.electricitySellPrice,
 					hasBlackout: powerPlant.hasBlackout,
 					totalDemand: powerPlant.totalDemand / simulator.deltaTimeS,
-					productionOutputRatio: powerPlant.productionOutputRatio
+					productionOutputRatio: powerPlant.productionOutputRatio,
+					delayTimeS: powerPlant.delayTimeS,
+					productionFlag: powerPlant.productionFlag
 				};
 			}
 			default:
@@ -65,6 +67,24 @@ class PowerPlantResolver {
 		return {
 			productionOutputRatio: manager.building.productionOutputRatio
 		}
+	}
+
+	stopProduction =  (simulator: Simulator, userIdentifier: Identifier) => {
+		const manager: Manager | undefined = simulator.managers.uGet(userIdentifier);
+		if (manager === undefined) throw new GraphQLError(GraphQLErrorName.USER_NOT_FOUND);
+		manager.building.stop();
+		return {
+			productionFlag: manager.building.productionFlag
+		} 
+	}
+
+	startProduction =  (simulator: Simulator, userIdentifier: Identifier) => {
+		const manager: Manager | undefined = simulator.managers.uGet(userIdentifier);
+		if (manager === undefined) throw new GraphQLError(GraphQLErrorName.USER_NOT_FOUND);
+		manager.building.start();
+		return {
+			productionFlag: manager.building.productionFlag
+		} 
 	}
 }
 

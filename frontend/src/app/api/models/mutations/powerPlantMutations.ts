@@ -10,3 +10,15 @@ export const updateProductionOutputRatioMutation = `mutation updateProductionOut
 		productionOutputRatio
 	}
 }`
+
+export const startPowerPlantProductionMutation = `mutation startPowerPlantProduction {
+	startPowerPlantProduction {
+		productionFlag
+	}
+}`
+
+export const stopPowerPlantProductionMutation = `mutation stopPowerPlantProduction {
+	stopPowerPlantProduction {
+		productionFlag
+	}
+}`
