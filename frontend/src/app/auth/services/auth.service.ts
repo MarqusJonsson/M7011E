@@ -54,8 +54,8 @@ export class AuthService {
 		return this.http.post<any>(config.URL_REGISTER, { email, password })
 		.pipe(
 			map((response) => {
-				if (response.status === StatusCode.CREATED) {
-					throw new AuthError();
+				if (!response.success) {
+					throw new AuthError('Unknown error');
 				}
 				AuthService.setSession(response.body);
 				return response.success;
@@ -72,8 +72,8 @@ export class AuthService {
 		return this.http.post<any>(config.URL_LOGIN, { email, password })
 		.pipe(
 			map((response) => {
-				if (response.status === StatusCode.CREATED) {
-					throw new AuthError();
+				if (!response.success) {
+					throw new AuthError('Unknown error');
 				}
 				AuthService.setSession(response.body);
 				return response.success;
