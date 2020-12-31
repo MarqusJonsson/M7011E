@@ -6,6 +6,7 @@ import { GraphqlService } from 'src/app/api/services/graphql.service';
 import { GraphComponent } from 'src/app/users/shared/containers/graph/graph.component';
 import { displayValuePrecision } from 'src/app/users/shared/pageConstants';
 import { ConfirmDialogService } from 'src/app/users/shared/services/confirm-dialog.service';
+import { DeleteProsumerService } from 'src/app/users/shared/services/delete-prosumer.service';
 import { Ws_to_kWh } from 'src/app/utils/electricity';
 @Component({
   selector: 'manager-main-block',
@@ -31,7 +32,7 @@ export class ManagerMainBlockComponent implements OnInit {
 	private svgWidth = "24";
 	private svgHeight = "24";
 	private svgViewBox = "0 0 24 24";
-	constructor(private graphqlService: GraphqlService, private dialogService: ConfirmDialogService, private alertService: AlertService) {}
+	constructor(private graphqlService: GraphqlService, private dialogService: ConfirmDialogService, private alertService: AlertService, private deleteProsumerService: DeleteProsumerService) {}
 
 	ngOnInit(): void {}
 
@@ -234,7 +235,7 @@ export class ManagerMainBlockComponent implements OnInit {
 			  this.dialogService.open(dialogData);
 			  this.dialogService.confirmed().subscribe(confirmed => {
 				if (confirmed) {
-					this.graphqlService.mutate(deleteProsumerMutation, {id: prosumerId}).subscribe( () => {
+					this.deleteProsumerService.deleteProsumer(prosumerId).subscribe( () => {
 						let item  = document.getElementById("prosumer-info-item_" + prosumerId);
 						if (item !== null) {
 							this.prosumerList.nativeElement.removeChild(item);

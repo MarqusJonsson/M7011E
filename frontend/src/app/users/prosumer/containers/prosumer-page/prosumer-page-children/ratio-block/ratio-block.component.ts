@@ -59,8 +59,8 @@ export class RatioBlockComponent implements OnInit {
 			this.setElectricityToPowerPlant(data.prosumer.house.electricityProduction, data.prosumer.house.overproductionRatio);
 		}
 		else {
-			this.setElectricityToBattery(data.prosumer.house.electricityProduction, data.prosumer.house.underproductionRatio);
-			this.setElectricityToPowerPlant(data.prosumer.house.electricityProduction, data.prosumer.house.underproductionRatio);
+			this.setElectricityToBattery(data.prosumer.house.electricityProduction, 1);
+			this.setElectricityToPowerPlant(0, 0);
 		}
 			
 	}
