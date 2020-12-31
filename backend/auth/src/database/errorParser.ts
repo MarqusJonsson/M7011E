@@ -27,7 +27,7 @@ function parseQueryResultError(error: pgPromise.errors.QueryResultError) {
 		case pgPromise.errors.queryResultErrorCode.noData:
 			switch (error.result.command) {
 				case 'DELETE':
-					return new ResponseError('Requested resouce to be deleted was not found', StatusCode.NOT_FOUND);
+					return new ResponseError('Requested resource to be deleted was not found', StatusCode.NOT_FOUND);
 			}
 			return new ResponseError(error.message, StatusCode.NOT_FOUND);
 	}
