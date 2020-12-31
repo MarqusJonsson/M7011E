@@ -15,9 +15,7 @@ class HouseResolver {
 			electricityProduction: house.electricityProduction / simulator.deltaTimeS,
 			hasBlackout: house.hasBlackout,
 			overproductionRatio: house.overproductionRatio,
-			underproductionRatio: house.underproductionRatio,
-
-
+			underproductionRatio: house.underproductionRatio
 		}
 	}
 
@@ -29,7 +27,7 @@ class HouseResolver {
 		const house = prosumer.building;
 		return {
 			id: house.id,
-			underproductionRatio: house.underproductionRatio,
+			underproductionRatio: house.underproductionRatio
 		}
 	}
 
@@ -41,7 +39,7 @@ class HouseResolver {
 		const house = prosumer.building;
 		return {
 			id: house.id,
-			underproductionRatio: house.overproductionRatio,
+			underproductionRatio: house.overproductionRatio
 		}
 	}
 }

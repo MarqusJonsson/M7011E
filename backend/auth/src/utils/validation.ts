@@ -24,8 +24,8 @@ function validatePassword(password: any): boolean {
 function validateRefreshToken(token: any): boolean {
 	if (token !== undefined) {
 		if(typeof token === 'string') {
-            const tokenRegex = /^[a-zA-Z0-9-_]+\.[a-zA-Z0-9-_]+\.[a-zA-Z0-9-_]+$/;
-            return tokenRegex.test(token);
+			const tokenRegex = /^[a-zA-Z0-9-_]+\.[a-zA-Z0-9-_]+\.[a-zA-Z0-9-_]+$/;
+			return tokenRegex.test(token);
 		}
 	}
 	return false;	

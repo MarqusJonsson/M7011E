@@ -44,28 +44,28 @@ export class LoginComponent implements OnInit {
 			return;
 		}
 		this.authService.login(this.form.value.email, this.form.value.password).subscribe(
-		(success) => {
-			if (success === true) {
-				this.alertService.success('Login successful', { autoClose: true, keepAfterRouteChange: true });
-				switch (this.authService.getRole()) {
-					case UserRole.MANAGER:
-						this.router.navigateByUrl('manager-page');
-						break;
-					case UserRole.PROSUMER:
-						this.router.navigateByUrl('prosumer-page');
-					}
-			} else {
-				throw new Error('Unknown error');
-			}
-		},
-		(error) => {
-			if (error instanceof AuthError) {
-				this.alertService.error(error.message, { autoClose: true });
-			} else {
-				this.alertService.error(error.message, { autoClose: true });
-				console.error(error);
-			}
-			return of(error);
-		});
+			(success) => {
+				if (success === true) {
+					this.alertService.success('Login successful', { autoClose: true, keepAfterRouteChange: true });
+					switch (this.authService.getRole()) {
+						case UserRole.MANAGER:
+							this.router.navigateByUrl('manager-page');
+							break;
+						case UserRole.PROSUMER:
+							this.router.navigateByUrl('prosumer-page');
+						}
+				} else {
+					throw new Error('Unknown error');
+				}
+			},
+			(error) => {
+				if (error instanceof AuthError) {
+					this.alertService.error(error.message, { autoClose: true });
+				} else {
+					this.alertService.error(error.message, { autoClose: true });
+					console.error(error);
+				}
+				return of(error);
+			});
 	}
 }

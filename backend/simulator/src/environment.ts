@@ -1,6 +1,7 @@
 import { Location } from './buildings/components/geoData';
-import { GeoDataMapPair } from './geoDataMap';
+import { GeoDataMap, GeoDataMapPair } from './geoDataMap';
 import { GaussianDistribution } from './math/gaussianDistribution';
+import { linearInterpolation } from './math/interpolation';
 import { MONTH_MEAN_TEMPERATURES } from './utils/realLifeData';
 
 // Setup distributions for each month mean temperatures
@@ -35,7 +36,6 @@ export class Environment {
 	private temperatureMap: GeoDataMapPair = new GeoDataMapPair(10, 10, 1, 0, (time, normalizedLocation) => {
 		const lowTempTime = 3;
 		const lowTempHighTempDiff = 7;
-		const lerp = (x: number, y: number, a: number) => x * (1 - a) + y * a;
 		const monthTemperatureSample = monthlyTemperatureDistributions[time.months].sample();
 		const diff = Math.abs(time.hours - lowTempTime);
 		let timeFactor;
@@ -44,9 +44,7 @@ export class Environment {
 		} else {
 			timeFactor = (24 - diff) / 12;
 		}
-		let temperature = lerp(monthTemperatureSample - lowTempHighTempDiff / 2, monthTemperatureSample + lowTempHighTempDiff / 2, timeFactor);
-		temperature = temperature * (1.1 - Math.abs(normalizedLocation.latitude - 0.5) / 2.5); // lower temp at latitude 0 and 1 than 0.5
-		return temperature;
+		return linearInterpolation(monthTemperatureSample - lowTempHighTempDiff / 2, monthTemperatureSample + lowTempHighTempDiff / 2, timeFactor);
 	});
 
 	private windMap: GeoDataMapPair = new GeoDataMapPair(10, 10, 1, 0, (time, normalizedLocation) => {
