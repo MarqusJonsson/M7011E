@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './auth/containers/login/login.component';
-import { ProsumerPageComponent } from './users/prosumer/containers/prosumer-page/prosumer-page.component';
-import { AccountSettingsComponent } from './users/shared/containers/account-settings/account-settings.component';
-import { RegisterComponent } from './auth/containers/register/register.component';
-import { ManagerPageComponent } from './users/manager/containers/manager-page/manager-page.component';
-import { ProsumerGuard } from './auth/guards/prosumer.guard';
-import { ManagerGuard } from './auth/guards/manager.guard';
-import { DialogComponent } from './users/shared/containers/dialog/dialog.component';
+import { LoginComponent } from './components/authentication/login/login.component';
+import { ProsumerPageComponent } from './components/user/prosumer-page/prosumer-page.component';
+import { AccountSettingsComponent } from './components/user/shared/account-settings/account-settings.component';
+import { RegisterComponent } from './components/authentication/register/register.component';
+import { ManagerPageComponent } from './components/user/manager-page/manager-page.component';
+import { ProsumerGuard } from './guards/prosumer.guard';
+import { ManagerGuard } from './guards/manager.guard';
+import { MainPageGuard } from './guards/main-page.guard';
 
 const routes: Routes = [
-	{path: '', pathMatch: 'full', redirectTo: '/login'},
-	{path: 'login', component: LoginComponent },
+	{path: '', pathMatch: 'full', children: [], canActivate: [MainPageGuard]},
+	{path: 'login', component: LoginComponent},
 	{path: 'register', component: RegisterComponent},
 	{path: 'prosumer-page', component: ProsumerPageComponent, canActivate: [ProsumerGuard]},
 	{path: 'manager-page', component: ManagerPageComponent, canActivate: [ManagerGuard]},

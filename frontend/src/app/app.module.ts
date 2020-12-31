@@ -3,34 +3,33 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './auth/containers/login/login.component';
-import { LogoutComponent } from './auth/containers/logout/logout.component';
-import { AlertComponent } from './alert/containers/alert/alert.component';
-import { ProsumerPageComponent } from './users/prosumer/containers/prosumer-page/prosumer-page.component';
-import { AccountSettingsComponent } from './users/shared/containers/account-settings/account-settings.component';
-import { NavBarComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/nav-bar/nav-bar.component';
-import { VisualBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/visual-block/visual-block.component';
+import { LoginComponent } from './components/authentication/login/login.component';
+import { LogoutComponent } from './components/authentication/logout/logout.component';
+import { AlertComponent } from './components/alert/alert.component';
+import { ProsumerPageComponent } from './components/user/prosumer-page/prosumer-page.component';
+import { AccountSettingsComponent } from './components/user/shared/account-settings/account-settings.component';
+import { NavBarComponent } from './components/user/prosumer-page/prosumer-page-children/nav-bar/nav-bar.component';
+import { VisualBlockComponent } from './components/user/prosumer-page/prosumer-page-children/visual-block/visual-block.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GraphComponent } from './users/shared/containers/graph/graph.component';
-import { RatioBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/ratio-block/ratio-block.component';
+import { GraphComponent } from './components/user/shared/graph/graph.component';
+import { RatioBlockComponent } from './components/user/prosumer-page/prosumer-page-children/ratio-block/ratio-block.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RegisterComponent } from './auth/containers/register/register.component';
-import { ManagerPageComponent } from './users/manager/containers/manager-page/manager-page.component';
-import { ManagerNavBarComponent } from './users/manager/containers/manager-page/manager-page-children/manager-nav-bar/manager-nav-bar.component';
-import { ManagerMainBlockComponent } from './users/manager/containers/manager-page/manager-page-children/manager-main-block/manager-main-block.component';
-import { PowerPlantBlockComponent } from './users/manager/containers/manager-page/manager-page-children/power-plant-block/power-plant-block.component';
-import { SubBlockComponent } from './users/shared/containers/sub-block/sub-block.component';
-import { ManagerMarketComponent } from './users/manager/containers/manager-page/manager-page-children/manager-market/manager-market.component';
-import { ProsumerCurrencyBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/prosumer-currency-block/prosumer-currency-block.component';
+import { RegisterComponent } from './components/authentication/register/register.component';
+import { ManagerPageComponent } from './components/user/manager-page/manager-page.component';
+import { ManagerNavBarComponent } from './components/user/manager-page/manager-page-children/manager-nav-bar/manager-nav-bar.component';
+import { ManagerMainBlockComponent } from './components/user/manager-page/manager-page-children/manager-main-block/manager-main-block.component';
+import { PowerPlantBlockComponent } from './components/user/manager-page/manager-page-children/power-plant-block/power-plant-block.component';
+import { ManagerMarketComponent } from './components/user/manager-page/manager-page-children/manager-market/manager-market.component';
+import { ProsumerCurrencyBlockComponent } from './components/user/prosumer-page/prosumer-page-children/prosumer-currency-block/prosumer-currency-block.component';
 import { JwtModule } from '@auth0/angular-jwt';
-import { AuthService } from './auth/services/auth.service';
-import JwtInterceptor from './api/interceptors/jwt.interceptor';
+import { AuthenticationService } from './services/authentication/authentication.service';
+import JwtInterceptor from './interceptors/jwt.interceptor';
 import { GraphQLModule } from './graphql.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { DialogComponent } from './users/shared/containers/dialog/dialog.component';
-import { UploadProfilePictureComponent } from './picture/containers/upload-profile-picture/upload-profile-picture.component';
-import { ProfilePictureComponent } from './users/shared/containers/profile-picture/profile-picture.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { UploadProfilePictureComponent } from './components/user/shared/upload-profile-picture/upload-profile-picture.component';
+import { ProfilePictureComponent } from './components/user/shared/profile-picture/profile-picture.component';
 
 @NgModule({
 	declarations: [
@@ -48,7 +47,6 @@ import { ProfilePictureComponent } from './users/shared/containers/profile-pictu
 		ManagerNavBarComponent,
 		ManagerMainBlockComponent,
 		PowerPlantBlockComponent,
-		SubBlockComponent,
 		ManagerMarketComponent,
 		ProsumerCurrencyBlockComponent,
 		DialogComponent,
@@ -65,7 +63,7 @@ import { ProfilePictureComponent } from './users/shared/containers/profile-pictu
 		HttpClientModule,
 		JwtModule.forRoot({
 			config: {
-			tokenGetter: AuthService.getAccessToken,
+			tokenGetter: AuthenticationService.getAccessToken,
 			allowedDomains: ['localhost:4200']
 			}
 		}),
