@@ -9,6 +9,7 @@ export const config = {
 	URL_LOGIN: `${URL_AUTH_SERVER}/login`,
 	URL_LOGOUT: `${URL_AUTH_SERVER}/logout`,
 	URL_REGISTER: `${URL_AUTH_SERVER}/register`,
+	URL_DELETE_USER: `${URL_AUTH_SERVER}/users/`,
 	URL_REFRESH_ACCESS_TOKEN: `${URL_AUTH_SERVER}/refresh-access-token`,
 	// Simulator API URLs
 	URL_GRAPHQL: `${URL_SIMULATOR_SERVER}/graphiql`,
