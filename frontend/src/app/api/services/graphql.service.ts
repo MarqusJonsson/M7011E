@@ -27,6 +27,24 @@ export class GraphqlService {
 		);
 	}
 
+	mutate(mutation: any, variables?: any) {
+		if (variables !== undefined) {
+			return this.apollo.mutate({
+				mutation: gql`${mutation}`,
+				variables: variables
+			}).pipe(map((response: any) => {
+				return response.data;
+			}));
+		}
+		else {
+			return this.apollo.mutate({
+				mutation: gql`${mutation}`
+			}).pipe(map((response: any) => {
+				return response.data;
+			}));
+		}
+	}
+
 	startQueryInterval(query: any, ms: number) {
 		this.stopQueryInterval();
 		this.queryInterval = setInterval(() => {
@@ -59,23 +77,5 @@ export class GraphqlService {
 
 	removeAllSubscriberCallbacks() {
 		this.subscriberCallBacks.length = 0;
-	}
-
-	mutate(mutation: any, variables?: any) {
-		if (variables !== undefined) {
-			return this.apollo.mutate({
-				mutation: gql`${mutation}`,
-				variables: variables
-			}).pipe(map((response: any) => {
-				return response.data;
-			}));
-		}
-		else {
-			return this.apollo.mutate({
-				mutation: gql`${mutation}`
-			}).pipe(map((response: any) => {
-				return response.data;
-			}));
-		}
 	}
 }
