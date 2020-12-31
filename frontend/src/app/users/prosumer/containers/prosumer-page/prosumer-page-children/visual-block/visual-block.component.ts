@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { geoDataContent, geoDataQuery } from 'src/app/api/models/geoDataContent';
 import { GraphqlService } from 'src/app/api/services/graphql.service';
+import { GraphComponent } from 'src/app/users/shared/containers/graph/graph.component';
 import { displayValuePrecision } from 'src/app/users/shared/pageConstants';
 import { Ws_to_kWh } from 'src/app/utils/electricity';
 @Component({
@@ -16,12 +17,22 @@ export class VisualBlockComponent implements OnInit {
 	@ViewChild('windSpeed') windSpeed: ElementRef;
 	@ViewChild('battery') battery: ElementRef;
 	@ViewChild('batteryCapacity') batteryCapacity: ElementRef;
-	constructor(private graphqlService: GraphqlService) { }
+	@ViewChild(GraphComponent) graph: GraphComponent;
+	constructor(private graphqlService: GraphqlService) {}
 
 	ngOnInit(): void {
 	}
-
+	
 	ngAfterViewInit() {
+		this.graph.createPlot(
+			[
+				{ x: [], y: [], type: 'scatter', mode: 'lines', marker: {color: 'red'}, name: 'Consumption' },
+				{ x: [], y: [], type: 'scatter', mode: 'lines', marker: {color: 'green'}, name: 'Production' },
+				{ x: [], y: [], type: 'scatter', mode: 'lines', marker: {color: 'blue'}, name: 'Wind speed' },
+				{ x: [], y: [], type: 'scatter', mode: 'lines', marker: {color: 'orange'}, name: 'Temperature' }
+			],
+			{ autosize: true }
+		);
 		this.graphqlService.addSubscriberCallback(this.onUpdate);
 	}
 
@@ -57,13 +68,19 @@ export class VisualBlockComponent implements OnInit {
 	}
 
 	public onUpdate = (data: any) => {
-		this.setProduction(data.prosumer.house.electricityProduction);
-		this.setConsumption(data.prosumer.house.electricityConsumption);
+		const house = data.prosumer.house;
+		this.setProduction(house.electricityProduction);
+		this.setConsumption(house.electricityConsumption);
 		this.setNetProduction();
-		this.setTemperature(data.prosumer.house.geoData.temperature);
-		this.setWindSpeed(data.prosumer.house.geoData.windSpeed);
-		this.setBattery(data.prosumer.house.battery.buffer);
-		this.setBatteryCapacity(data.prosumer.house.battery.capacity);
+		this.setTemperature(house.geoData.temperature);
+		this.setWindSpeed(house.geoData.windSpeed);
+		this.setBattery(house.battery.buffer);
+		this.setBatteryCapacity(house.battery.capacity);
+		const time = new Date();
+		this.graph.appendToPlot(
+			[[time], [time], [time], [time]],
+			[[house.electricityConsumption], [house.electricityProduction], [house.geoData.windSpeed], [house.geoData.temperature]]
+		);
 	}
 
 }

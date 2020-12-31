@@ -5,7 +5,6 @@
 			<ul style = "list-style-type:none" id="prosumer-list" #prosumerList>
 			</ul>
 		</div>
-
 		<div #prosumerInfoContainer id ="prosumer-info-container">
 			<img #prosumerInfoCloseSymbol src ="/assets/x-mark.svg" alt="exit"> <br><br>
 			<h2 #prosumerInfoHeader></h2>
@@ -16,9 +15,7 @@
 			<span>Consumption: </span><span #prosumerInfoConsumption></span> <br><br>
 			<span>Is blocked: </span><span #prosumerInfoIsBlocked></span> <br><br>
 			<span>HasBlackout: </span><span #prosumerInfoHasBlackout></span>
-
 		</div>
-
 		<div id = "environment-details">
 			<ul style = "list-style-type:none" id="environment-list">
 				<span #temperature></span>
@@ -29,6 +26,6 @@
 		</div>
 	</div>
 	<div id = "graph-container">
-		<plotly-graph></plotly-graph>
+		<data-graph [id]="'graph'"></data-graph>
 	</div>
 </div>

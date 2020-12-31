@@ -12,13 +12,8 @@ import { NavBarComponent } from './users/prosumer/containers/prosumer-page/prosu
 import { VisualBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/visual-block/visual-block.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PlotlyViaCDNModule } from 'angular-plotly.js';
-import { PlotlyComponent } from './users/shared/containers/plotly/plotly.component';
+import { GraphComponent } from './users/shared/containers/graph/graph.component';
 import { RatioBlockComponent } from './users/prosumer/containers/prosumer-page/prosumer-page-children/ratio-block/ratio-block.component';
-// can be `latest` or any version number (i.e.: '1.40.0')
-PlotlyViaCDNModule.setPlotlyVersion('latest');
-// optional: can be null (for full) or 'basic', 'cartesian', 'geo', 'gl3d', 'gl2d', 'mapbox' or 'finance'
-PlotlyViaCDNModule.setPlotlyBundle('basic');
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegisterComponent } from './auth/containers/register/register.component';
 import { ManagerPageComponent } from './users/manager/containers/manager-page/manager-page.component';
@@ -46,7 +41,7 @@ import { ProfilePictureComponent } from './users/shared/containers/profile-pictu
 		AccountSettingsComponent,
 		NavBarComponent,
 		VisualBlockComponent,
-		PlotlyComponent,
+		GraphComponent,
 		RatioBlockComponent,
 		RegisterComponent,
 		ManagerPageComponent,
@@ -65,7 +60,6 @@ import { ProfilePictureComponent } from './users/shared/containers/profile-pictu
 		BrowserModule,
 		AppRoutingModule,
 		ReactiveFormsModule,
-		PlotlyViaCDNModule,
 		BrowserAnimationsModule,
 		MatSliderModule,
 		HttpClientModule,
@@ -86,8 +80,6 @@ import { ProfilePictureComponent } from './users/shared/containers/profile-pictu
 		}
 	],
 	entryComponents: [DialogComponent],
-	// 	exports: [ConfirmDialogService],
 	bootstrap: [AppComponent],
-
 })
 export class AppModule {}

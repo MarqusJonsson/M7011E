@@ -45,14 +45,12 @@ export class PowerPlantBlockComponent implements OnInit {
 
 	}
 
-	public setProduction(value: number, productionFlag: boolean) {
-		if (productionFlag) this.production.nativeElement.innerText = Ws_to_kWh(value).toFixed(displayValuePrecision) + " kW";
-		else this.production.nativeElement.innerText = 0 + " kW";
+	public setProduction(value: number) {
+		this.production.nativeElement.innerText = Ws_to_kWh(value).toFixed(displayValuePrecision) + " kW";
 	}
 
-	public setConsumption(value: number,  productionFlag: boolean) {
-		if (productionFlag) this.consumption.nativeElement.innerText =	Ws_to_kWh(value).toFixed(displayValuePrecision) + " kW";
-		else this.consumption.nativeElement.innerText = 0 + " kW"
+	public setConsumption(value: number) {
+		this.consumption.nativeElement.innerText =	Ws_to_kWh(value).toFixed(displayValuePrecision) + " kW";
 	}
 
 	public setNetProduction() {
@@ -82,11 +80,8 @@ export class PowerPlantBlockComponent implements OnInit {
 		}
 	}
 
-	public setStatus(value: boolean) {
-		if(value == true)
-		this.status.nativeElement.innerText = "Running";
-		else
-		this.status.nativeElement.innerText = "Stopped"; 
+	public setStatus(value: boolean, hasBlackout: boolean) {
+		this.status.nativeElement.innerText = (value ? 'Running' : 'Stopped') + (hasBlackout ? ' (has blackout)' : '');
 	}
 
 	public productionOutputRatioSliderValueChange(event: MatSliderChange) {
@@ -95,13 +90,14 @@ export class PowerPlantBlockComponent implements OnInit {
 
 
 	public onUpdate = (data: any) => {
-		this.setBattery(data.manager.powerPlant.battery.buffer);
-		this.setBatteryCapacity(data.manager.powerPlant.battery.capacity);
-		this.setProduction(data.manager.powerPlant.electricityProduction * data.manager.powerPlant.productionOutputRatio, data.manager.powerPlant.productionFlag);
-		this.setConsumption(data.manager.powerPlant.electricityConsumption, data.manager.powerPlant.productionFlag)
+		const powerPlant = data.manager.powerPlant;
+		this.setBattery(powerPlant.battery.buffer);
+		this.setBatteryCapacity(powerPlant.battery.capacity);
+		this.setProduction(powerPlant.electricityProduction * powerPlant.productionOutputRatio);
+		this.setConsumption(powerPlant.electricityConsumption);
 		this.setNetProduction();
-		this.setStatus(data.manager.powerPlant.productionFlag);
-		this.setActionTimeDelay(data.manager.powerPlant.delayTimeS);
+		this.setStatus(powerPlant.productionFlag, powerPlant.hasBlackout);
+		this.setActionTimeDelay(powerPlant.delayTimeS);
 	}
 
 }

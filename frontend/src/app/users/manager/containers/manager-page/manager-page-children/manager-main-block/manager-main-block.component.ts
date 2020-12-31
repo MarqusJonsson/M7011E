@@ -3,6 +3,7 @@ import { AlertService } from 'src/app/alert/services/alert.service';
 import { deleteProsumerMutation, setProsumerSellTimeoutMutation } from 'src/app/api/models/mutations/prosumerMutations';
 import { prosumerQueryById } from 'src/app/api/models/prosumerContent';
 import { GraphqlService } from 'src/app/api/services/graphql.service';
+import { GraphComponent } from 'src/app/users/shared/containers/graph/graph.component';
 import { displayValuePrecision } from 'src/app/users/shared/pageConstants';
 import { ConfirmDialogService } from 'src/app/users/shared/services/confirm-dialog.service';
 import { DeleteProsumerService } from 'src/app/users/shared/services/delete-prosumer.service';
@@ -26,18 +27,23 @@ export class ManagerMainBlockComponent implements OnInit {
 	@ViewChild('prosumerInfoIsBlocked') prosumerInfoIsBlocked:ElementRef;
 	@ViewChild('prosumerInfoCloseSymbol') prosumerInfoCloseSymbol:ElementRef;
 	@ViewChild('prosumerInfoHasBlackout') prosumerInfoHasBlackout: ElementRef;
+	@ViewChild(GraphComponent) graph: GraphComponent;
 	private selectedProsumerId = null;
 	private svgWidth = "24";
 	private svgHeight = "24";
 	private svgViewBox = "0 0 24 24";
-	constructor(private graphqlService: GraphqlService, private dialogService: ConfirmDialogService, private alertService: AlertService, private deleteProsumerService: DeleteProsumerService) {
+	constructor(private graphqlService: GraphqlService, private dialogService: ConfirmDialogService, private alertService: AlertService, private deleteProsumerService: DeleteProsumerService) {}
 
-	}
-
-	ngOnInit(): void {
-	}
+	ngOnInit(): void {}
 
 	ngAfterViewInit() {
+		this.graph.createPlot(
+			[
+				{ x: [], y: [], type: 'scatter', mode: 'lines', marker: {color: 'red'}, name: 'Consumption' },
+				{ x: [], y: [], type: 'scatter', mode: 'lines', marker: {color: 'green'}, name: 'Production' }
+			],
+			{ autosize: true }
+		);
 		this.graphqlService.addSubscriberCallback(this.onUpdate);
 		this.hideElement(this.prosumerInfoContainer.nativeElement.id);
 		this.prosumerInfoCloseSymbol.nativeElement.onclick = () => {this.hideElement(this.prosumerInfoContainer.nativeElement.id);};
@@ -179,9 +185,15 @@ export class ManagerMainBlockComponent implements OnInit {
 	}
 
 	public onUpdate = (data: any) => {
-		this.setTemperature(data.manager.powerPlant.geoData.temperature);
-		this.setWindSpeed(data.manager.powerPlant.geoData.windSpeed);
+		const powerPlant = data.manager.powerPlant;
+		this.setTemperature(powerPlant.geoData.temperature);
+		this.setWindSpeed(powerPlant.geoData.windSpeed);
 		this.createProsumerList(data.manager.prosumers);
+		const time = new Date();
+		this.graph.appendToPlot(
+			[[time], [time]],
+			[[powerPlant.electricityConsumption], [powerPlant.electricityProduction]]
+		);
 	}
 
 	public createProsumerListBlackoutSVG(blackoutStatus): SVGSVGElement{
@@ -275,10 +287,7 @@ export class ManagerMainBlockComponent implements OnInit {
 				else {
 					this.alertService.error("Invalid input, prosumer block aborted", {autoClose: true});
 				}
-					
 			}
 		 });
 	}
-
 }
-
