@@ -50,7 +50,7 @@ export class Environment {
 	});
 
 	private windMap: GeoDataMapPair = new GeoDataMapPair(10, 10, 1, 0, (time, normalizedLocation) => {
-		const sample = windSpeedDist.sample();
+		const sample = Math.abs(windSpeedDist.sample());
 		return sample;
 	});
 
