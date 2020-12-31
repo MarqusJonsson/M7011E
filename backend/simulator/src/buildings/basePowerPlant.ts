@@ -22,35 +22,38 @@ export abstract class BasePowerPlant extends BaseBuilding {
 		super(type, battery, geoData, generators);
 	}
 
+	public calculateProduction(deltaTimeS: number): number {
+		this.electricityProduction = 0;
+		if (!this.hasBlackout && this.productionFlag) {
+			this.generators.forEach((generator) => {
+				this.electricityProduction += generator.calculateOutput(this.geoData);
+			});
+			this.electricityProduction *= deltaTimeS * this.productionOutputRatio;
+		}
+		return this.electricityProduction;
+	}
+
 	public generateElectricity(): void {
 		const battery: Battery = this.battery;
 		if (this.productionFlag) {
-			const batteryElectricityAfterGeneration = battery.buffer + this.electricityProduction * this.productionOutputRatio;
-			if (batteryElectricityAfterGeneration <= battery.capacity) {
-				battery.buffer = batteryElectricityAfterGeneration;
-			} 
-			else {
-				battery.buffer = battery.capacity;
-			}
+			battery.buffer = Math.min(battery.buffer + this.electricityProduction, battery.capacity);
 		} 
 	}
 
 	public consumeElectricity() {
-		if (this.productionFlag) {
-			const remainingElectricity = this.battery.buffer - this.electricityConsumption;
-			if (!this.hasBlackout) {
-				if (remainingElectricity < 0) {
-					this.hasBlackout = true;
-					this.battery.buffer = 0;
-				}
-				else {
-					this.battery.buffer = remainingElectricity;
-				}
+		const remainingElectricity = this.battery.buffer - this.electricityConsumption;
+		if (!this.hasBlackout) {
+			if (remainingElectricity < 0) {
+				this.hasBlackout = true;
+				this.battery.buffer = 0;
 			}
-			else if (remainingElectricity >= 0) {
-				this.hasBlackout = false;
+			else {
 				this.battery.buffer = remainingElectricity;
-			}	
+			}
+		}
+		else if (remainingElectricity >= 0) {
+			this.hasBlackout = false;
+			this.battery.buffer = remainingElectricity;
 		}
 	}
 
