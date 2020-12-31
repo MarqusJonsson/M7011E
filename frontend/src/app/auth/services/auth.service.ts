@@ -91,6 +91,7 @@ export class AuthService {
 		return this.http.delete<any>(config.URL_LOGOUT) // Refresh token is in Authorization header, see jwt interceptor
 			.pipe(tap(() => {
 				AuthService.removeSession();
+				this.clearUser();
 			}));
 	}
 
@@ -105,7 +106,7 @@ export class AuthService {
 		if (this.user === undefined) {
 			const payload = this.jwtHelper.decodeToken(AuthService.getRefreshToken());
 			if (!payload) {
-				return null;
+				return undefined;
 			}
 			this.user = payload.user;
 		}
@@ -117,6 +118,10 @@ export class AuthService {
 			this.getUser();
 		}
 		return this.user.role;
+	}
+
+	private clearUser() {
+		this.user = undefined;
 	}
 
 	public getId(): number {

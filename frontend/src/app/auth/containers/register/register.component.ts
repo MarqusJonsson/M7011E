@@ -23,6 +23,9 @@ export class RegisterComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
+		if (AuthService.getRefreshToken() !== null) {
+			this.authService.logout();
+		}
 		this.form = this.formBuilder.group({
 			email: new FormControl('', {
 				validators: [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/)],
