@@ -28,3 +28,4 @@
 |2020-12-29| 7 | Finished functionality for managers being able to stop and start power plants with countdown for delay until action is executed.
 |2020-12-30| 7 | Started working on the report and made it possible to delete prosumers from both the simulation and the authentication server.
 |2020-12-31| 6 | Continued working on the report, worked a bit with error handling for API calls to the simulator  and started with documentation for the API.
+|2021-01-01| 6 | Continued working on the API documentation.
