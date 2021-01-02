@@ -25,3 +25,7 @@
 | 2020-12-20 | 3 | <ul><li>Started working on allowing users to upload profile pictures.</li></ul> |
 | 2020-12-22 | 7 | <ul><li>Continued working on allowing uses to upload profile pictures.</li></ul> |
 | 2020-12-23 | 6 | <ul><li>Created components for viewing and uploading images.</li></ul> |
+| 2020-12-29 | 5 | <ul><li>Fixed issue regarding storing images incorrectly.</li></ul> |
+| 2020-12-30 | 5 | <ul><li>Added removal of related refresh token when deleting a user.</li></ul> |
+| 2020-12-31 | 5 | <ul><li>Fixed interpolation of data maps.</li><li>Started working on creating graphs for the user pages.</li></ul> |
+| 2021-01-01 | 10 | <ul><li>Continued working on creating graphs for the user pages.</li><li>Fixed issues regarding production and consumption variables in simulator.</li><li>Restructure project files on frontend.</li><li>Started working on making the frontend more visually appealing.</li></ul> |
