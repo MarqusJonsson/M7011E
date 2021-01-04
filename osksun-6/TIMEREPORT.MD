@@ -30,3 +30,4 @@
 |2020-12-31| 6 | Continued working on the report, worked a bit with error handling for API calls to the simulator  and started with documentation for the API.
 |2021-01-01| 6 | Continued working on the API documentation.
 |2021-01-02| 4 | Almost finished with the API documentation, started adding more to the discussion section of the report and description of the simulator server.
+|2021-01-04| 4 | Continued working on the report.
