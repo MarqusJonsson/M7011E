@@ -31,3 +31,4 @@
 |2021-01-01| 6 | Continued working on the API documentation.
 |2021-01-02| 4 | Almost finished with the API documentation, started adding more to the discussion section of the report and description of the simulator server.
 |2021-01-04| 4 | Continued working on the report.
+|2021-01-05| 6 | Continued working on the report and looked into setting up a deployment of the application on a public VPS.
