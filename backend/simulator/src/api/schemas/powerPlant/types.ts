@@ -27,11 +27,11 @@ const PowerPlantType = new GraphQLObjectType({
 		},
 		electricityConsumption: {
 			type: GraphQLFloat,
-			description: `The electricity consumption of the ${typeName} in watt seconds.`
+			description: `The electricity consumption of the ${typeName} in Ws.`
 		},
 		electricityProduction: {
 			type: GraphQLFloat,
-			description: `The electricity production of the ${typeName} in watt seconds.`
+			description: `The electricity production of the ${typeName} in Ws.`
 		},
 		modelledElectricitySellPrice: {
 			type: GraphQLFloat,

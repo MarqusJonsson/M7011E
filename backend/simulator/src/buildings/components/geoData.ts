@@ -41,7 +41,7 @@ export class GeoData extends Identifiable {
 		this._temperature = 0;
 	}
 
-	public sampleEnviornmentVariables(environment: Environment, simulationTime: number) {
+	public sampleEnvironmentVariables(environment: Environment, simulationTime: number) {
 		this.windSpeed = environment.sampleWindSpeed(this.longitude, this.latitude, simulationTime);
 		this.temperature = environment.sampleTemperature(this.longitude, this.latitude, simulationTime);
 	}

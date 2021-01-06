@@ -16,7 +16,7 @@ const BatteryType = new GraphQLObjectType({
 		},
 		buffer: {
 			type: GraphQLFloat,
-			description: `The amount of electricity in the ${typeName} buffer, in Ws.`
+			description: `The amount of electricity in the ${typeName} buffer in Ws.`
 		},
 		capacity: {
 			type: GraphQLFloat,

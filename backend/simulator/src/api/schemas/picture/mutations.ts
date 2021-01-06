@@ -8,7 +8,7 @@ import { pictureResolver } from '../../resolvers/picture';
 
 const uploadProfilePicture = {
 	type: GraphQLBoolean,
-	description: `Uploads an ${typeName} file.`,
+	description: `Uploads a ${typeName} file.`,
 	args: {
 		picture: {
 			description: `A ${typeName} file.`,
