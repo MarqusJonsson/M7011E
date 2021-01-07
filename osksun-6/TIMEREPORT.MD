@@ -33,3 +33,4 @@
 |2021-01-04| 4 | Continued working on the report.
 |2021-01-05| 6 | Continued working on the report and looked into setting up a deployment of the application on a public VPS.
 |2021-01-06| 4 | Continued working on the report.
+|2021-01-07| 7 | Continued working on a deployment on a public VPS.
