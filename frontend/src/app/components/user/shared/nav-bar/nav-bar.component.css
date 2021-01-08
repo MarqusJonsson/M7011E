@@ -1,0 +1,44 @@
+:host {
+	--nav-bar-background-color: #323232;
+	--nav-button-width: 50px;
+	--nav-button-height: 50px;
+	--nav-button-padding: 10px;
+	--nav-bar-padding: 0 10px;
+	--num-nav-buttons: 3;
+	--nav-bar-total-width: calc(
+		(var(--nav-button-width) + var(--nav-button-padding) * 2) * var(--num-nav-buttons)
+		+ var(--nav-button-padding) * 2
+	);
+}
+
+:host #nav-bar-list {
+	position: fixed;
+	left: 50%;
+	bottom: 0;
+	background-color: var(--nav-bar-background-color);
+	border-radius: var(--nav-button-padding) var(--nav-button-padding) 0 0;
+	padding: var(--nav-bar-padding);
+	margin: 0 0 0 calc(var(--nav-bar-total-width) / -2);
+	list-style-type: none;
+}
+
+:host #nav-bar-list > li, :host #nav-bar-list > li a {
+	display: inline-block;
+}
+
+:host svg {
+	display: inline-block;
+	width: var(--nav-button-width);
+	height: var(--nav-button-height);
+	padding: var(--nav-button-padding);
+}
+
+:host svg:hover {
+	fill: #ffffff;
+}
+
+:host ::ng-deep a:focus {
+	outline: none;
+	stroke: #ffffff;
+	
+}
