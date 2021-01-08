@@ -1,4 +1,7 @@
-import { houseContent, houseContentWithoutPowerPlant } from './house';
+import { Battery } from './battery';
+import { GeoData } from './geoData';
+import { House, houseContent, houseContentWithoutPowerPlant } from './house';
+import { PowerPlant } from './powerPlant';
 
 // Content
 export const prosumerContent = `
@@ -42,3 +45,15 @@ export const deleteProsumerMutation = `
 			id
 		}
 	}`;
+
+// Query results
+export interface ProsumerQueryData {
+	prosumer: Prosumer;
+}
+
+// Data structure
+export interface Prosumer {
+	currency: number;
+	isBlocked: boolean;
+	house: House;
+}
