@@ -1,0 +1,23 @@
+:host {
+	/* Colors */
+	--house-color: #95d4ed;
+	--house-color-darkened: #3b555f;
+	--battery-color: #8fe7a4;
+	--user-color: #ed9595;
+	--power-plant-color: #929292;
+	--geo-data-color: #bd9988;
+	--generator-color: #ffce54;
+	--house-animation-container-width: 480px;
+	--house-animation-container-height: var(--house-animation-container-width);
+}
+
+:host .column {
+	margin: 5px 5px 5px 10px;
+	width: 304px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+:host .row {
+	margin: 5px 0px;
+}

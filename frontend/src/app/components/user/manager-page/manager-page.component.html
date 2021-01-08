@@ -1,7 +1,15 @@
-<manager-nav-bar></manager-nav-bar>
-<div class = "inline-block-container">
-	<manager-main-block></manager-main-block>
-	<power-plant-block></power-plant-block>
-	<manager-market-block class ="sub-block" id = "currency-block" blockName ="Market"></manager-market-block>
+<div class="column">
+	<app-battery-card class="app row" #batteryCard></app-battery-card>
+	<app-geo-data-card class="app row" #geoDataCard></app-geo-data-card>
+	<app-user-card class="app row" #userCard></app-user-card>
 </div>
-<app-alert></app-alert>
+<div class="column">
+	<app-power-plant-card [isManager]="true" class="app row" #powerPlantCard></app-power-plant-card>
+</div>
+<nav-bar></nav-bar>
+
+<!--
+<app-manager-main-block></app-manager-main-block>
+<app-power-plant-block></app-power-plant-block>
+<app-manager-market-block class ="sub-block" id = "currency-block" blockName ="Market"></app-manager-market-block>
+-->
