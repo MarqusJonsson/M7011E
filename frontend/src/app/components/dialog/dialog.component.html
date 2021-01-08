@@ -1,13 +1,11 @@
 <div class="header">
+	<h2 mat-dialog-title>{{ data.title }}</h2>
 </div>
-<div class="header">
-	<h1 mat-dialog-title>{{ data.title }}</h1>
-</div>
-<div mat-dialog-content  >
+<div mat-dialog-content>
 	<p class="dialog-message">{{ data.message }}</p>
+	<div #contentContainer></div>
 </div>
-<div #inputFieldContainer></div>
 <div mat-dialog-actions>
-	<button class="btn-confirm" (click)="confirm()">{{ data.confirmText }}</button>
-	<button class="btn-cancel" style="margin-right:10px;" (click)="cancel()">{{ data.cancelText }}</button>
+	<button class="sne-button confirm-button" (click)="confirm()">{{ data.confirmText }}</button>
+	<button class="sne-button sne-button-cancel cancel-button" (click)="cancel()">{{ data.cancelText }}</button>
 </div>

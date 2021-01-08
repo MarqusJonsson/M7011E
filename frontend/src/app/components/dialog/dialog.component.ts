@@ -8,7 +8,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 	styleUrls: [`./dialog.component.css`]
 })
 export class DialogComponent implements AfterViewInit {
-	@ViewChild('inputFieldContainer') inputFieldContainer: ElementRef;
+	@ViewChild('contentContainer') contentContainer: ElementRef;
 	constructor(
 		@Optional() @Inject(MAT_DIALOG_DATA) public data: {
 			cancelText: string,
@@ -18,20 +18,22 @@ export class DialogComponent implements AfterViewInit {
 			extraField: HTMLDivElement
 		},
 		@Optional() private dialogRef: MatDialogRef<DialogComponent>
-	){}
+	) {}
 
-	ngAfterViewInit() {
-		if (this.data.extraField != null) {
-			this.inputFieldContainer.nativeElement.appendChild(this.data.extraField);
+	public ngAfterViewInit() {
+		if (this.data.extraField !== undefined) {
+			this.contentContainer.nativeElement.appendChild(this.data.extraField);
 		}
 	}
 
 	public cancel() {
 		this.close(false);
 	}
-	public close(value) {
+
+	public close(value: any) {
 		this.dialogRef.close(value);
 	}
+
 	public confirm() {
 		this.close(true);
 	}
