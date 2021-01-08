@@ -1,0 +1,11 @@
+:host .power-plant-card,
+:host .power-plant-card .card-button {
+	border-color: var(--power-plant-color);
+	color: var(--power-plant-color);
+}
+
+:host ::ng-deep .power-plant-card .slider .mat-slider-thumb,
+:host ::ng-deep .power-plant-card .slider .mat-slider-thumb-label,
+:host ::ng-deep .power-plant-card .slider .mat-slider-track-fill  {
+	background-color: var(--power-plant-color);
+}
