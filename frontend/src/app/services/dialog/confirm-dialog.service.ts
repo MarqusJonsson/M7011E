@@ -12,18 +12,20 @@ export class ConfirmDialogService {
 	dialogRef: MatDialogRef<DialogComponent>;
 	public open(options) {
 		this.dialogRef = this.dialog.open(DialogComponent, {
-				 data: {
-					 title: options.title,
-					 message: options.message,
-					 cancelText: options.cancelText,
-					 confirmText: options.confirmText,
-					 extraField : options.extraField
-				 }
+			data: {
+				title: options.title,
+				message: options.message,
+				cancelText: options.cancelText,
+				confirmText: options.confirmText,
+				extraField : options.extraField
+			}
 		});
 	}
 
 	public confirmed(): Observable<any> {
-		return this.dialogRef.afterClosed().pipe(take(1), map(res => {
+		return this.dialogRef.afterClosed().pipe(
+			take(1),
+			map(res => {
 				return res;
 			}
 		));

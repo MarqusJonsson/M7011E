@@ -2,11 +2,11 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { updateElectricityPrices } from 'src/app/models/graphql/powerPlant';
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
-import { displayValuePrecision } from 'src/app/models/user/pageConstants';
+import { DECIMALS } from 'src/app/models/user/page-constants';
 import { Ws_per_kWh } from 'src/app/models/user/electricity';
 
 @Component({
-	selector: 'manager-market-block',
+	selector: 'app-manager-market-block',
 	templateUrl: './manager-market.component.html',
 	styleUrls: ['./manager-market.component.css']
 })
@@ -32,33 +32,33 @@ export class ManagerMarketComponent implements AfterViewInit {
 		this.submitMarketPrices.nativeElement.onclick = () => { this.updateMarketPrices(); };
 	}
 	public setMarketDemand(value: number) {
-		this.marketDemand.nativeElement.innerText = value.toFixed(displayValuePrecision) + ' currency/J';
+		this.marketDemand.nativeElement.innerText = value.toFixed(DECIMALS) + ' currency/J';
 	}
 
 	public setSuggestBuyPrice(value: number) {
-		this.suggestBuyPrice.nativeElement.innerText = (value * Ws_per_kWh).toFixed(displayValuePrecision) + ' currency/kWh';
+		this.suggestBuyPrice.nativeElement.innerText = (value * Ws_per_kWh).toFixed(DECIMALS) + ' currency/kWh';
 	}
 
 	public setSuggestSellPrice(value: number) {
-		this.suggestSellPrice.nativeElement.innerText = (value * Ws_per_kWh).toFixed(displayValuePrecision) + ' currency/kWh';
+		this.suggestSellPrice.nativeElement.innerText = (value * Ws_per_kWh).toFixed(DECIMALS) + ' currency/kWh';
 	}
 
 	public setElectricityBuyPrice(value: number) {
 		this.currentElectricityBuyPrice = value;
-		this.electricityBuyPrice.nativeElement.innerText = (value * Ws_per_kWh).toFixed(displayValuePrecision) + ' currency/kWh';
+		this.electricityBuyPrice.nativeElement.innerText = (value * Ws_per_kWh).toFixed(DECIMALS) + ' currency/kWh';
 	}
 
 	public setElectricitySellPrice(value: number) {
 		this.currentElectricitySellPrice = value;
-		this.electricitySellPrice.nativeElement.innerText = (value * Ws_per_kWh).toFixed(displayValuePrecision) + ' currency/kWh';
+		this.electricitySellPrice.nativeElement.innerText = (value * Ws_per_kWh).toFixed(DECIMALS) + ' currency/kWh';
 	}
 
 	public setCurrency(value: number) {
-		this.currency.nativeElement.innerText = value.toFixed(displayValuePrecision);
+		this.currency.nativeElement.innerText = value.toFixed(DECIMALS);
 	}
 
 	public setTotalDemand(value: number) {
-		this.totalDemand.nativeElement.innerText = value.toFixed(displayValuePrecision) + ' J';
+		this.totalDemand.nativeElement.innerText = value.toFixed(DECIMALS) + ' J';
 	}
 
 	public electricityPricesMutation(buyPrice: number, sellPrice: number) {

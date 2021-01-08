@@ -1,4 +1,4 @@
-.form-card {
+:host .form-card {
 	position: absolute;
 	width: 400px;
 	top: 40%;
@@ -8,25 +8,25 @@
 	border-radius: 5px;
 }
 
-.form-card .form-card-header {
+:host .form-card .form-card-header {
 	font-size: 24px;
 	height: 1.5em;
 	line-height: 1.5em;
 	margin: 0 auto;
 	text-align: center;
-	background-color: #5C84FF;
-	border-radius: 5px 5px 0 0;
+	background-color: var(--primary-color);
+	border-radius: var(--button-border-radius) var(--button-border-radius) 0 0;
 }
 
-.form-card .form-group {
+:host .form-card .form-group {
 	padding: 10px;
 }
 
-.form-card .form-group:first-of-type {
+:host .form-card .form-group:first-of-type {
 	padding-top: 20px;
 }
 
-.form-card .form-label {
+:host .form-card .form-label {
 	display: inline-block;
 	width: 25%;
 	height: 30px;
@@ -35,7 +35,7 @@
 	vertical-align: middle;
 }
 
-.form-card .form-control {
+:host .form-card .form-control {
 	display: inline-block;
 	border: none;
 	padding: 5px;
@@ -46,49 +46,29 @@
 	vertical-align: middle;
 }
 
-.form-card .form-button {
-	background: #5C84FF;
-	border: none;
-	display: inline-block;
-	color: #ffffff;
-	font-size: 20px;
-	line-height: 1em;
-	text-align: center;
-	text-decoration: none;
-	padding: 10px 0;
-	min-width: 185px;
-	cursor: pointer;
-	vertical-align: middle;
-	border-radius: 5px;
-}
-
-.form-card .form-button-submit {
-	margin-right: 5px;
-}
-
-.form-card .form-button-link {
-	text-decoration: none;
-	margin-left: 5px;
-}
-
-.form-card .form-button-link:hover, .form-card .form-button-submit:hover {
-	background-color: #4d79ff;
-	cursor: pointer;
-}
-
-.form-card .form-button-link:active, .form-card .form-button-submit:active {
-	background-color: #3d6eff;
-	box-shadow: none;
-}
-
-.form-card .invalid-feedback {
-	color:#ff5c5c;
+:host .form-card .invalid-feedback {
+	color: var(--error-primary-color);
 	text-align: right;
 	margin: 1px 0;
 	margin-bottom: -21px;
 }
 
-.form-card .loading {
+:host .form-card .loading {
 	display: inline-block;
 	height: 18px;
+}
+
+:host .form-button {
+	display: inline-block;
+	vertical-align: middle;
+	width: 185px;
+	padding: 10px 0px;
+}
+
+:host .form-submit-button {
+	margin-right: 5px;
+}
+
+:host .form-link-button {
+	margin-left: 5px;
 }

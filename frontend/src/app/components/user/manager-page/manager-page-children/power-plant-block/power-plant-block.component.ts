@@ -2,11 +2,11 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
 import { startPowerPlantProductionMutation, stopPowerPlantProductionMutation, updateProductionOutputRatioMutation } from 'src/app/models/graphql/powerPlant';
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
-import { displayValuePrecision } from 'src/app/models/user/pageConstants';
+import { DECIMALS } from 'src/app/models/user/page-constants';
 import { Ws_to_kWh } from 'src/app/models/user/electricity';
 
 @Component({
-	selector: 'power-plant-block',
+	selector: 'app-power-plant-block',
 	templateUrl: './power-plant-block.component.html',
 	styleUrls: ['./power-plant-block.component.css']
 })
@@ -44,26 +44,26 @@ export class PowerPlantBlockComponent implements AfterViewInit {
 	}
 
 	public setProduction(value: number) {
-		this.production.nativeElement.innerText = Ws_to_kWh(value).toFixed(displayValuePrecision) + ' kW';
+		this.production.nativeElement.innerText = Ws_to_kWh(value).toFixed(DECIMALS) + ' kW';
 	}
 
 	public setConsumption(value: number) {
-		this.consumption.nativeElement.innerText =	Ws_to_kWh(value).toFixed(displayValuePrecision) + ' kW';
+		this.consumption.nativeElement.innerText =	Ws_to_kWh(value).toFixed(DECIMALS) + ' kW';
 	}
 
 	public setNetProduction() {
 		const production = parseFloat(this.production.nativeElement.innerText);
 		const consumption = parseFloat(this.consumption.nativeElement.innerText);
 		const netProduction = production - consumption;
-		this.netProduction.nativeElement.innerText = netProduction.toFixed(displayValuePrecision) + ' kW';
+		this.netProduction.nativeElement.innerText = netProduction.toFixed(DECIMALS) + ' kW';
 	}
 
 	public setBattery(value: number) {
-		this.battery.nativeElement.innerText =	Ws_to_kWh(value).toFixed(displayValuePrecision) + '/';
+		this.battery.nativeElement.innerText =	Ws_to_kWh(value).toFixed(DECIMALS) + '/';
 	}
 
 	public setBatteryCapacity(value: number) {
-		this.batteryCapacity.nativeElement.innerText =	Ws_to_kWh(value).toFixed(displayValuePrecision) + ' kWh';
+		this.batteryCapacity.nativeElement.innerText =	Ws_to_kWh(value).toFixed(DECIMALS) + ' kWh';
 	}
 
 	public setActionTimeDelay(value: number) {
@@ -73,7 +73,7 @@ export class PowerPlantBlockComponent implements AfterViewInit {
 		} else {
 			this.actionTimeDelay.nativeElement.style.display = 'inline';
 			this.actionTimeDelayDescription.nativeElement.style.display = 'inline';
-			this.actionTimeDelay.nativeElement.innerText = value.toFixed(displayValuePrecision) + ' s';
+			this.actionTimeDelay.nativeElement.innerText = value.toFixed(DECIMALS) + ' s';
 		}
 	}
 

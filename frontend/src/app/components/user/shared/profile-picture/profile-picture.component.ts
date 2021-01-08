@@ -1,6 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { of } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { StatusCode } from 'src/app/models/statusCode';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
@@ -20,14 +20,14 @@ export class ProfilePictureComponent implements OnInit {
 		const url = config.URL_PROFILE_PICTURE(this.authService.getId());
 		this.httpClient.get(url, { observe: 'response', responseType: 'blob' }).pipe(
 			catchError((error) => {
-				return of(undefined);
+				return EMPTY;
 			})
 		).subscribe((response: HttpResponse<Blob>) => {
 			switch (response.status) {
 				case StatusCode.OK:
 					const image = response.body;
 					if (image === undefined) { return; }
-					let reader = new FileReader();
+					const reader = new FileReader();
 					reader.addEventListener('load', () => {
 						this.profilePictureSrc = reader.result;
 					}, false);
