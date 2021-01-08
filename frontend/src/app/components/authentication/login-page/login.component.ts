@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit} from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { AlertService } from '../../../services/alert/alert.service';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import { AuthenticationService, UserRole } from 'src/app/services/authentication/authentication.service';
 import { AuthenticationError } from '../../../models/authentication/authenticationError';
-import { AuthenticationService } from '../../../services/authentication/authentication.service';
 
 @Component({
-	selector: 'app-register',
-	templateUrl: './register.component.html',
-	styleUrls: ['./register.component.css', '../shared/form-card.css']
+	selector: 'app-login',
+	templateUrl: './login.component.html',
+	styleUrls: ['./login.component.css', '../shared/form-card.css']
 })
-export class RegisterComponent implements OnInit {
+export class LoginComponent implements OnInit {
 	form: FormGroup;
 	loading = false;
 
@@ -40,33 +40,35 @@ export class RegisterComponent implements OnInit {
 
 	get f() { return this.form.controls; }
 
-	onSubmit() {
+	login() {
 		if (this.form.invalid) {
 			this.f.email.markAsTouched();
 			this.f.password.markAsTouched();
 			return;
 		}
-		this.loading = true;
-		this.authService.register(this.form.value.email, this.form.value.password).subscribe(
+		this.authService.login(this.form.value.email, this.form.value.password).subscribe(
 			(success) => {
-				this.loading = false;
 				if (success === true) {
-					this.alertService.success('Registration successful', { autoClose: true, keepAfterRouteChange: true });
-					this.router.navigateByUrl('/prosumer-page');
+					this.alertService.success('Login successful', { autoClose: true, keepAfterRouteChange: true });
+					switch (this.authService.getRole()) {
+						case UserRole.MANAGER:
+							this.router.navigateByUrl('manager-page');
+							break;
+						case UserRole.PROSUMER:
+							this.router.navigateByUrl('prosumer-page');
+						}
 				} else {
 					throw new Error('Unknown error');
 				}
 			},
 			(error) => {
-				this.loading = false;
 				if (error instanceof AuthenticationError) {
 					this.alertService.error(error.message, { autoClose: true });
 				} else {
 					this.alertService.error(error.message, { autoClose: true });
-					console.log(error.message);
+					console.error(error);
 				}
 				return of(error);
-			}
-		);
+			});
 	}
 }
