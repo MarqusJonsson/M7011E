@@ -34,4 +34,4 @@
 |2021-01-05| 6 | Continued working on the report and looked into setting up a deployment of the application on a public VPS.
 |2021-01-06| 4 | Continued working on the report.
 |2021-01-07| 7 | Continued working on a deployment on a public VPS.
-|2021-01-07| 6 | Continued working on a deplayment on a public VPS, created docker containers for authentication server and simulator server with scripts for automatically creating and starting them.
+|2021-01-08| 6 | Continued working on a deplayment on a public VPS, created docker containers for authentication server and simulator server with scripts for automatically creating and starting them.
