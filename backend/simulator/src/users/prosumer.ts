@@ -10,18 +10,18 @@ export class Prosumer extends BaseUser<House> {
 
 	public buyElectricity(manager: Manager): void {
 		let payment: number = 0;
-		const houseDemand = this.building.getDemand();
+		const electricityToBuy = this.building.getDemand() * (1 - this.building.underproductionRatio);
 		const electricityBuyPrice = manager.building.electricityBuyPrice;
-		const currencyDifference = this.currency - houseDemand * electricityBuyPrice;
+		const currencyDifference = this.currency - electricityToBuy * electricityBuyPrice;
 		const hBattery = this.building.battery;
 		const pBattery = manager.building.battery;
-		if (houseDemand > 0){
+		if (electricityToBuy > 0){
 			if (currencyDifference >= 0){
 				// Power plant has more than enough electricity, buy everything
-				if (houseDemand <= pBattery.buffer){
-					payment = houseDemand * electricityBuyPrice;
-					pBattery.buffer -= houseDemand;
-					hBattery.buffer += houseDemand;
+				if (electricityToBuy <= pBattery.buffer){
+					payment = electricityToBuy * electricityBuyPrice;
+					pBattery.buffer -= electricityToBuy;
+					hBattery.buffer += electricityToBuy;
 				}
 				// Buy electricity that is available from power plant
 				else {
@@ -46,9 +46,6 @@ export class Prosumer extends BaseUser<House> {
 			manager.currency += payment;
 			this.currency -= payment;
 		}
-		//else {
-		//	console.log('Demand already satisfied');
-		//}
 	}
 
 	public sellElectricity(manager: Manager) {
