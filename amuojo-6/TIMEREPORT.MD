@@ -32,3 +32,5 @@
 | 2021-01-02 | 4 | <ul><li>Continued adding styling of the frontend application.</li></ul> |
 | 2021-01-04 | 4 | <ul><li>Continued adding styling of the frontend application.</li><li>Added css variables to eventually control most relevant styling properties dynamically.</li></ul> |
 | 2021-01-05 | 5 | <ul><li>Continued wokring on the visual aspects of the frontend application.</li><li>Added CSS animations.</li></ul> |
+| 2021-01-06 | 4 | <ul><li>Continued wokring on the visual aspects of the frontend application.</li><li>Mostly focused on the prosumer page.</li></ul> |
+| 2021-01-07 | 7 | <ul><li>Continued wokring on the visual aspects of the frontend application.</li><li>Mostly focused on the manager page.</li></ul> |
