@@ -1,5 +1,5 @@
-const URL_SIMULATOR_SERVER = 'http://localhost:3002';
-const URL_AUTH_SERVER = 'http://localhost:3001';
+const URL_SIMULATOR_SERVER = 'https://localhost:3002';
+const URL_AUTH_SERVER = 'https://localhost:3001';
 
 export const config = {
 	// API servers

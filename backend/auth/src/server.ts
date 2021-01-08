@@ -1,4 +1,6 @@
 import express from 'express';
+import https from 'https';
+import fs from 'fs';
 // Middleware
 import bodyParser from 'body-parser';
 import { corsHandler } from './middleware/cors';
@@ -14,8 +16,12 @@ dotenv.config();
 
 // Setup server
 console.log('Setting up server...');
+const sslKey = fs.readFileSync(__dirname + '/../ssl/server.key');
+const sslCrt = fs.readFileSync(__dirname + '/../ssl/server.crt');
+const serverOptions = { key: sslKey, cert: sslCrt };
 const PORT = process.env.SERVER_PORT || 3001;
 const app = express();
+const server = https.createServer(serverOptions, app);
 // Create / load crypto key pairs
 const refreshPrivateKeyPath = process.env.PATH_REFRESH_PRIVATE_KEY || 'refreshPrivate.key';
 const refreshPublicKeyPath = process.env.PATH_REFRESH_PUBLIC_KEY || 'refreshPublic.key';
@@ -37,7 +43,7 @@ database.task((t) => {
 				// Setup middleware
 				app.use(bodyParser.json());
 				app.use(bodyParser.urlencoded({extended:true}));
-				app.use(corsHandler(['http://localhost:4200']));
+				app.use(corsHandler(['https://localhost:4200']));
 				// Setup API endpoints
 				POST	('/register', authenticationAPI.register);
 				POST	('/login', authenticationAPI.login);
@@ -47,7 +53,7 @@ database.task((t) => {
 				// Setup error handler middleware
 				app.use(errorHandler);
 				// Start server
-				app.listen(PORT, () => console.log(`Auth server listening on port ${PORT}`));
+				server.listen(PORT, () => console.log(`Auth server listening on port ${PORT}`));
 			});
 		});
 	});
