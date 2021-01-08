@@ -1,0 +1,8 @@
+:host .battery-card {
+	border-color: var(--battery-color);
+	color: var(--battery-color);
+}
+
+:host .graph-container {
+	border-color: var(--battery-color);
+}
