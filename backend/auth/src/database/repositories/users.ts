@@ -78,8 +78,8 @@ export class UsersRepository extends BaseWithHistoryRepository<User> {
 		return new Promise((resolve, reject) => {
 			const db = t || this.database;
 			return db.txIf((t_: pgPromise.ITask<any>) => {
-				return t_.one(`UPDATE ${this.tableName} SET password = $2 WHERE id = $1 RETURNING id`, [id, newPassword]).then((updatedUser) => {
-					return this.historyRepository.update(updatedUser.id, t_).then((updatedHistoryId) => {
+				return t_.one(`UPDATE ${this.tableName} SET password = $2 WHERE id = $1 RETURNING id, histories_id`, [id, newPassword]).then((updatedUser) => {
+					return this.historyRepository.update(updatedUser.histories_id, t_).then((updatedHistoryId) => {
 						resolve(updatedUser);
 					}).catch((error) => { reject(toResponseError(error)); });
 				}).catch((error) => { reject(toResponseError(error)); });
