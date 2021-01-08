@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 import crypto from 'crypto';
 dotenv.config();
 
-const refreshTokenExpireSeconds = process.env.REFRESH_TOKEN_EXPIRE_SECONDS || 14 * 24 * 60 * 60;
+const refreshTokenExpireSeconds = process.env.REFRESH_TOKEN_EXPIRE_SECONDS || 1 * 24 * 60 * 60;
 const accessTokenExpireSeconds = process.env.ACCESS_TOKEN_EXPIRE_SECONDS || 5 * 60;
 const refreshTokenExpireTime = refreshTokenExpireSeconds + 's';
 const accessTokenExpireTime = accessTokenExpireSeconds + 's';
