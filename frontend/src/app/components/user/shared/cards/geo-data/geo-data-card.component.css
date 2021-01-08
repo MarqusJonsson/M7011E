@@ -1,0 +1,4 @@
+:host .geo-data-card {
+	border-color: var(--geo-data-color);
+	color: var(--geo-data-color);
+}
