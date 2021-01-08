@@ -1,5 +1,34 @@
 :host {
-	display: block;
-	width: 100%;
-	height: 100%;
+	/* Colors */
+	--house-color: #95d4ed;
+	--house-color-darkened: #3b555f;
+	--battery-color: #8fe7a4;
+	--user-color: #ed9595;
+	--power-plant-color: #929292;
+	--geo-data-color: #bd9988;
+	--generator-color: #ffce54;
+	--house-animation-container-width: 480px;
+	--house-animation-container-height: var(--house-animation-container-width);
+}
+
+:host .house-animation-card-container {
+	display: inline-block;
+	vertical-align: top;
+	padding: 10px;
+	margin: 10px;
+	width: var(--house-animation-container-width);
+	height: var(--house-animation-container-height);
+	border-radius: 10px;
+	border: 2px solid #dbdbdb;
+}
+
+:host .column {
+	margin: 5px 5px 5px 10px;
+	width: 304px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+:host .row {
+	margin: 5px 0px;
 }
