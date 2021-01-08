@@ -15,7 +15,12 @@
       "es2018",
       "dom",
       "esnext.asynciterable"
-    ],
+	],
+	"paths": {
+        "plotly.js": [
+            "../node_modules/plotly.js/lib/core.js"
+        ]
+    },
     "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {
