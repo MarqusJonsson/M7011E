@@ -1,0 +1,17 @@
+<div class="battery-card base-card">
+	<h2>Battery</h2>
+	<ul>
+		<li>
+			Buffer: <span class="right-align" #bufferText></span>
+		</li>
+		<li>
+			Capacity: <span class="right-align" #capacityText></span>
+		</li>
+		<li>
+			Battery percent:
+			<div id="graph-container" class="graph-container base-card-boxed-element">
+				<app-data-graph [id]="'graph'" #graph></app-data-graph>
+			</div>
+		</li>
+	</ul>
+</div>

@@ -28,3 +28,11 @@
 |2020-12-29| 7 | Finished functionality for managers being able to stop and start power plants with countdown for delay until action is executed.
 |2020-12-30| 7 | Started working on the report and made it possible to delete prosumers from both the simulation and the authentication server.
 |2020-12-31| 6 | Continued working on the report, worked a bit with error handling for API calls to the simulator  and started with documentation for the API.
+|2021-01-01| 6 | Continued working on the API documentation.
+|2021-01-02| 4 | Almost finished with the API documentation, started adding more to the discussion section of the report and description of the simulator server.
+|2021-01-04| 4 | Continued working on the report.
+|2021-01-05| 6 | Continued working on the report and looked into setting up a deployment of the application on a public VPS.
+|2021-01-06| 4 | Continued working on the report.
+|2021-01-07| 7 | Continued working on a deployment on a public VPS.
+|2021-01-08| 6 | Continued working on a deplayment on a public VPS, created docker containers for authentication server and simulator server with scripts for automatically creating and starting them.
+|2021-01-11| 6 | Finalized a deployment of the system on a VPS provided by LUDD DUST.

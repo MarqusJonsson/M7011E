@@ -1,0 +1,46 @@
+<div class="house-card base-card">
+	<h2>House</h2>
+	<ul>
+		<li>
+			Production: <span class="right-align" #productionText></span>
+		</li>
+		<li>
+			Consumption: <span class="right-align" #consumptionText></span>
+		</li>
+		<li>
+			Net production: <span class="right-align" #netProductionText></span>
+		</li>
+		<li>
+			To battery: <span class="right-align" #toBatteryText></span>
+		</li>
+		<li>
+			From battery: <span class="right-align" #fromBatteryText></span>
+		</li>
+		<li>
+			To power plant: <span class="right-align" #toPowerPlantText></span>
+		</li>
+		<li>
+			From power plant: <span class="right-align" #fromPowerPlantText></span>
+		</li>
+		<li [ngClass]="{'unused-ratio': !isOverproducing}">
+			Overproduction ratio:
+		</li>
+		<li [ngClass]="{'unused-ratio': !isOverproducing}">
+			<mat-slider class="slider" #overproductionRatioSlider min="0" max="1" step="0.01" value="{{overproductionRatioSliderValue}}" thumbLabel="true" (input)="overproductionSliderValueChange($event)" (mousedown)="mouseDownOverproductionRatio()"></mat-slider> 
+			<span #overproductionPercentToPowerPlantText></span><span class="right-align" #overproductionPercentToBatteryText></span>
+		</li>
+		<li [ngClass]="{'unused-ratio': !isOverproducing}">
+			Power plant<span class="right-align">Battery</span>
+		</li>
+		<li [ngClass]="{'unused-ratio': isOverproducing}">
+			Underproduction ratio:
+		</li>
+		<li [ngClass]="{'unused-ratio': isOverproducing}">
+			<mat-slider class="slider" #underproductionRatioSlider min="0" max="1" step="0.01" value="{{underproductionRatioSliderValue}}" thumbLabel="true" (input)="underproductionSliderValueChange($event)" (mousedown)="mouseDownUnderproductionRatio()"></mat-slider>
+			<span #underproductionPercentToPowerPlantText></span><span class="right-align" #underproductionPercentToBatteryText></span>
+		</li>
+		<li [ngClass]="{'unused-ratio': isOverproducing}">
+			Power plant<span class="right-align">Battery</span>
+		</li>
+	</ul>
+</div>

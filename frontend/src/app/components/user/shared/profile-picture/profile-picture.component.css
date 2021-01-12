@@ -1,6 +1,6 @@
 :host {
-	--profile-picture-width: 300px;
-	--profile-picture-height: 200px;
+	--profile-picture-width: 100%;
+	--profile-picture-height: 100%;
 }
 
 .profile-picture {
@@ -11,4 +11,5 @@
 	-o-object-fit: contain;
 	text-align: center;
 	line-height: var(--profile-picture-height);
+	margin: 0 auto;
 }

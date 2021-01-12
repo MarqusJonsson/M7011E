@@ -1,4 +1,6 @@
-import { powerPlantContent } from './powerPlant';
+import { Battery } from './battery';
+import { PowerPlant, powerPlantContent } from './powerPlant';
+import { Prosumer } from './prosumer';
 
 // Content
 export const managerContent = `
@@ -7,8 +9,7 @@ export const managerContent = `
 		${powerPlantContent}
 		prosumers {
 			id
-			house
-			{
+			house {
 				hasBlackout
 			}
 		}
@@ -19,3 +20,16 @@ export const managerQuery = `
 	query manager {
 		${managerContent}
 	}`;
+
+// Query results
+export interface ManagerQueryData {
+	manager: Manager;
+}
+
+// Data structure
+export interface Manager {
+	currency: number;
+	isBlocked: boolean;
+	powerPlant: PowerPlant;
+	prosumers: Prosumer[];
+}

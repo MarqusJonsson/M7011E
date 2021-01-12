@@ -1,0 +1,46 @@
+<div class="power-plant-card base-card">
+	<h2>Power plant</h2>
+	<ul>
+		<div *ngIf="isProsumer || isManager">
+			<li>
+				Buy price: <span class="right-align" #buyPriceText></span>
+			</li>
+			<li>
+				Sell price: <span class="right-align" #sellPriceText></span>
+			</li>
+		</div>
+		<div *ngIf="isManager">
+			<li>
+				<button class="card-button" (click)="openUpdatePricesDialog()">Update prices</button>
+			</li>
+			<li>
+				Modelled sell price: <span class="right-align" #modelledSellPriceText></span>
+			</li>
+			<li>
+				Modelled buy price: <span class="right-align" #modelledBuyPriceText></span>
+			</li>
+			<li>
+				Production: <span class="right-align" #productionText></span>
+			</li>
+			<li>
+				Consumption: <span class="right-align" #consumptionText></span>
+			</li>
+			<li>
+				<button class="card-button" (click)="startProduction()">Start production</button>
+				<button class="card-button" (click)="stopProduction()">Stop production</button>
+			</li>
+			<li>
+				totalDemand: <span class="right-align" #totalDemandText></span>
+			</li>
+			<li>
+				hasBlackout: <span class="right-align" #hasBlackoutText></span>
+			</li>
+			<li>
+				<mat-slider class="slider" #productionOutputRatioSlider min="0" max="1" step="0.01" value="{{productionOutputRatioSliderValue}}" thumbLabel="true" (input)="productionOutputRatioSliderValueChange($event)" (mousedown)="mouseDownProductionOutputRatio()"></mat-slider> 
+			</li>
+			<li>
+				delayTimeS: <span class="right-align" #delayTimeSText></span>
+			</li>
+		</div>
+	</ul>
+</div>

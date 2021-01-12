@@ -1,6 +1,6 @@
-import { batteryContent } from './battery';
-import { geoDataContent } from './geoData';
-import { prosumerPowerPlantContent } from './powerPlant';
+import { Battery, batteryContent } from './battery';
+import { GeoData, geoDataContent } from './geoData';
+import { PowerPlant, prosumerPowerPlantContent } from './powerPlant';
 
 // Content
 export const houseContent = `
@@ -46,3 +46,20 @@ export const setHouseUnderproductionRatioMutation = `
 			underproductionRatio
 		}
 	}`;
+
+// Query results
+export interface HouseQueryResults {
+	house: House;
+}
+
+// Data structure
+export interface House {
+	electricityConsumption: number;
+	electricityProduction: number;
+	overproductionRatio: number;
+	underproductionRatio: number;
+	hasBlackout: boolean;
+	battery: Battery;
+	geoData: GeoData;
+	powerPlant: PowerPlant;
+}

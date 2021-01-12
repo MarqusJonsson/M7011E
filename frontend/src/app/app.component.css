@@ -3,3 +3,7 @@
 	width: auto;
 	height: auto;
 }
+
+:host ::ng-deep .app {
+	display: inline-block;
+}

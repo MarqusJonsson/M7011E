@@ -3,13 +3,13 @@ import { AlertService } from 'src/app/services/alert/alert.service';
 import { setProsumerSellTimeoutMutation } from 'src/app/models/graphql/prosumer';
 import { prosumerQueryById } from 'src/app/models/graphql/prosumer';
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
-import { GraphComponent } from 'src/app/components/user/shared/graph/graph.component';
-import { displayValuePrecision } from 'src/app/models/user/pageConstants';
+import { GraphComponent } from 'src/app/components/user/shared/cards/battery/graph/graph.component';
+import { DECIMALS } from 'src/app/models/user/page-constants';
 import { ConfirmDialogService } from 'src/app/services/dialog/confirm-dialog.service';
 import { DeleteProsumerService } from 'src/app/services/user/delete-prosumer.service';
 import { Ws_to_kWh } from 'src/app/models/user/electricity';
 @Component({
-	selector: 'manager-main-block',
+	selector: 'app-manager-main-block',
 	templateUrl: './manager-main-block.component.html',
 	styleUrls: ['./manager-main-block.component.css']
 })
@@ -40,13 +40,10 @@ export class ManagerMainBlockComponent implements AfterViewInit {
 	) {}
 
 	ngAfterViewInit() {
-		this.graph.createPlot(
-			[
-				{ x: [], y: [], type: 'scatter', mode: 'lines', marker: {color: 'red'}, name: 'Consumption' },
-				{ x: [], y: [], type: 'scatter', mode: 'lines', marker: {color: 'green'}, name: 'Production' }
-			],
-			{ autosize: true }
-		);
+		this.graph.createPlot('#ffffff', [
+			{ lineColor: 'red', name: 'Consumption' },
+			{ lineColor: 'green', name: 'Production' }
+		]);
 		this.graphqlService.addSubscriberCallback(this.onUpdate);
 		this.hideElement(this.prosumerInfoContainer.nativeElement.id);
 		this.prosumerInfoCloseSymbol.nativeElement.onclick = () => { this.hideElement(this.prosumerInfoContainer.nativeElement.id); };
@@ -92,23 +89,23 @@ export class ManagerMainBlockComponent implements AfterViewInit {
 	}
 
 	public setProsumerInfoCurrency(value: number) {
-		this.prosumerInfoCurrency.nativeElement.innerText =  value.toFixed(displayValuePrecision) + ' ';
+		this.prosumerInfoCurrency.nativeElement.innerText =  value.toFixed(DECIMALS) + ' ';
 	}
 
 	public setProsumerInfoBattery(value: number) {
-		this.prosumerInfoBattery.nativeElement.innerText =  Ws_to_kWh(value).toFixed(displayValuePrecision) + ' kWh';
+		this.prosumerInfoBattery.nativeElement.innerText =  Ws_to_kWh(value).toFixed(DECIMALS) + ' kWh';
 	}
 
 	public setProsumerInfoCapacity(value: number) {
-		this.prosumerInfoCapacity.nativeElement.innerText =  Ws_to_kWh(value).toFixed(displayValuePrecision) + ' kWh';
+		this.prosumerInfoCapacity.nativeElement.innerText =  Ws_to_kWh(value).toFixed(DECIMALS) + ' kWh';
 	}
 
 	public setProsumerInfoProduction(value: number) {
-		this.prosumerInfoProduction.nativeElement.innerText = value.toFixed(displayValuePrecision) + ' J';
+		this.prosumerInfoProduction.nativeElement.innerText = value.toFixed(DECIMALS) + ' J';
 	}
 
 	public setProsumerInfoConsumption(value: number) {
-		this.prosumerInfoConsumption.nativeElement.innerText =  value.toFixed(displayValuePrecision) + ' J';
+		this.prosumerInfoConsumption.nativeElement.innerText =  value.toFixed(DECIMALS) + ' J';
 	}
 
 	public setProsumerInfoIsBlocked(value: boolean) {
@@ -165,11 +162,11 @@ export class ManagerMainBlockComponent implements AfterViewInit {
 
 
 	public setTemperature(value: number) {
-		this.temperature.nativeElement.innerText = value.toFixed(displayValuePrecision) + ' C';
+		this.temperature.nativeElement.innerText = value.toFixed(DECIMALS) + ' C';
 	}
 
 	public setWindSpeed(value: number) {
-		this.windSpeed.nativeElement.innerText = value.toFixed(displayValuePrecision) + ' m/s';
+		this.windSpeed.nativeElement.innerText = value.toFixed(DECIMALS) + ' m/s';
 	}
 
 	public hideElement(elementId: string) {

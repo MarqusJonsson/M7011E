@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { config } from 'src/app/config';
 import { Tokens } from 'src/app/models/authentication/tokens';
@@ -88,10 +88,12 @@ export class AuthenticationService {
 
 	public logout() {
 		return this.http.delete<any>(config.URL_LOGOUT) // Refresh token is in Authorization header, see jwt interceptor
-			.pipe(tap(() => {
-				AuthenticationService.removeSession();
-				this.clearUser();
-			}));
+			.pipe(
+				tap(() => {
+					AuthenticationService.removeSession();
+					this.clearUser();
+				}
+			));
 	}
 
 	public refreshAccessToken() {

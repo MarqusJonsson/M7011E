@@ -1,0 +1,11 @@
+:host .user-card {
+	border-color: var(--user-color);
+	color: var(--user-color);
+}
+
+:host .profile-picture-container {
+	width: 280px;
+	height: calc((280px) * 9 / 16);
+	padding: 0px;
+	border-color: var(--user-color);
+}

@@ -297,7 +297,8 @@ export class Simulator {
 		this._managers.forEach((manager) => {
 			if (manager.building.getAction() !== undefined) {
 				manager.building.delayTimeS -= this.deltaTimeS;
-				if(manager.building.delayTimeS <= 0) {
+				if (manager.building.delayTimeS <= 0) {
+					manager.building.delayTimeS = 0;
 					manager.building.performAction();
 					manager.building.clearAction();
 				}

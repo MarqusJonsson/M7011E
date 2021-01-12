@@ -1,8 +1,53 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css'; /* Used for dialog box*/
+
+:root {
+	--primary-color: #5C84FF;
+	--font-color: #ffffff;
+	--font-size: 20px;
+	--button-line-height: 1em;
+	--button-border: none;
+	--button-border-radius: 5px;
+	--box-shadow-focus: 0 0 0 3px #9ab3ff;
+	--button-text-align: center;
+	--button-text-decoration: none;
+	--background-color: #1d1d1d;
+	--error-primary-color: #ff5c5c;
+}
+
+.sne-button {
+	background-color: var(--primary-color);
+	color: var(--font-color);
+	font-size: var(--font-size);
+	border: var(--button-border);
+	border-radius: var(--button-border-radius);
+	text-align: var(--button-text-align);
+	text-decoration: var(--button-text-decoration);
+	line-height: var(--button-line-height);
+	padding: var(--button-padding);
+	cursor: pointer;
+}
+
+.sne-button-cancel {
+	background-color: var(--error-primary-color);
+}
+
+.sne-button:hover {
+	-webkit-filter: brightness(1.2);
+	filter: brightness(1.2);
+}
+
+.sne-button:active {
+	-webkit-filter: brightness(0.8);
+	filter: brightness(0.8);
+}
+
+.sne-button:focus {
+	box-shadow: var(--box-shadow-focus);
+}
 
 body {
-	background-color:#1d1a1a;
-	color:#fff;
+	background-color: var(--background-color);
+	color: var(--font-color);
 	margin: 0;
 	font-size: 0;
 }
@@ -49,5 +94,5 @@ body {
 }
 
 .prosumer-list-blackout-status.online-status {
-	fill:green;
+	fill: green;
 }

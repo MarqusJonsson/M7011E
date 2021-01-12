@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './components/authentication/login/login.component';
+import { LoginComponent } from './components/authentication/login-page/login.component';
 import { ProsumerPageComponent } from './components/user/prosumer-page/prosumer-page.component';
-import { AccountSettingsComponent } from './components/user/shared/account-settings/account-settings.component';
-import { RegisterComponent } from './components/authentication/register/register.component';
+import { AccountSettingsComponent } from './components/user/settings-page/settings-page.component';
+import { RegisterComponent } from './components/authentication/register-page/register.component';
 import { ManagerPageComponent } from './components/user/manager-page/manager-page.component';
 import { ProsumerGuard } from './guards/prosumer.guard';
 import { ManagerGuard } from './guards/manager.guard';

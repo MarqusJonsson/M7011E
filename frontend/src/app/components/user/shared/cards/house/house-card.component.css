@@ -1,0 +1,20 @@
+:host .house-card {
+	border-color: var(--house-color);
+	color: var(--house-color);
+}
+
+:host ::ng-deep .house-card .slider .mat-slider-thumb,
+:host ::ng-deep .house-card .slider .mat-slider-thumb-label,
+:host ::ng-deep .house-card .slider .mat-slider-track-fill  {
+	background-color: var(--house-color);
+}
+
+:host ::ng-deep .house-card .unused-ratio {
+	color: var(--house-color-darkened);
+}
+
+:host ::ng-deep .house-card .unused-ratio .slider .mat-slider-thumb,
+:host ::ng-deep .house-card .unused-ratio .slider .mat-slider-thumb-label,
+:host ::ng-deep .house-card .unused-ratio .slider .mat-slider-track-fill  {
+	background-color: var(--house-color-darkened);
+}

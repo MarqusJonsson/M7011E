@@ -42,6 +42,5 @@ function parsePostgreSQLError(error: any) {
 					return new ResponseError('Email is already in use', StatusCode.CONFLICT);
 			}
 	}
-	console.error(error);
 	return new ResponseError();
 }

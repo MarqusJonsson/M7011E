@@ -12,7 +12,7 @@ const environment: Environment = new Environment(Date.now());
 
 const users: IMap<Manager | Prosumer> = new IMap<Manager | Prosumer>();
 // Create prosumers with one house each
-const nProsumers = 2;
+const nProsumers = 0;
 let prosumers = [] as Prosumer[];
 for (let i = 0; i < nProsumers; i++) {
 	const prosumer = faker.createProsumer();
@@ -20,7 +20,7 @@ for (let i = 0; i < nProsumers; i++) {
 	prosumers.push(prosumer)
 }
 // Create managers with one power plant each
-const nManagers = 1;
+const nManagers = 0;
 for (let i = 0; i < nManagers; i++) {
 	users.iSet(faker.createManager());
 }

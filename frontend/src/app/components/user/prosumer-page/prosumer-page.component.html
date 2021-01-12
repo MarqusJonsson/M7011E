@@ -1,8 +1,13 @@
-
-<prosumer-page-nav-bar></prosumer-page-nav-bar>
-<div class = "inline-block-container">
-	<prosumer-page-visual-block></prosumer-page-visual-block>
-	<ratio-block class ="sub-block-container"  id ="overproduction-ratio-block"></ratio-block>
-	<prosumer-currency-block class = "sub-block-container"></prosumer-currency-block>
+<div class="column">
+	<app-battery-card class="app row" #batteryCard></app-battery-card>
+	<app-geo-data-card class="app row" #geoDataCard></app-geo-data-card>
+	<app-user-card class="app row" #userCard></app-user-card>
+	<app-power-plant-card [isProsumer]="true" class="app row" #powerPlantCard></app-power-plant-card>
 </div>
-<app-alert></app-alert>
+<div class="column">
+	<app-house-card class="app row" #houseCard></app-house-card>
+</div>
+<div class="house-animation-card-container">
+	<app-house-animation-card #houseAnimationCard></app-house-animation-card>
+</div>
+<nav-bar></nav-bar>

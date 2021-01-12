@@ -18,8 +18,7 @@ export class House extends BaseBuilding {
 		// TODO: replace 0.75 factor with something to compensate for the appending on average problem
 		if (temperature < 0) {
 			this.electricityConsumption = AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND * 0.75 * deltaTimeS * Math.pow(1.05, Math.abs(temperature));
-		}
-		else {
+		} else {
 			this.electricityConsumption = AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND * 0.75 * deltaTimeS;
 		}
 	}
@@ -29,10 +28,10 @@ export class House extends BaseBuilding {
 		let productionToBattery: number;
 		let productionToPowerPlant: number;
 		if (totalProduction - this.electricityConsumption > 0) {
-			productionToBattery = totalProduction * this.overproductionRatio;
-			productionToPowerPlant = totalProduction - productionToBattery;
-		}
-		else {
+			const excessiveProduction = totalProduction - this.electricityConsumption;
+			productionToBattery = excessiveProduction * this.overproductionRatio + this.electricityConsumption;
+			productionToPowerPlant = excessiveProduction - productionToBattery;
+		} else {
 			productionToBattery = totalProduction;
 			productionToPowerPlant = 0;
 		}
@@ -44,12 +43,10 @@ export class House extends BaseBuilding {
 				this.electricityOutput = pBattery.capacity - pBattery.buffer;
 				// Since power plant battery was filled, send rest to house battery
 				hBattery.buffer = Math.min(hBattery.capacity, hBattery.buffer + productionToPowerPlant - this.electricityOutput);
-			}
-			else {
+			} else {
 				this.electricityOutput = productionToPowerPlant;
 			}
-		}
-		else {
+		} else {
 			const excessElectricity: number = hBattery.buffer + productionToBattery - this.battery.capacity;
 			hBattery.buffer = hBattery.capacity;
 			// productionToPowerPlant + excessElectricity to power plant
@@ -57,18 +54,19 @@ export class House extends BaseBuilding {
 				this.electricityOutput = pBattery.capacity - pBattery.buffer;
 				// Since power plant battery was filled, send rest to house battery
 				hBattery.buffer = Math.min(hBattery.capacity, hBattery.buffer + excessElectricity + productionToPowerPlant - this.electricityOutput);
-			}
-			else {
+			} else {
 				this.electricityOutput = excessElectricity + productionToPowerPlant;
 			}
 		}
 	}
 
 	public getDemand(): number {
-		if (this.electricityProduction - this.electricityConsumption >= 0)
-			return Math.max(this.electricityConsumption - this.battery.buffer, 0);
-		else
-			return Math.max(this.electricityConsumption - this.battery.buffer * this.underproductionRatio, 0);
+		const netProduction = this.electricityProduction - this.electricityConsumption;
+		if (netProduction >= 0) {
+			return 0;
+		} else {
+			return Math.abs(netProduction);
+		}
 	}
 
 	public get overproductionRatio(): number {
@@ -76,7 +74,7 @@ export class House extends BaseBuilding {
 	}
 	
 	public set overproductionRatio(value: number) {
-		if(value > 1 || value < 0) {
+		if (value > 1 || value < 0) {
 			throw new Error('Value for overproductionRatio is not within range 0 to 1.')
 		}
 		this._overproductionRatio = value;
@@ -87,7 +85,7 @@ export class House extends BaseBuilding {
 	}
 	
 	public set underproductionRatio(value: number) {
-		if(value > 1 || value < 0) {
+		if (value > 1 || value < 0) {
 			throw new Error('Value for underproductionRatio is not within range 0 to 1.')
 		}
 		this._underproductionRatio = value;

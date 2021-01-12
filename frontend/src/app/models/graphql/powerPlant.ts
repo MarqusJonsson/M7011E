@@ -1,5 +1,5 @@
-import { batteryContent } from './battery';
-import { geoDataContent } from './geoData';
+import { Battery, batteryContent } from './battery';
+import { GeoData, geoDataContent } from './geoData';
 
 // Content
 export const powerPlantContent = `
@@ -60,3 +60,25 @@ export const stopPowerPlantProductionMutation = `
 			productionFlag
 		}
 	}`;
+
+// Query results
+export interface PowerPlantQueryResults {
+	powerPlant: PowerPlant;
+}
+
+// Data structure
+export interface PowerPlant {
+	delayTimeS: number;
+	electricityBuyPrice: number;
+	electricitySellPrice: number;
+	modelledElectricityBuyPrice: number;
+	modelledElectricitySellPrice: number;
+	electricityConsumption: number;
+	electricityProduction: number;
+	hasBlackout: boolean;
+	productionFlag: boolean;
+	productionOutputRatio: number;
+	totalDemand: number;
+	battery: Battery;
+	geoData: GeoData;
+}

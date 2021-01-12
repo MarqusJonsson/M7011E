@@ -9,7 +9,7 @@ Node.js: [https://nodejs.org/en/](https://nodejs.org/en/)
 pgAdmin or similar for setting up a PostgreSQL database: [https://www.pgadmin.org/download/](https://www.pgadmin.org/download/)
 ## Setup
 
-1. Install TypeScript globally with ``npm install typescript``
+1. Install TypeScript globally with ``npm install -g typescript``
 
 2. Clone repository with ``git clone https://github.com/MarqusJonsson/M7011E.git ``
 
