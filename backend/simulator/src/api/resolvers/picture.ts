@@ -1,4 +1,4 @@
-import { createWriteStream, existsSync, mkdirSync, readdirSync, unlinkSync } from "fs";
+import { createWriteStream } from "fs";
 import { FileUpload } from "graphql-upload";
 import { Identifier } from "../../identifiable";
 import { Simulator } from "../../simulator";
