@@ -6,7 +6,7 @@ import { BadRequest } from "../../utils/error";
 import { createDir, getFileExtension, removeFileFromDir } from "../../utils/fileSystem";
 
 const profilePictureFilename = 'profile-picture';
-const ALLOWED_MIME_TYPES_REGEX = /^image\/(apng|avif|gif|jpeg|png|svg|webp)$/;
+const ALLOWED_MIME_TYPES_REGEX = /^image\/(jpeg|png|webp)$/;
 
 class PictureResolver {
 	public uploadProfilePicture = (simulator: Simulator, userIdentifier: Identifier, file: FileUpload) => {

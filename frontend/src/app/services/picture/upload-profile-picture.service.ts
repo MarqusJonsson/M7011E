@@ -6,7 +6,7 @@ import { config } from 'src/app/config';
 
 @Injectable({ providedIn: 'root' })
 export class UploadProfilePictureService {
-	public static readonly ALLOWED_MIME_TYPES_REGEX = /^image\/(apng|avif|gif|jpeg|png|svg|webp)$/;
+	public static readonly ALLOWED_MIME_TYPES_REGEX = /^image\/(jpeg|png|webp)$/;
 
 	constructor(private http: HttpClient) {}
 
