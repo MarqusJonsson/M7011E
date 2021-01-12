@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { UploadProfilePictureService } from 'src/app/services/picture/upload-profile-picture.service';
 import { HttpEventType } from '@angular/common/http';
 import { AlertService } from 'src/app/services/alert/alert.service';
@@ -8,16 +8,13 @@ import { AlertService } from 'src/app/services/alert/alert.service';
 	templateUrl: './upload-profile-picture.component.html',
 	styleUrls: ['./upload-profile-picture.component.css']
 })
-export class UploadProfilePictureComponent implements OnInit {
+export class UploadProfilePictureComponent {
 	currentFile: File;
 	progress = 0;
 	uploading = false;
 	url = '';
-	
-	constructor(private uploadPictureService: UploadProfilePictureService, private alertService: AlertService) {}
 
-	ngOnInit(): void {
-	}
+	constructor(private uploadPictureService: UploadProfilePictureService, private alertService: AlertService) {}
 
 	onSelectFile(event) {
 		if (event.target.files && event.target.files[0]) {
@@ -26,11 +23,11 @@ export class UploadProfilePictureComponent implements OnInit {
 				this.currentFile = undefined;
 			} else {
 				this.currentFile = event.target.files[0];
-				var reader = new FileReader();
+				const reader = new FileReader();
 				reader.readAsDataURL(event.target.files[0]); // Read file as data url
 				reader.onload = (event) => { // Called once readAsDataURL is completed
 					this.url = event.target.result as string;
-				}
+				};
 			}
 		}
 	}
