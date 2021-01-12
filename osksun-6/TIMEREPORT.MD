@@ -35,3 +35,4 @@
 |2021-01-06| 4 | Continued working on the report.
 |2021-01-07| 7 | Continued working on a deployment on a public VPS.
 |2021-01-08| 6 | Continued working on a deplayment on a public VPS, created docker containers for authentication server and simulator server with scripts for automatically creating and starting them.
+|2021-01-11| 6 | Finalized a deployment of the system on a VPS provided by LUDD DUST.
