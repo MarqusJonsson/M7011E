@@ -1,12 +1,15 @@
 # M7011E
+
 Design of Dynamic Web Systems 7.5 Credits, Course, master's level, M7011E
 
 ## Requirements
+
 Windows
 
 Node.js: [https://nodejs.org/en/](https://nodejs.org/en/)
 
 pgAdmin or similar for setting up a PostgreSQL database: [https://www.pgadmin.org/download/](https://www.pgadmin.org/download/)
+
 ## Setup
 
 1. Install TypeScript globally with ``npm install -g typescript``
@@ -22,6 +25,7 @@ pgAdmin or similar for setting up a PostgreSQL database: [https://www.pgadmin.or
 ### Back-end
 
 #### Authentication
+
 5. Configure and create a PostgreSQL database named m7011e-auth and a PostgreSQL user and database password (Using pgAdmin for example)
 
 6. Go to M7011E/backend/auth using a file explorer
@@ -42,6 +46,12 @@ pgAdmin or similar for setting up a PostgreSQL database: [https://www.pgadmin.or
 
 13. Open a command prompt, go to M7011E/backend/simulator and run ``npm install`` to install necessary dependencies for the simulator server
 
+#### TLS/SSL 
+
+Each server will be running with TLS encrypted communication, therefore a certificate and key pair needs to be provided in a directory called ``ssl`` in the root directory of each server.
+
+Note: if you do not have access to a certificate and key pair, you can creeate a self signed pair using OpenSSL by running the command ``openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout ./server.key -out ./server.crt``.
+
 ## Running the system
 
 14. Open a command prompt and go to M7011E/frontend
@@ -50,9 +60,9 @@ pgAdmin or similar for setting up a PostgreSQL database: [https://www.pgadmin.or
 
 16. Open a command prompt and go to M7011E/backend/auth
 
-17. Run ``npm run start`` to start the authentication server
+17. Run ``npm run startts`` to start the authentication server
 
-18. Create a copy of the generated public key from step 16 located in M7011E/backend/auth and move it to M7011E/backend/simulator (TODO currently using private key instead of public key
+18. Create a copy of the generated access public key "``accessPublic.key``" from step 16 located in the root directory of the auth server and move the copy to the root directory of the simulator server
 
 19. Open a command prompt and go to M7011E/backend/simulator
 
