@@ -5,6 +5,7 @@ import { DeleteResult, GetResult, PostResult } from './result';
 import express from 'express';
 import { crypto } from '../utils/crypto';
 import { StatusCode } from '../utils/statusCode';
+import { UsersRepository } from '../database/repositories';
 
 function getAll(): Promise<GetResult> {
 	return new Promise((resolve, reject) => {
@@ -46,17 +47,20 @@ function findByEmail(request: express.Request): Promise<GetResult> {
 
 function delete_(request: express.Request): Promise<DeleteResult> {
 	return new Promise((resolve, reject) => {
-		// TODO: Make sure requester has permission to delete a user
-		const strId = request.params.id;
-		const id = parseInt(strId);
-		if (!validation.validateId(id)) {
-			reject(new ResponseError('Malformed input', StatusCode.BAD_REQUEST));
+		if (request.payload.user.role !== UsersRepository.userRole.MANAGER) {
+			reject(new ResponseError('Access denied', StatusCode.FORBIDDEN))
 		} else {
-			database.refreshTokens.deleteAllWithUserId(id).then(() => {
-				database.users.delete(id).then((userId) => {
-					resolve(new DeleteResult({ user: { id: userId } }));
+			const strId = request.params.id;
+			const id = parseInt(strId);
+			if (!validation.validateId(id)) {
+				reject(new ResponseError('Malformed input', StatusCode.BAD_REQUEST));
+			} else {
+				database.refreshTokens.deleteAllWithUserId(id).then(() => {
+					database.users.delete(id).then((userId) => {
+						resolve(new DeleteResult({ user: { id: userId } }));
+					}).catch((error) => { reject(error); });
 				}).catch((error) => { reject(error); });
-			}).catch((error) => { reject(error); });
+			}
 		}
 	});
 }
