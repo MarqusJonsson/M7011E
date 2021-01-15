@@ -6,22 +6,25 @@ import { catchError, map } from 'rxjs/operators';
 @Injectable({
 	providedIn: 'root'
 })
-
 export class GraphqlService {
-	private subscriberCallbacks: ((data: any) => void)[] = [];
-	private newSubscriberCallbacks: ((data: any) => void)[] = [];
+	private subscriberCallbacks: Map<number, ((data: any) => void)> = new Map<number, ((data: any) => void)>();
+	private newSubscriberCallbacks: { callbackId: number, callback: ((data: any) => void) }[] = [];
 	private singleFetchCallbacks: ((data: any) => void)[] = [];
 	private newSingleFetchCallbacks: ((data: any) => void)[] = [];
 	private queryInterval: NodeJS.Timeout;
+	private nextCallbackId = 0;
 	constructor(private apollo: Apollo) { }
 
 	public query(query: any, variables?: any) {
 		return this.apollo.query({
 			query: gql`${query}`,
-			variables: variables,
+			variables,
 			fetchPolicy: 'network-only'
 		}).pipe(
 			map((response) => {
+				if (response === undefined) {
+					throw new Error('No response');
+				}
 				return response.data;
 			}),
 			catchError((error) => {
@@ -34,7 +37,7 @@ export class GraphqlService {
 		if (variables !== undefined) {
 			return this.apollo.mutate({
 				mutation: gql`${mutation}`,
-				variables: variables
+				variables
 			}).pipe(map((response: any) => {
 				return response.data;
 			}));
@@ -48,20 +51,22 @@ export class GraphqlService {
 		}
 	}
 
-	public startQueryInterval(query: any, ms: number) {
+	public startQueryInterval(query: any, ms: number, variables?: any) {
 		this.stopQueryInterval();
-		this.queryAndNotifySubscribers(query).subscribe();
+		this.queryAndNotifySubscribers(query, variables).subscribe();
 		this.queryInterval = setInterval(() => {
 			// Add new callbacs
 			if (this.newSubscriberCallbacks.length > 0) {
-				this.subscriberCallbacks.push(...this.newSubscriberCallbacks);
+				this.newSubscriberCallbacks.forEach((entry) => {
+					this.subscriberCallbacks.set(entry.callbackId, entry.callback);
+				});
 				this.newSubscriberCallbacks.length = 0;
 			}
 			if (this.newSingleFetchCallbacks.length > 0) {
 				this.singleFetchCallbacks.push(...this.singleFetchCallbacks);
 				this.newSingleFetchCallbacks.length = 0;
 			}
-			this.queryAndNotifySubscribers(query).subscribe();
+			this.queryAndNotifySubscribers(query, variables).subscribe();
 		}, ms);
 	}
 
@@ -71,8 +76,8 @@ export class GraphqlService {
 		}
 	}
 
-	private queryAndNotifySubscribers(query: any) {
-		return this.query(query).pipe(
+	private queryAndNotifySubscribers(query: any, variables?: any) {
+		return this.query(query, variables).pipe(
 			map((data: any) => {
 				if (data !== undefined) {
 					this.subscriberCallbacks.forEach((callback) => {
@@ -80,7 +85,7 @@ export class GraphqlService {
 					});
 					this.singleFetchCallbacks.forEach((callback) => {
 						callback(data);
-					})
+					});
 					this.singleFetchCallbacks.length = 0;
 				}
 				return data;
@@ -92,11 +97,16 @@ export class GraphqlService {
 		this.singleFetchCallbacks.push(callback);
 	}
 
-	public addSubscriberCallback(callback: (data: any) => void) {
-		this.subscriberCallbacks.push(callback);
+	public addSubscriberCallback(callback: (data: any) => void): number {
+		this.newSubscriberCallbacks.push({ callbackId: this.nextCallbackId, callback });
+		return this.nextCallbackId++;
+	}
+
+	public removeSubscriberCallback(callbackId: number) {
+		this.subscriberCallbacks.delete(callbackId);
 	}
 
 	public removeAllSubscriberCallbacks() {
-		this.subscriberCallbacks.length = 0;
+		this.subscriberCallbacks.clear();
 	}
 }
