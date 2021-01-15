@@ -67,8 +67,13 @@ export class HouseCardComponent {
 				electricityFromPowerPlant = 0;
 			}
 		} else { // In case of overproduction
-			electricityToBattery = netProduction * prosumer.house.overproductionRatio;
-			electricityToPowerPlant = netProduction - electricityToBattery;
+			if (prosumer.isBlocked) {
+				electricityToBattery = netProduction;
+				electricityToPowerPlant = 0;
+			} else {
+				electricityToBattery = netProduction * prosumer.house.overproductionRatio;
+				electricityToPowerPlant = netProduction - electricityToBattery;
+			}
 			electricityFromBattery = 0;
 			electricityFromPowerPlant = 0;
 		}
@@ -79,7 +84,7 @@ export class HouseCardComponent {
 		this.data.hasBlackout = prosumer.house.hasBlackout;
 		if (animate !== undefined) {
 			const currencyToPowerPlant = electricityFromPowerPlant * prosumer.house.powerPlant.electricityBuyPrice;
-			const currencyFromPowerPlant = electricityToPowerPlant * prosumer.house.powerPlant.electricitySellPrice * +!prosumer.isBlocked;
+			const currencyFromPowerPlant = electricityToPowerPlant * prosumer.house.powerPlant.electricitySellPrice;
 			animate({
 				electricityProduction: prosumer.house.electricityProduction,
 				electricityConsumption: prosumer.house.electricityConsumption,

@@ -103,7 +103,7 @@
 	height: var(--consumption-height);
 	left: var(--consumption-x);
 	top: var(--consumption-y);
-	background-color: none;
+	fill: var(--consumption-color);
 }
 
 :host .power-plant {

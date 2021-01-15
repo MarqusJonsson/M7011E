@@ -10,11 +10,13 @@
 }
 
 :host ::ng-deep .house-card .unused-ratio {
-	color: var(--house-color-darkened);
+	-webkit-filter: brightness(0.5);
+	filter: brightness(0.5);
 }
 
 :host ::ng-deep .house-card .unused-ratio .slider .mat-slider-thumb,
 :host ::ng-deep .house-card .unused-ratio .slider .mat-slider-thumb-label,
 :host ::ng-deep .house-card .unused-ratio .slider .mat-slider-track-fill  {
-	background-color: var(--house-color-darkened);
+	-webkit-filter: brightness(0.5);
+	filter: brightness(0.5);
 }
