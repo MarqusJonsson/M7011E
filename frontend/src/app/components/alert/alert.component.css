@@ -1,12 +1,12 @@
 :host > .alert-container {
 	position: fixed;
-	bottom: 5%;
+	top: 5%;
 	width: 100%;
 }
 
 :host .alert {
-	background-color: #cecece;
-	border: solid 1px #858585;
+	background-color: var(--background-color);
+	border: solid 2px #858585;
 	height: 50px;
 	width: 800px;
 	border-radius: 10px;
@@ -28,25 +28,21 @@
 }
 
 :host .alert-success {
-	background-color: #d4edda;
 	border-color: #c3e6cb;
-	color: #155724;
+	color: #c3e6cb;
 }
 
 :host .alert-error {
-	background-color: #f8d7da;
 	border-color: #f5c6cb;
-	color: #721c24;
+	color: #f5c6cb;
 }
 
 :host .alert-info {
-	background-color: #d1ecf1;
 	border-color: #bee5eb;
-	color: #0c5460;
+	color: #bee5eb;
 }
 
 :host .alert-warning {
-	background-color: #fff3cd;
 	border-color: #ffeeba;
-	color: #85643f;
+	color: #ffeeba;
 }
