@@ -54,10 +54,11 @@ export interface RefreshTokenPayload {
 
 function generateRefreshToken(payload: RefreshTokenPayload) {
 	if (refreshKeyPair == undefined) throw new Error('Missing refresh key pair');
-	return jwt.sign(payload, <jwt.Secret><unknown> refreshKeyPair.privateKey, {
+	const signed = jwt.sign(payload, <jwt.Secret><unknown> refreshKeyPair.privateKey, {
 		expiresIn: refreshTokenExpireTime,
 		algorithm: signingAlgorithm
 	});
+	return signed;
 }
 
 function verifyRefreshToken(token: string, callback: jwt.VerifyCallback, options?: jwt.VerifyOptions) {
@@ -77,7 +78,7 @@ function generateAccessToken(payload: string | object | Buffer) {
 
 function verifyAccessToken(token: string, callback: jwt.VerifyCallback) {
 	if (accessKeyPair == undefined) throw new Error('Missing access key pair');
-	jwt.verify(token, <jwt.Secret><unknown> accessKeyPair.privateKey, {
+	jwt.verify(token, <jwt.Secret><unknown> accessKeyPair.publicKey, {
 		algorithms: [signingAlgorithm]
 	}, callback);
 }
@@ -86,5 +87,6 @@ export const authentication = {
 	createKeyPairs: createKeyPairs,
 	generateRefreshToken: generateRefreshToken,
 	generateAccessToken: generateAccessToken,
-	verifyRefreshToken: verifyRefreshToken
+	verifyRefreshToken: verifyRefreshToken,
+	verifyAccessToken: verifyAccessToken
 }

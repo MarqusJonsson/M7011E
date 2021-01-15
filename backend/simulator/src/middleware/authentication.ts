@@ -6,21 +6,21 @@ import { BadRequest, Unauthorized } from '../utils/error';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-const accessPrivateKeyPath = process.env.PATH_ACCESS_PRIVATE_KEY || 'accessPrivate.key';
+const accessPublicKeyPath = process.env.PATH_ACCESS_PUBLIC_KEY || 'accessPublic.key';
 const signingAlgorithm = 'RS256';
-const accessPrivateKey = loadAccesPrivateKey(accessPrivateKeyPath);
+const accessPublicKey = loadAccesPublicKey(accessPublicKeyPath);
 
-function loadAccesPrivateKey(accessPrivateKeyPath: string) {
+function loadAccesPublicKey(accessPublicKeyPath: string) {
 	try {
-		return crypto.createPrivateKey(fs.readFileSync(accessPrivateKeyPath));
+		return crypto.createPublicKey(fs.readFileSync(accessPublicKeyPath));
 	} catch {
-		throw new Error('Can not find access private key at \'' + accessPrivateKeyPath + '\'');
+		throw new Error('Can not find access public key at \'' + accessPublicKeyPath + '\'');
 	}
 };
 
 function verifyAccessToken(token: string, callback: jwt.VerifyCallback) {
-	if (accessPrivateKey == undefined) throw new Error('Can not verify access tokens: missing access private key');
-	jwt.verify(token, <jwt.Secret><unknown> accessPrivateKey, {
+	if (accessPublicKey == undefined) throw new Error('Can not verify access tokens: missing access public key');
+	jwt.verify(token, <jwt.Secret><unknown> accessPublicKey, {
 		algorithms: [signingAlgorithm]
 	}, callback);
 }
