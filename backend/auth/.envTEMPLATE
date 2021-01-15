@@ -1,7 +1,7 @@
 # Auth server config
 SERVER_PORT=3001
-# 1209600s = 14 * 24 * 60 * 60s = 14 days
-REFRESH_TOKEN_EXPIRE_SECONDS=1209600
+# 86400s = 1 * 24 * 60 * 60s = 1 day
+REFRESH_TOKEN_EXPIRE_SECONDS=86400
 # 300s = 5 * 60s = 5 minutes
 ACCESS_TOKEN_EXPIRE_SECONDS=300
 # Auth database config
