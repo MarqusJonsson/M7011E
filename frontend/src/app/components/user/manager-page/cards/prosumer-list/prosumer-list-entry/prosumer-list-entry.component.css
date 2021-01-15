@@ -73,20 +73,17 @@
 }
 
 :host .close-prosumer-view-button {
-	position: absolute;
-	top: 25px;
-	right: 25px;
-	font-size: 32px;
+	font-size: 24px;
 	line-height: 1em;
 	color: #ffffff;
 	background-color: #323232;
-	width: 64px;
-	height: 64px;
-	border-radius: 32px;
+	width: 32px;
+	height: 32px;
+	border-radius: 8px;
 	border: none;
-	outline: none;
-	cursor: pointer;
-	z-index: 4;
+	z-index: 5;
+	float: right;
+	margin: 8px;
 }
 
 :host .close-prosumer-view-button:focus {
@@ -99,16 +96,32 @@
 
 :host .prosumer-view-container {
 	background-color: var(--background-color);
-	width: 1280px;
-	height: 720px;
-	margin: 0;
+	width: 90%;
+	height: 90%;
 	position: absolute;
-	top: 50%;
-	left: 50%;
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
 	border-radius: 10px;
 	z-index: 3;
+}
+
+:host ::ng-deep .prosumer-view-container > .prosumer-view {
+	display: block;
 	overflow-y: auto;
 	overflow-x: auto;
+	z-index: 4;
+	width: 100%;
+	height: calc(100% - 48px);
+}
+
+:host .prosumer-view-title {
+	text-align: center;
+	color: #ffffff;
+	font-size: 24px;
+	line-height: 2em;
+	margin: 0;
+	background-color: #323232;
+	border-radius: 10px 10px 0px 0px;
 }

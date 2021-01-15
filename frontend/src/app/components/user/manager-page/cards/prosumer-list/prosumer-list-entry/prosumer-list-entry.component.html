@@ -15,8 +15,11 @@
 	</div>
 </li>
 <div *ngIf="data.view" class="prosumer-view-overlay" (click)="toggleProsumerViewOverlay(false);">
-	<button class="close-prosumer-view-button" (click)="toggleProsumerViewOverlay(false);">x</button>
 	<div class="prosumer-view-container" (click)="$event.stopPropagation();">
-		<app-prosumer-page [ngClass]="{'hidden': viewedProsumer === undefined}" [showNavBar]="false" [prosumer]="viewedProsumer" [startQueryInterval]="false" [profilePictureUserId]="id"></app-prosumer-page>
+		<h2 class="prosumer-view-title">
+			Prosumer {{id}}'s view
+			<button class="sne-button close-prosumer-view-button" (click)="toggleProsumerViewOverlay(false);">✖</button>
+		</h2>
+		<app-prosumer-page class="prosumer-view" [ngClass]="{'hidden': viewedProsumer === undefined}" [showNavBar]="false" [prosumer]="viewedProsumer" [startQueryInterval]="false" [profilePictureUserId]="id"></app-prosumer-page>
 	</div>
 </div>
