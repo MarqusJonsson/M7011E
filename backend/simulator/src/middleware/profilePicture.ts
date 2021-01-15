@@ -10,7 +10,7 @@ import { getProfilePicturePath } from "../utils/fileSystem";
 export function profilePicture(simulator: Simulator) {
 	return (request: express.Request, response: express.Response, next: express.NextFunction) => {
 	const requester = (<any> request).payload.user;
-	const resourceOwner = { id: +request.params.userId, role: +request.params.role };
+	const resourceOwner = { id: +request.params.userId, role: +request.params.roleId };
 	// Make sure requester should be allowed to obtain the resource
 	switch (requester.role) {
 		case UserRole.PROSUMER:
