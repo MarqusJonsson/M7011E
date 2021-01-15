@@ -36,3 +36,7 @@
 | 2021-01-07 | 7 | <ul><li>Continued wokring on the visual aspects of the frontend application.</li><li>Mostly focused on the manager page.</li></ul> |
 | 2021-01-08 | 9 | <ul><li>Worked on the report.</li><li>Improved security by adding encryption using TLS.</li></ul> |
 | 2021-01-11 | 9 | <ul><li>Worked on the report.</li><li>Worked on deploying the system using a VPS provided by LUDD DUST and docker containers to run each server independantly.</li></ul> |
+| 2021-01-12 | 6 | <ul><li>Worked on the report.</li><li>Added online status for prosumers to be shown from the manager page.</li></ul> |
+| 2021-01-13 | 4 | <ul><li>Started working on updating the list of prosumers on the manager page.</li></ul> |
+| 2021-01-14 | 5 | <ul><li>Added the featue to show a prosumers view as a manager.</li></ul> |
+
