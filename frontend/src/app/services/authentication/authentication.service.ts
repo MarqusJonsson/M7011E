@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { catchError, finalize, map, tap } from 'rxjs/operators';
 import { config } from 'src/app/config';
 import { Tokens } from 'src/app/models/authentication/tokens';
 import { AuthenticationError } from 'src/app/models/authentication/authenticationError';
@@ -59,11 +59,11 @@ export class AuthenticationService {
 				AuthenticationService.setSession(response.body);
 				return response.success;
 			}),
-			catchError((response) => {
-				if (response instanceof AuthenticationError) {
-					return throwError(response);
+			catchError((error) => {
+				if (error instanceof AuthenticationError) {
+					return throwError(error);
 				}
-				return throwError(new AuthenticationError(response.error.message));
+				return throwError(new AuthenticationError(error.error.message));
 		}));
 	}
 
@@ -77,11 +77,11 @@ export class AuthenticationService {
 				AuthenticationService.setSession(response.body);
 				return response.success;
 			}),
-			catchError((response) => {
-				if (response instanceof AuthenticationError) {
-					return throwError(response);
+			catchError((error) => {
+				if (error instanceof AuthenticationError) {
+					return throwError(error);
 				}
-				return throwError(new AuthenticationError(response.error.message));
+				return throwError(new AuthenticationError(error.error.message));
 			})
 		);
 	}
@@ -89,11 +89,11 @@ export class AuthenticationService {
 	public logout() {
 		return this.http.delete<any>(config.URL_LOGOUT) // Refresh token is in Authorization header, see jwt interceptor
 			.pipe(
-				tap(() => {
+				finalize(() => {
 					AuthenticationService.removeSession();
 					this.clearUser();
-				}
-			));
+				})
+			);
 	}
 
 	public refreshAccessToken() {

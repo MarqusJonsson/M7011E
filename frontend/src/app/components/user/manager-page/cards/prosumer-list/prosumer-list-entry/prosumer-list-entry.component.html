@@ -1,0 +1,22 @@
+<li class="base-card">
+	<span class="title">{{data.title}}</span>
+	<div class="info">
+		<div class="buttons">
+			<button class="prosumer-list-button box-green" (click)="toggleProsumerViewOverlay(true);">View</button>
+			<button class="prosumer-list-button box-yellow" (click)="openBlockProsumerDialog();">Block</button>
+			<button class="prosumer-list-button box-red" (click)="openDeleteProsumerDialog();">Delete</button>
+		</div>
+		<div class="statuses">
+			<span *ngIf="data.isOnline" class="box box-green">Online</span>
+			<span *ngIf="!data.isOnline" class="box box-red">Offline</span>
+			<span *ngIf="data.hasBlackout" class="box box-red">Blackout</span>
+			<span *ngIf="data.isBlocked" class="box box-yellow">Blocked</span>
+		</div>
+	</div>
+</li>
+<div *ngIf="data.view" class="prosumer-view-overlay" (click)="toggleProsumerViewOverlay(false);">
+	<button class="close-prosumer-view-button" (click)="toggleProsumerViewOverlay(false);">x</button>
+	<div class="prosumer-view-container" (click)="$event.stopPropagation();">
+		<app-prosumer-page [ngClass]="{'hidden': viewedProsumer === undefined}" [showNavBar]="false" [prosumer]="viewedProsumer" [startQueryInterval]="false" [profilePictureUserId]="id"></app-prosumer-page>
+	</div>
+</div>

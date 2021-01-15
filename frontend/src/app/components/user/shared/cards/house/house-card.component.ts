@@ -1,7 +1,7 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
-import { House, setHouseOverproductionRatioMutation, setHouseUnderproductionRatioMutation } from 'src/app/models/graphql/house';
-import { Prosumer, ProsumerQueryData } from 'src/app/models/graphql/prosumer';
+import { setHouseOverproductionRatioMutation, setHouseUnderproductionRatioMutation } from 'src/app/models/graphql/house';
+import { Prosumer } from 'src/app/models/graphql/prosumer';
 import { HouseAnimationData } from 'src/app/models/user/animation';
 import { DECIMALS } from 'src/app/models/user/page-constants';
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
@@ -13,21 +13,24 @@ import { SiFormatterService } from 'src/app/services/stiring-format/si-formatter
 	styleUrls: ['./house-card.component.css', '../base-card.css']
 })
 export class HouseCardComponent {
-	@ViewChild('productionText') private productionText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('consumptionText') private consumptionText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('netProductionText') private netProductionText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('toBatteryText') private toBatteryText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('fromBatteryText') private fromBatteryText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('toPowerPlantText') private toPowerPlantText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('fromPowerPlantText') private fromPowerPlantText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('overproductionPercentToPowerPlantText') private overproductionPercentToPowerPlantText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('overproductionPercentToBatteryText') private overproductionPercentToBatteryText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('underproductionPercentToPowerPlantText') private underproductionPercentToPowerPlantText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('underproductionPercentToBatteryText') private underproductionPercentToBatteryText: ElementRef<HTMLElement> | undefined;
-
-	public overproductionRatioSliderValue = 0.5;
-	public underproductionRatioSliderValue = 0.5;
-	public isOverproducing = false;
+	public data = {
+		production: '',
+		consumption: '',
+		netProduction: '',
+		toBattery: '',
+		fromBattery: '',
+		toPowerPlant: '',
+		fromPowerPlant: '',
+		isOverproducing: false,
+		hasBlackout: false,
+		blocked: false,
+		overproductionRatioSliderValue: 0.5,
+		underproductionRatioSliderValue: 0.5,
+		overproductionPercentToPowerPlant: '',
+		overproductionPercentToBattery: '',
+		underproductionPercentToPowerPlant: '',
+		underproductionPercentToBattery: ''
+	};
 
 	constructor(
 		private siFormatterService: SiFormatterService,
@@ -40,13 +43,13 @@ export class HouseCardComponent {
 	}
 
 	public update = (prosumer: Prosumer, animate?: (animationData: HouseAnimationData) => void) => {
-		this.productionText.nativeElement.innerText = `${this.siFormatterService.format(prosumer.house.electricityProduction, DECIMALS)}W`;
-		this.consumptionText.nativeElement.innerText = `${this.siFormatterService.format(prosumer.house.electricityConsumption, DECIMALS)}W`;
+		this.data.production = `${this.siFormatterService.format(prosumer.house.electricityProduction, DECIMALS)}W`;
+		this.data.consumption = `${this.siFormatterService.format(prosumer.house.electricityConsumption, DECIMALS)}W`;
 		const netProduction = prosumer.house.electricityProduction - prosumer.house.electricityConsumption;
 		if (netProduction >= 0) {
-			this.isOverproducing = true;
+			this.data.isOverproducing = true;
 		}
-		this.netProductionText.nativeElement.innerText = `${this.siFormatterService.format(netProduction, DECIMALS)}W`;
+		this.data.netProduction = `${this.siFormatterService.format(netProduction, DECIMALS)}W`;
 		let electricityToBattery: number;
 		let electricityFromBattery: number;
 		let electricityToPowerPlant: number;
@@ -69,13 +72,14 @@ export class HouseCardComponent {
 			electricityFromBattery = 0;
 			electricityFromPowerPlant = 0;
 		}
-		this.toBatteryText.nativeElement.innerText = `${this.siFormatterService.format(electricityToBattery, DECIMALS)}W`;
-		this.fromBatteryText.nativeElement.innerText = `${this.siFormatterService.format(electricityFromBattery, DECIMALS)}W`;
-		this.toPowerPlantText.nativeElement.innerText = `${this.siFormatterService.format(electricityToPowerPlant, DECIMALS)}W`;
-		this.fromPowerPlantText.nativeElement.innerText = `${this.siFormatterService.format(electricityFromPowerPlant, DECIMALS)}W`;
+		this.data.toBattery = `${this.siFormatterService.format(electricityToBattery, DECIMALS)}W`;
+		this.data.fromBattery = `${this.siFormatterService.format(electricityFromBattery, DECIMALS)}W`;
+		this.data.toPowerPlant = `${this.siFormatterService.format(electricityToPowerPlant, DECIMALS)}W`;
+		this.data.fromPowerPlant = `${this.siFormatterService.format(electricityFromPowerPlant, DECIMALS)}W`;
+		this.data.hasBlackout = prosumer.house.hasBlackout;
 		if (animate !== undefined) {
 			const currencyToPowerPlant = electricityFromPowerPlant * prosumer.house.powerPlant.electricityBuyPrice;
-			const currencyFromPowerPlant = electricityToPowerPlant * prosumer.house.powerPlant.electricitySellPrice;
+			const currencyFromPowerPlant = electricityToPowerPlant * prosumer.house.powerPlant.electricitySellPrice * +!prosumer.isBlocked;
 			animate({
 				electricityProduction: prosumer.house.electricityProduction,
 				electricityConsumption: prosumer.house.electricityConsumption,
@@ -111,27 +115,27 @@ export class HouseCardComponent {
 
 	public submitOverproductionRatio = () => {
 		this.graphqlService.mutate(setHouseOverproductionRatioMutation, {
-			ratio: this.overproductionRatioSliderValue
+			ratio: this.data.overproductionRatioSliderValue
 		}).subscribe();
 	}
 
 	public submitUnderproductionRatio = () => {
 		this.graphqlService.mutate(setHouseUnderproductionRatioMutation, {
-			ratio: this.underproductionRatioSliderValue
+			ratio: this.data.underproductionRatioSliderValue
 		}).subscribe();
 	}
 
 	private set overproductionRatioSlider(ratio: number) {
 		const overproductionRatioPercent = ratio * 100;
-		this.overproductionPercentToPowerPlantText.nativeElement.innerText = `${(100 - overproductionRatioPercent).toFixed(0)} %`;
-		this.overproductionPercentToBatteryText.nativeElement.innerText = `${overproductionRatioPercent.toFixed(0)} %`;
-		this.overproductionRatioSliderValue = ratio;
+		this.data.overproductionPercentToPowerPlant = `${(100 - overproductionRatioPercent).toFixed(0)} %`;
+		this.data.overproductionPercentToBattery = `${overproductionRatioPercent.toFixed(0)} %`;
+		this.data.overproductionRatioSliderValue = ratio;
 	}
 
 	private set underproductionRatioSlider(ratio: number) {
 		const underproductionRatioPercent = ratio * 100;
-		this.underproductionPercentToPowerPlantText.nativeElement.innerText = `${(100 - underproductionRatioPercent).toFixed(0)} %`;
-		this.underproductionPercentToBatteryText.nativeElement.innerText = `${underproductionRatioPercent.toFixed(0)} %`;
-		this.underproductionRatioSliderValue = ratio;
+		this.data.underproductionPercentToPowerPlant = `${(100 - underproductionRatioPercent).toFixed(0)} %`;
+		this.data.underproductionPercentToBattery = `${underproductionRatioPercent.toFixed(0)} %`;
+		this.data.underproductionRatioSliderValue = ratio;
 	}
 }

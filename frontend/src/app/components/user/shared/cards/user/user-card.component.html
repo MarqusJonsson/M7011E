@@ -2,12 +2,15 @@
 	<h2>User</h2>
 	<ul>
 		<li>
-			Currency: <span class="right-align" #currencyText></span>
+			Currency: <span class="right-align">{{data.currency}}</span>
+		</li>
+		<li *ngIf="isProsumer">
+			Blocked from selling: <span class="right-align">{{data.isBlocked}}</span>
 		</li>
 		<li>
 			Profile picture:
 			<div class="profile-picture-container base-card-boxed-element">
-				<app-profile-picture></app-profile-picture>
+				<app-profile-picture [userId]="profilePictureUserId"></app-profile-picture>
 			</div>
 		</li>
 	</ul>

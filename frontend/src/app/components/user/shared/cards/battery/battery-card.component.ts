@@ -10,9 +10,13 @@ import { GraphComponent } from './graph/graph.component';
 	styleUrls: ['./battery-card.component.css', '../base-card.css']
 })
 export class BatteryCardComponent implements AfterViewInit {
-	@ViewChild('capacityText') private capacityText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('bufferText') private bufferText: ElementRef<HTMLElement> | undefined;
 	@ViewChild('graph') graph: GraphComponent;
+	@Input() graphId = 'battery-graph';
+	public data = {
+		buffer: '',
+		capacity: '',
+		percent: ''
+	};
 
 	constructor(
 		private siFormatterService: SiFormatterService,
@@ -25,12 +29,14 @@ export class BatteryCardComponent implements AfterViewInit {
 	}
 
 	public update = (battery: Battery) => {
-		this.capacityText.nativeElement.innerText = `${this.siFormatterService.format(battery.capacity, DECIMALS)}Wh`;
-		this.bufferText.nativeElement.innerText = `${this.siFormatterService.format(battery.buffer, DECIMALS)}Wh`;
+		this.data.capacity = `${this.siFormatterService.format(battery.capacity, DECIMALS)}Wh`;
+		this.data.buffer = `${this.siFormatterService.format(battery.buffer, DECIMALS)}Wh`;
+		const percent = battery.buffer / battery.capacity * 100;
+		this.data.percent = `${percent.toFixed(3)} %`;
 		const time = new Date();
 		this.graph.appendToPlot(
 			[[time]],
-			[[battery.buffer / battery.capacity * 100]]
+			[[percent]]
 		);
 	}
 }

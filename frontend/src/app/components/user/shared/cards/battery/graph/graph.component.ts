@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import * as Plotly from 'plotly.js';
 
 @Component({
@@ -7,14 +7,11 @@ import * as Plotly from 'plotly.js';
 	styleUrls: ['./graph.component.css']
 })
 export class GraphComponent {
-
-	public id: string;
 	private data: Partial<Plotly.PlotData>[];
 	private layout: Partial<Plotly.Layout>;
+	@Input() graphId: string;
 
-	constructor(private hostElement: ElementRef<HTMLElement>) {
-		this.id = this.hostElement.nativeElement.id + '-content';
-	}
+	constructor(private hostElement: ElementRef<HTMLElement>) {}
 
 	public createPlot(hexColor: string, variables: { name?: string, lineColor: string }[]) {
 		this.data = [];
@@ -33,18 +30,20 @@ export class GraphComponent {
 			});
 		});
 		this.layout = this.createLayout(hexColor);
-		Plotly.newPlot(this.id, this.data, this.layout);
+		Plotly.newPlot(this.graphId, this.data, this.layout);
 	}
 
 	public appendToPlot(x: any[][], y: any[][]) {
 		const indices = [...Array(x.length).keys()];
 		const graphDiv = this.hostElement.nativeElement.children[0] as any;
-		Plotly.extendTraces(this.id, { x: x, y: y }, indices);
+		Plotly.extendTraces(this.graphId, { x, y }, indices);
 		// Remove every second data sample if trace contains more than 2500 points to prevent eventual performance issues
-		for (const trace of graphDiv.data) {
-			if (trace.x.length > 250) {
-				trace.x = trace.x.filter((_: any, index: number) => index % 2 === 0);
-				trace.y = trace.y.filter((_: any, index: number) => index % 2 === 0);
+		if (graphDiv.data !== undefined) {
+			for (const trace of graphDiv.data) {
+				if (trace.x.length > 250) {
+					trace.x = trace.x.filter((_: any, index: number) => index % 2 === 0);
+					trace.y = trace.y.filter((_: any, index: number) => index % 2 === 0);
+				}
 			}
 		}
 	}

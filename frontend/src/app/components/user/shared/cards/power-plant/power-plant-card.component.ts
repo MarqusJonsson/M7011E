@@ -1,6 +1,12 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
-import { PowerPlant, startPowerPlantProductionMutation, stopPowerPlantProductionMutation, updateElectricityPrices, updateProductionOutputRatioMutation } from 'src/app/models/graphql/powerPlant';
+import {
+	PowerPlant,
+	startPowerPlantProductionMutation,
+	stopPowerPlantProductionMutation,
+	updateElectricityPrices,
+	updateProductionOutputRatioMutation
+} from 'src/app/models/graphql/powerPlant';
 import { Ws_per_kWh } from 'src/app/models/user/electricity';
 import { CURRENCY_SYMBOL, DECIMALS } from 'src/app/models/user/page-constants';
 import { AlertService } from 'src/app/services/alert/alert.service';
@@ -14,21 +20,23 @@ import { SiFormatterService } from 'src/app/services/stiring-format/si-formatter
 	styleUrls: ['./power-plant-card.component.css', '../base-card.css']
 })
 export class PowerPlantCardComponent {
-	@ViewChild('buyPriceText') private buyPriceText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('sellPriceText') private sellPriceText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('modelledSellPriceText') private modelledSellPriceText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('modelledBuyPriceText') private modelledBuyPriceText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('productionText') private productionText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('consumptionText') private consumptionText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('totalDemandText') private totalDemandText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('hasBlackoutText') private hasBlackoutText: ElementRef<HTMLElement> | undefined;
-	@ViewChild('productionOutputRatioSlider') private productionOutputRatioSlider: ElementRef<HTMLElement> | undefined;
-	@ViewChild('delayTimeSText') private delayTimeSText: ElementRef<HTMLElement> | undefined;
 	@Input() isProsumer = false;
 	@Input() isManager = false;
 	private buyPricePerkWh: number;
 	private sellPricePerkWh: number;
-	public productionOutputRatioSliderValue: number;
+	public data = {
+		buyPrice: '',
+		sellPrice: '',
+		modelledSellPrice: '',
+		modelledBuyPrice: '',
+		production: '',
+		consumption: '',
+		netProduction: '',
+		totalDemand: '',
+		hasBlackout: '',
+		actionDelayTimeS: '',
+		productionOutputRatioSliderValue: 0.5
+	};
 
 	constructor(
 		private siFormatterService: SiFormatterService,
@@ -39,34 +47,35 @@ export class PowerPlantCardComponent {
 
 	public update = (powerPlant: PowerPlant) => {
 		if (this.isProsumer || this.isManager) {
-			this.buyPricePerkWh = powerPlant.electricityBuyPrice * Ws_per_kWh;
-			this.sellPricePerkWh = powerPlant.electricitySellPrice * Ws_per_kWh;
-			this.buyPriceText.nativeElement.innerText = `${this.buyPricePerkWh} ${CURRENCY_SYMBOL}/kWh`;
-			this.sellPriceText.nativeElement.innerText = `${this.sellPricePerkWh} ${CURRENCY_SYMBOL}/kWh`;
+			this.buyPricePerkWh = parseFloat((powerPlant.electricityBuyPrice * Ws_per_kWh).toPrecision(15));
+			this.sellPricePerkWh = parseFloat((powerPlant.electricitySellPrice * Ws_per_kWh).toPrecision(15));
+			this.data.buyPrice = `${this.buyPricePerkWh} ${CURRENCY_SYMBOL}/kWh`;
+			this.data.sellPrice = `${this.sellPricePerkWh} ${CURRENCY_SYMBOL}/kWh`;
 		}
 		if (this.isManager) {
-			this.modelledSellPriceText.nativeElement.innerText = `${(powerPlant.modelledElectricitySellPrice * Ws_per_kWh).toFixed(DECIMALS)} ${CURRENCY_SYMBOL}/kWh`;
-			this.modelledBuyPriceText.nativeElement.innerText = `${(powerPlant.modelledElectricityBuyPrice * Ws_per_kWh).toFixed(DECIMALS)} ${CURRENCY_SYMBOL}/kWh`;
-			this.productionText.nativeElement.innerText = `${this.siFormatterService.format(powerPlant.electricityProduction, DECIMALS)}Wh`;
-			this.consumptionText.nativeElement.innerText = `${this.siFormatterService.format(powerPlant.electricityConsumption, DECIMALS)}Wh`;
-			this.totalDemandText.nativeElement.innerText = `${this.siFormatterService.format(powerPlant.totalDemand, DECIMALS)}Wh`;
-			this.hasBlackoutText.nativeElement.innerText = `${powerPlant.hasBlackout}`;
-			this.delayTimeSText.nativeElement.innerText = `${powerPlant.delayTimeS}`;
+			this.data.modelledSellPrice = `${(powerPlant.modelledElectricitySellPrice * Ws_per_kWh).toFixed(DECIMALS)} ${CURRENCY_SYMBOL}/kWh`;
+			this.data.modelledBuyPrice = `${(powerPlant.modelledElectricityBuyPrice * Ws_per_kWh).toFixed(DECIMALS)} ${CURRENCY_SYMBOL}/kWh`;
+			this.data.production = `${this.siFormatterService.format(powerPlant.electricityProduction, DECIMALS)}Wh`;
+			this.data.consumption = `${this.siFormatterService.format(powerPlant.electricityConsumption, DECIMALS)}Wh`;
+			this.data.netProduction = `${this.siFormatterService.format(powerPlant.electricityProduction - powerPlant.electricityConsumption, DECIMALS)}W`;
+			this.data.totalDemand = `${this.siFormatterService.format(powerPlant.totalDemand, DECIMALS)}Wh`;
+			this.data.hasBlackout = `${powerPlant.hasBlackout}`;
+			this.data.actionDelayTimeS = `${powerPlant.actionDelayTimeS}`;
 		}
 	}
 
 	public setProductionOutputRatioSliderValue(ratio: number) {
-		this.productionOutputRatioSliderValue = ratio;
+		this.data.productionOutputRatioSliderValue = ratio;
 	}
 
 	public productionOutputRatioSliderValueChange(event: MatSliderChange) {
-		this.productionOutputRatioSliderValue = event.value;
+		this.data.productionOutputRatioSliderValue = event.value;
 	}
 
 	private updateProductionOutputRatio() {
 		this.graphqlService.mutate(
 			updateProductionOutputRatioMutation,
-			{ productionOutputRatio: this.productionOutputRatioSliderValue }
+			{ productionOutputRatio: this.data.productionOutputRatioSliderValue }
 		).subscribe();
 	}
 

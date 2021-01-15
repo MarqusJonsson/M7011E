@@ -1,7 +1,7 @@
 <div class="column">
 	<app-battery-card class="app row" #batteryCard></app-battery-card>
 	<app-geo-data-card class="app row" #geoDataCard></app-geo-data-card>
-	<app-user-card class="app row" #userCard></app-user-card>
+	<app-user-card [isProsumer]="true" [profilePictureUserId]="profilePictureUserId" class="app row" #userCard></app-user-card>
 	<app-power-plant-card [isProsumer]="true" class="app row" #powerPlantCard></app-power-plant-card>
 </div>
 <div class="column">
@@ -10,4 +10,4 @@
 <div class="house-animation-card-container">
 	<app-house-animation-card #houseAnimationCard></app-house-animation-card>
 </div>
-<nav-bar></nav-bar>
+<app-nav-bar *ngIf="showNavBar"></app-nav-bar>

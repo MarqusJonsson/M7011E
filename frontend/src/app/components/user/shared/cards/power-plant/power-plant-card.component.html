@@ -3,10 +3,10 @@
 	<ul>
 		<div *ngIf="isProsumer || isManager">
 			<li>
-				Buy price: <span class="right-align" #buyPriceText></span>
+				Buy price: <span class="right-align">{{data.buyPrice}}</span>
 			</li>
 			<li>
-				Sell price: <span class="right-align" #sellPriceText></span>
+				Sell price: <span class="right-align">{{data.sellPrice}}</span>
 			</li>
 		</div>
 		<div *ngIf="isManager">
@@ -14,32 +14,41 @@
 				<button class="card-button" (click)="openUpdatePricesDialog()">Update prices</button>
 			</li>
 			<li>
-				Modelled sell price: <span class="right-align" #modelledSellPriceText></span>
+				Modelled sell price: <span class="right-align">{{data.modelledSellPrice}}</span>
 			</li>
 			<li>
-				Modelled buy price: <span class="right-align" #modelledBuyPriceText></span>
+				Modelled buy price: <span class="right-align">{{data.modelledBuyPrice}}</span>
 			</li>
 			<li>
-				Production: <span class="right-align" #productionText></span>
+				Production: <span class="right-align">{{data.production}}</span>
 			</li>
 			<li>
-				Consumption: <span class="right-align" #consumptionText></span>
+				Consumption: <span class="right-align">{{data.consumption}}</span>
 			</li>
+			<li>
+				Net production: <span class="right-align">{{data.netProduction}}</span>
+			</li>	
 			<li>
 				<button class="card-button" (click)="startProduction()">Start production</button>
 				<button class="card-button" (click)="stopProduction()">Stop production</button>
 			</li>
 			<li>
-				totalDemand: <span class="right-align" #totalDemandText></span>
+				actionDelayTimeS: <span class="right-align">{{data.actionDelayTimeS}}</span>
 			</li>
 			<li>
-				hasBlackout: <span class="right-align" #hasBlackoutText></span>
+				Total demand: <span class="right-align">{{data.totalDemand}}</span>
 			</li>
 			<li>
-				<mat-slider class="slider" #productionOutputRatioSlider min="0" max="1" step="0.01" value="{{productionOutputRatioSliderValue}}" thumbLabel="true" (input)="productionOutputRatioSliderValueChange($event)" (mousedown)="mouseDownProductionOutputRatio()"></mat-slider> 
+				Has blackout: <span class="right-align">{{data.hasBlackout}}</span>
 			</li>
 			<li>
-				delayTimeS: <span class="right-align" #delayTimeSText></span>
+				Production output ratio:
+			</li>
+			<li>
+				<mat-slider class="slider" #productionOutputRatioSlider min="0" max="1" step="0.01" value="{{data.productionOutputRatioSliderValue}}" thumbLabel="true" (input)="productionOutputRatioSliderValueChange($event)" (mousedown)="mouseDownProductionOutputRatio()"></mat-slider> 
+			</li>
+			<li>
+				0% <span class="right-align">100%</span>
 			</li>
 		</div>
 	</ul>

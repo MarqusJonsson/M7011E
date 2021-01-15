@@ -4,7 +4,7 @@ import { GraphqlService } from 'src/app/services/graphql/graphql.service';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
 @Component({
-	selector: 'logout-button',
+	selector: 'app-logout-button',
 	templateUrl: './logout-button.component.html',
 	styleUrls: ['./logout-button.component.css', '../../shared/nav-bar/nav-bar.component.css']
 })
@@ -14,9 +14,14 @@ export class LogoutButtonComponent {
 	logout() {
 		this.graphQLService.stopQueryInterval();
 		this.graphQLService.removeAllSubscriberCallbacks();
-		this.authService.logout().subscribe(() => {
-			this.router.navigateByUrl('/login'); // Redirect when ready
-		});
+		this.authService.logout().subscribe(
+			() => {
+				this.router.navigateByUrl('/login'); // Redirect when ready
+			},
+			(error) => {
+				this.router.navigateByUrl('/login');
+			}
+		);
 		return false; // return false so user do not get redirected from clicking anchor tag
 	}
 }

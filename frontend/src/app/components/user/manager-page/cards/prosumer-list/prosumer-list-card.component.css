@@ -1,0 +1,10 @@
+:host .prosumer-list-card,
+:host .prosumer-list-card .card-button {
+	border-color: var(--house-color);
+	color: var(--house-color);
+}
+
+:host .prosumer-list {
+	overflow-y: auto;
+	max-height: calc(98px * 3);
+}

@@ -2,15 +2,15 @@
 	<h2>Battery</h2>
 	<ul>
 		<li>
-			Buffer: <span class="right-align" #bufferText></span>
+			Buffer: <span class="right-align">{{data.buffer}}</span>
 		</li>
 		<li>
-			Capacity: <span class="right-align" #capacityText></span>
+			Capacity: <span class="right-align">{{data.capacity}}</span>
 		</li>
 		<li>
-			Battery percent:
+			Battery percent: <span class="right-align">{{data.percent}}</span>
 			<div id="graph-container" class="graph-container base-card-boxed-element">
-				<app-data-graph [id]="'graph'" #graph></app-data-graph>
+				<app-data-graph [graphId]="graphId + '-content'" #graph></app-data-graph>
 			</div>
 		</li>
 	</ul>

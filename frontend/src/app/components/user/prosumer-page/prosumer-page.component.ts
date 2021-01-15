@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { prosumerQuery, ProsumerQueryData } from 'src/app/models/graphql/prosumer';
+import { AfterViewInit, Component, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Prosumer, prosumerQuery, ProsumerQueryData } from 'src/app/models/graphql/prosumer';
 import { GraphqlService } from '../../../services/graphql/graphql.service';
 import { BatteryCardComponent } from '../shared/cards/battery/battery-card.component';
 import { GeoDataCardComponent } from '../shared/cards/geo-data/geo-data-card.component';
@@ -13,29 +13,60 @@ import { HouseAnimationCardComponent } from './cards/house-animation/house-anima
 	templateUrl: './prosumer-page.component.html',
 	styleUrls: ['./prosumer-page.component.css']
 })
-export class ProsumerPageComponent implements AfterViewInit {
+export class ProsumerPageComponent implements AfterViewInit, OnDestroy {
 	@ViewChild('batteryCard') batteryCard: BatteryCardComponent;
 	@ViewChild('geoDataCard') geoDataCard: GeoDataCardComponent;
 	@ViewChild('userCard') userCard: UserCardComponent;
 	@ViewChild('powerPlantCard') powerPlantCard: PowerPlantCardComponent;
 	@ViewChild('houseCard') houseCard: HouseCardComponent;
 	@ViewChild('houseAnimationCard') houseAnimationCard: HouseAnimationCardComponent;
+	@Input() prosumer: Prosumer;
+	@Input() startQueryInterval = true;
+	@Input() profilePictureUserId: number;
+	@Input() showNavBar = true;
+	private callbackId: number;
 
 	constructor(private graphqlService: GraphqlService) {}
 
-	ngAfterViewInit(): void {
-		this.graphqlService.addSubscriberCallback((data: ProsumerQueryData) => {
-			const { prosumer } = data;
-			this.batteryCard.update(prosumer.house.battery);
-			this.geoDataCard.update(prosumer.house.geoData);
-			this.userCard.update(prosumer.currency);
-			this.powerPlantCard.update(prosumer.house.powerPlant);
-			this.houseCard.update(prosumer, this.houseAnimationCard.animateData);
+	public ngAfterViewInit(): void {
+		if (this.prosumer !== undefined) {
+			this.update(this.prosumer);
+		}
+		this.callbackId = this.graphqlService.addSubscriberCallback((data: ProsumerQueryData) => {
+			let prosumer: Prosumer;
+			if (this.prosumer !== undefined) {
+				prosumer = this.prosumer;
+			} else {
+				prosumer = data.prosumer;
+			}
+			this.update(prosumer);
 		});
 		this.graphqlService.addSingleFetchCallback((data: ProsumerQueryData) => {
-			const { prosumer: { house: { overproductionRatio, underproductionRatio } } } = data;
+			let overproductionRatio: number;
+			let underproductionRatio: number;
+			if (this.prosumer !== undefined) {
+				overproductionRatio = this.prosumer.house.overproductionRatio;
+				underproductionRatio = this.prosumer.house.underproductionRatio;
+			} else {
+				overproductionRatio = data.prosumer.house.overproductionRatio;
+				underproductionRatio = data.prosumer.house.underproductionRatio;
+			}
 			this.houseCard.setRatioSliders(overproductionRatio, underproductionRatio);
 		});
-		this.graphqlService.startQueryInterval(prosumerQuery, 1000);
+		if (this.startQueryInterval) {
+			this.graphqlService.startQueryInterval(prosumerQuery, 1000);
+		}
+	}
+
+	public ngOnDestroy() {
+		this.graphqlService.removeSubscriberCallback(this.callbackId);
+	}
+
+	private update(prosumer: Prosumer) {
+		this.batteryCard.update(prosumer.house.battery);
+		this.geoDataCard.update(prosumer.house.geoData);
+		this.userCard.update(prosumer.currency, prosumer.isBlocked);
+		this.powerPlantCard.update(prosumer.house.powerPlant);
+		this.houseCard.update(prosumer, this.houseAnimationCard.animateData);
 	}
 }

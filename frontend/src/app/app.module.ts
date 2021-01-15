@@ -9,17 +9,14 @@ import { SettingsButtonComponent } from './components/user/shared/settings-butto
 import { UserPageButtonComponent } from './components/user/shared/user-page-button/user-page-button.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { ProsumerPageComponent } from './components/user/prosumer-page/prosumer-page.component';
-import { AccountSettingsComponent } from './components/user/settings-page/settings-page.component';
+import { ManagerPageComponent } from './components/user/manager-page/manager-page.component';
+import { SettingsPageComponent } from './components/user/settings-page/settings-page.component';
 import { NavBarComponent } from './components/user/shared/nav-bar/nav-bar.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GraphComponent } from './components/user/shared/cards/battery/graph/graph.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegisterComponent } from './components/authentication/register-page/register.component';
-import { ManagerPageComponent } from './components/user/manager-page/manager-page.component';
-import { ManagerMainBlockComponent } from './components/user/manager-page/manager-page-children/manager-main-block/manager-main-block.component';
-import { PowerPlantBlockComponent } from './components/user/manager-page/manager-page-children/power-plant-block/power-plant-block.component';
-import { ManagerMarketComponent } from './components/user/manager-page/manager-page-children/manager-market/manager-market.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthenticationService } from './services/authentication/authentication.service';
 import JwtInterceptor from './interceptors/jwt.interceptor';
@@ -34,6 +31,9 @@ import { UserCardComponent } from './components/user/shared/cards/user/user-card
 import { PowerPlantCardComponent } from './components/user/shared/cards/power-plant/power-plant-card.component';
 import { HouseCardComponent } from './components/user/shared/cards/house/house-card.component';
 import { HouseAnimationCardComponent } from './components/user/prosumer-page/cards/house-animation/house-animation-card.component';
+import { ProsumerListCardComponent } from './components/user/manager-page/cards/prosumer-list/prosumer-list-card.component';
+import { ProsumerListEntryComponent } from './components/user/manager-page/cards/prosumer-list/prosumer-list-entry/prosumer-list-entry.component';
+import { config } from './config';
 
 @NgModule({
 	declarations: [
@@ -41,14 +41,11 @@ import { HouseAnimationCardComponent } from './components/user/prosumer-page/car
 		LoginComponent,
 		AlertComponent,
 		ProsumerPageComponent,
-		AccountSettingsComponent,
+		ManagerPageComponent,
+		SettingsPageComponent,
 		NavBarComponent,
 		GraphComponent,
 		RegisterComponent,
-		ManagerPageComponent,
-		ManagerMainBlockComponent,
-		PowerPlantBlockComponent,
-		ManagerMarketComponent,
 		DialogComponent,
 		LogoutButtonComponent,
 		UploadProfilePictureComponent,
@@ -60,7 +57,9 @@ import { HouseAnimationCardComponent } from './components/user/prosumer-page/car
 		UserCardComponent,
 		PowerPlantCardComponent,
 		HouseCardComponent,
-		HouseAnimationCardComponent
+		HouseAnimationCardComponent,
+		ProsumerListCardComponent,
+		ProsumerListEntryComponent
 	],
 	imports: [
 		BrowserModule,
@@ -71,8 +70,8 @@ import { HouseAnimationCardComponent } from './components/user/prosumer-page/car
 		HttpClientModule,
 		JwtModule.forRoot({
 			config: {
-			tokenGetter: AuthenticationService.getAccessToken,
-			allowedDomains: ['localhost:4200']
+				tokenGetter: AuthenticationService.getAccessToken,
+				allowedDomains: ['https://localhost:4200', config.URL_SIMULATOR_SERVER, config.URL_AUTH_SERVER]
 			}
 		}),
 		GraphQLModule,
