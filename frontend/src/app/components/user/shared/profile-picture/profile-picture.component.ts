@@ -1,9 +1,9 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { EMPTY } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { StatusCode } from 'src/app/models/statusCode';
-import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { AuthenticationService, UserRole } from 'src/app/services/authentication/authentication.service';
 import { config } from 'src/app/config';
 
 @Component({
@@ -12,12 +12,24 @@ import { config } from 'src/app/config';
 	styleUrls: ['./profile-picture.component.css']
 })
 export class ProfilePictureComponent implements OnInit {
-	profilePictureSrc: string | ArrayBuffer = '/assets/profile-picture-placeholder.svg';
+	public profilePictureSrc: string | ArrayBuffer = '/assets/profile-picture-placeholder.svg';
+	@Input() userId: number;
 
 	constructor(private authService: AuthenticationService, private httpClient: HttpClient) {}
 
 	ngOnInit(): void {
-		const url = config.URL_PROFILE_PICTURE(this.authService.getId());
+		let id: number;
+		let role: number;
+		if (this.userId !== undefined) {
+			// If userId is set, it means that a manager is trying to view a prosumers picture
+			// This is not well structured due to time constraints
+			id = this.userId;
+			role = UserRole.PROSUMER;
+		} else {
+			id = this.authService.getId();
+			role = this.authService.getRole();
+		}
+		const url = config.URL_PROFILE_PICTURE(role, id);
 		this.httpClient.get(url, { observe: 'response', responseType: 'blob' }).pipe(
 			catchError((error) => {
 				return EMPTY;
@@ -26,7 +38,7 @@ export class ProfilePictureComponent implements OnInit {
 			switch (response.status) {
 				case StatusCode.OK:
 					const image = response.body;
-					if (image === undefined) { return; }
+					if (image === undefined) { return EMPTY; }
 					const reader = new FileReader();
 					reader.addEventListener('load', () => {
 						this.profilePictureSrc = reader.result;
