@@ -2,22 +2,22 @@ import { Location } from './buildings/components/geoData';
 import { GeoDataMap, GeoDataMapPair } from './geoDataMap';
 import { GaussianDistribution } from './math/gaussianDistribution';
 import { linearInterpolation } from './math/interpolation';
-import { MONTH_MEAN_TEMPERATURES } from './utils/realLifeData';
+import { MONTH_AVERAGE_TEMPERATURES } from './utils/realLifeData';
 
 // Setup distributions for each month mean temperatures
 const meanTempVariance = 10;
-const janDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[0], meanTempVariance);
-const febDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[1], meanTempVariance);
-const marDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[2], meanTempVariance);
-const aprilDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[3], meanTempVariance);
-const mayDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[4], meanTempVariance);
-const juneDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[5], meanTempVariance);
-const juliDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[6], meanTempVariance);
-const augDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[7], meanTempVariance);
-const sepDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[8], meanTempVariance);
-const octDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[9], meanTempVariance);
-const novDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[10], meanTempVariance);
-const decDistribution: GaussianDistribution = new GaussianDistribution(MONTH_MEAN_TEMPERATURES[11], meanTempVariance);
+const janDistribution: GaussianDistribution = new GaussianDistribution(MONTH_AVERAGE_TEMPERATURES[0], meanTempVariance);
+const febDistribution: GaussianDistribution = new GaussianDistribution(MONTH_AVERAGE_TEMPERATURES[1], meanTempVariance);
+const marDistribution: GaussianDistribution = new GaussianDistribution(MONTH_AVERAGE_TEMPERATURES[2], meanTempVariance);
+const aprilDistribution: GaussianDistribution = new GaussianDistribution(MONTH_AVERAGE_TEMPERATURES[3], meanTempVariance);
+const mayDistribution: GaussianDistribution = new GaussianDistribution(MONTH_AVERAGE_TEMPERATURES[4], meanTempVariance);
+const juneDistribution: GaussianDistribution = new GaussianDistribution(MONTH_AVERAGE_TEMPERATURES[5], meanTempVariance);
+const juliDistribution: GaussianDistribution = new GaussianDistribution(MONTH_AVERAGE_TEMPERATURES[6], meanTempVariance);
+const augDistribution: GaussianDistribution = new GaussianDistribution(MONTH_AVERAGE_TEMPERATURES[7], meanTempVariance);
+const sepDistribution: GaussianDistribution = new GaussianDistribution(MONTH_AVERAGE_TEMPERATURES[8], meanTempVariance);
+const octDistribution: GaussianDistribution = new GaussianDistribution(MONTH_AVERAGE_TEMPERATURES[9], meanTempVariance);
+const novDistribution: GaussianDistribution = new GaussianDistribution(MONTH_AVERAGE_TEMPERATURES[10], meanTempVariance);
+const decDistribution: GaussianDistribution = new GaussianDistribution(MONTH_AVERAGE_TEMPERATURES[11], meanTempVariance);
 const monthlyTemperatureDistributions: GaussianDistribution[] = [
 	janDistribution, febDistribution, marDistribution, aprilDistribution, 
 	mayDistribution, juneDistribution, juliDistribution, augDistribution,

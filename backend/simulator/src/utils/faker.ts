@@ -8,39 +8,40 @@ import { kWh_to_Ws } from "../math/electricity";
 import { GaussianDistribution } from "../math/gaussianDistribution";
 import { Manager } from "../users/manager";
 import { Prosumer } from "../users/prosumer";
-import { AVERAGE_HOUSE_BATTERY_CAPACITY, AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND, AVERAGE_POWER_PLANT_COAL_GENERATOR_ELECTRICITY_PRODUCTION_PER_SECOND } from "./realLifeData";
+import { AVERAGE_HOUSE_BATTERY_CAPACITY, AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND, AVERAGE_COAL_POWER_PLANT_ELECTRICITY_PRODUCTION_PER_SECOND } from "./realLifeData";
 
 // Setup distributions for prosumers
 const prosumerCurrencyDistribution: GaussianDistribution =
-	new GaussianDistribution(20000, 4000);
+	new GaussianDistribution(20000, 20000 * 20000 * 0.4);
 const houseBatteryDistribution: GaussianDistribution =
 	new GaussianDistribution(
 		AVERAGE_HOUSE_BATTERY_CAPACITY,
-		AVERAGE_HOUSE_BATTERY_CAPACITY * 0.15
+		AVERAGE_HOUSE_BATTERY_CAPACITY * AVERAGE_HOUSE_BATTERY_CAPACITY * 0.15
 	);
 const houseWindTurbineProductionDistribution: GaussianDistribution =
 	new GaussianDistribution(
 		AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND,
-		AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND * 0.15
+		AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND * AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND * 0.15
 	);
 
 function createProsumer(id?: number) {
 	const currency = prosumerCurrencyDistribution.sample();
 	const batteryCapacity = houseBatteryDistribution.sample();
-	const batteryBufferStartPercent = 0.5;
+	const batteryBufferStartPercent = Math.random();
 	const battery = new Battery(batteryCapacity, batteryCapacity * batteryBufferStartPercent);
 	const geoData = new GeoData();
 	const windTurbine = new WindTurbine(houseWindTurbineProductionDistribution.sample());
 	const generators = [windTurbine];
-	const batteryToPowerPlantStartRatio = 0.0;
-	const house = new House(battery, geoData, generators, batteryToPowerPlantStartRatio);
+	const overproductionRatio = 0.5;
+	const underproductionRatio = 0.5;
+	const house = new House(battery, geoData, generators, overproductionRatio, underproductionRatio);
 	return new Prosumer(currency, house, id);
 }
 
 function createManager(id?: number) {
-	const battery = new Battery(kWh_to_Ws(1000000), kWh_to_Ws(500000));
+	const battery = new Battery(kWh_to_Ws(10000), Math.random() * kWh_to_Ws(10000));
 	const geoData = new GeoData();
-	const coalGenerator = new CoalGenerator(AVERAGE_POWER_PLANT_COAL_GENERATOR_ELECTRICITY_PRODUCTION_PER_SECOND);
+	const coalGenerator = new CoalGenerator(AVERAGE_COAL_POWER_PLANT_ELECTRICITY_PRODUCTION_PER_SECOND);
 	const generators = [coalGenerator]
 	const powerPlant = new CoalPowerPlant(battery, geoData, generators);
 	const managerCurrency = 100000;

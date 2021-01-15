@@ -6,11 +6,12 @@ import { AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND } from '../utils/realL
 
 export class House extends BaseBuilding {
 	private _overproductionRatio: number; // Ratio of how much goes to house battery and how much goes to the power plant when overproducing (eg. 1.0 = 100% to house battery)
-	private _underproductionRatio: number = 1; // Ratio of how much electricity should be taken from battery and how much from the market when underproducing (eg 1.0 = take 100% from battery)
+	private _underproductionRatio: number; // Ratio of how much electricity should be taken from battery and how much from the market when underproducing (eg 1.0 = take 100% from battery)
 
-	constructor(battery: Battery, geoData: GeoData, generators: BaseGenerator[], overproductionRatio: number) {
+	constructor(battery: Battery, geoData: GeoData, generators: BaseGenerator[], overproductionRatio: number = 0.5, underproductionRatio: number = 0.5) {
 		super(House.name, battery, geoData, generators);
 		this._overproductionRatio = overproductionRatio;
+		this._underproductionRatio = underproductionRatio;
 	}
 
 	public calculateConsumption(deltaTimeS: number): void {

@@ -16,7 +16,7 @@ class TestObject {
 		const hGeoData = new GeoData();
 		const hCoalGenerator = new CoalGenerator(100, false, 0);
 		const hGenerators = [hCoalGenerator];
-		this.house = new House(this.hBattery, hGeoData, hGenerators, 0.1);
+		this.house = new House(this.hBattery, hGeoData, hGenerators, 0.1, 1);
 	}
 }
 
