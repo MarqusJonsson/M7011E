@@ -13,7 +13,7 @@ export const powerPlantContent = `
 		hasBlackout
 		totalDemand
 		productionOutputRatio
-		delayTimeS
+		actionDelayTimeS
 		productionFlag
 		${batteryContent}
 		${geoDataContent}
@@ -68,7 +68,7 @@ export interface PowerPlantQueryResults {
 
 // Data structure
 export interface PowerPlant {
-	delayTimeS: number;
+	actionDelayTimeS: number;
 	electricityBuyPrice: number;
 	electricitySellPrice: number;
 	modelledElectricityBuyPrice: number;

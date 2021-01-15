@@ -15,7 +15,7 @@ export const houseContent = `
 		${prosumerPowerPlantContent}
 	}`;
 
-export const houseContentWithoutPowerPlant = `
+export const houseContentWithLimitedPowerPlant = `
 	house {
 		electricityConsumption
 		electricityProduction
@@ -24,6 +24,10 @@ export const houseContentWithoutPowerPlant = `
 		hasBlackout
 		${batteryContent}
 		${geoDataContent}
+		powerPlant {
+			electricityBuyPrice
+			electricitySellPrice
+		}
 	}`;
 
 // Queries

@@ -9,6 +9,8 @@ export const managerContent = `
 		${powerPlantContent}
 		prosumers {
 			id
+			isOnline
+			isBlocked
 			house {
 				hasBlackout
 			}

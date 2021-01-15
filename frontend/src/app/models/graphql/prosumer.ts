@@ -1,6 +1,6 @@
 import { Battery } from './battery';
 import { GeoData } from './geoData';
-import { House, houseContent, houseContentWithoutPowerPlant } from './house';
+import { House, houseContent, houseContentWithLimitedPowerPlant } from './house';
 import { PowerPlant } from './powerPlant';
 
 // Content
@@ -15,7 +15,7 @@ export const prosumerContentById = `
 	prosumer (id: $id) {
 		currency
 		isBlocked
-		${houseContentWithoutPowerPlant}
+		${houseContentWithLimitedPowerPlant}
 	}`;
 
 // Queries
@@ -53,7 +53,9 @@ export interface ProsumerQueryData {
 
 // Data structure
 export interface Prosumer {
+	id: number;
 	currency: number;
 	isBlocked: boolean;
+	isOnline: boolean;
 	house: House;
 }
