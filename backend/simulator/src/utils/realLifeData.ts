@@ -6,9 +6,10 @@ export const AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND = kWh_to_Ws(0.0006
 // Source: https://www.energimarknadsbyran.se/el/dina-avtal-och-kostnader/elkostnader/elforbrukning/normal-elforbrukning-och-elkostnad-for-villa/
 // Motivation: 20000 kWh per year => 20 000 / (365.25 * 24 * 3600) = 0.00063376175 kWh per second.
 
-export const AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND = 60000;
+export const AVERAGE_HOUSE_WIND_TURBINE_PRODUCTION_PER_SECOND = 1500 * 4;
 // Source: https://www.windforce.se/vindkraftverk.php
 // Motivation: Assumption of average consumer owned wind turbine providing an effect around 1500 W based on wind turbines listed on site.
+// However this would lead to a very small chance of exessive production, thus we increased this value quite a bit
 
 export const AVERAGE_HOUSE_BATTERY_CAPACITY = AVERAGE_HOUSE_ELECTRICITY_CONSUMPTION_PER_SECOND * (3600 * 24 * 7);
 // Motivation: Assumption that a fully charged battery should last a week with an average consumption.
