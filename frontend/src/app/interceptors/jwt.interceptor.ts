@@ -26,10 +26,21 @@ export default class JwtInterceptor implements HttpInterceptor {
 		if (request.url === config.URL_LOGIN || request.url === config.URL_REGISTER) {
 			// Do not add Authorization header
 			return next.handle(request);
-		} else if (request.url === config.URL_LOGOUT || request.url === config.URL_REFRESH_ACCESS_TOKEN) {
+		} else if (request.url === config.URL_LOGOUT
+			|| request.url === config.URL_REFRESH_ACCESS_TOKEN
+			|| request.url.startsWith(config.URL_DELETE_USER)) {
 			// Add Authorization header with refresh token
 			request = this.addToken(request, AuthenticationService.getRefreshToken());
-			return next.handle(request);
+			return next.handle(request).pipe(
+				catchError((error) => {
+					if (error instanceof HttpErrorResponse) {
+						switch (error.status) {
+							case StatusCode.FORBIDDEN:
+								return this.handleForbiddenError(request, next);
+						}
+					}
+				})
+			);
 		}
 		// Add Authorization header with access token
 		request = this.addToken(request, AuthenticationService.getAccessToken());
@@ -92,7 +103,7 @@ export default class JwtInterceptor implements HttpInterceptor {
 	private handleForbiddenError(request: HttpRequest<any>, next: HttpHandler) {
 		return this.authService.logout().pipe(
 			finalize(() => {
-				this.alertService.error('Access denied, session has been terminated', { keepAfterRouteChange: true });
+				this.alertService.error('Session has been terminated', { keepAfterRouteChange: true });
 				this.graphQLSerivce.stopQueryInterval();
 				this.router.navigateByUrl('/login');
 			})
