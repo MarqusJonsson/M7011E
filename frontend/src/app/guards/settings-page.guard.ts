@@ -11,7 +11,7 @@ export class SettingsPageGuard implements CanActivate {
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		if (this.authService.authorizedProsumer() || this.authService.authorizedManager()) {
-			return this.router.parseUrl('/settings');
+			return true;
 		} else {
 			return this.router.parseUrl('/');
 		}

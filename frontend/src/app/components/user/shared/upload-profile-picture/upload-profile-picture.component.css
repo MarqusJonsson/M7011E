@@ -79,4 +79,5 @@
 	border: none;
 	object-fit: contain;
 	-o-object-fit: contain;
+	margin: 0 auto;
 }

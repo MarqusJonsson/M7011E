@@ -1,0 +1,11 @@
+:host .settings-container {
+    position: absolute;
+    padding: 24px;
+    width: 400px;
+	top: 40%;
+	left: 50%;
+    transform: translate(-50%, -40%);
+    background-color: #36393f;
+    border-radius: 5px;
+    text-align: center;
+}
