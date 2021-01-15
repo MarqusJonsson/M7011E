@@ -25,8 +25,8 @@ export class UploadProfilePictureComponent {
 				this.currentFile = event.target.files[0];
 				const reader = new FileReader();
 				reader.readAsDataURL(event.target.files[0]); // Read file as data url
-				reader.onload = (event) => { // Called once readAsDataURL is completed
-					this.url = event.target.result as string;
+				reader.onload = (readerEvent) => { // Called once readAsDataURL is completed
+					this.url = readerEvent.target.result as string;
 				};
 			}
 		}

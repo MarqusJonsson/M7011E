@@ -7,11 +7,17 @@
 	--button-line-height: 1em;
 	--button-border: none;
 	--button-border-radius: 5px;
-	--box-shadow-focus: 0 0 0 3px #9ab3ff;
+	--focus-color: #9ab3ff;
+	--box-shadow-focus: 0 0 0 3px var(--focus-color);
 	--button-text-align: center;
 	--button-text-decoration: none;
 	--background-color: #1d1d1d;
 	--error-primary-color: #ff5c5c;
+}
+
+*:not(input) {
+	font-family: "Roboto", "Helvetica Neue", sans-serif;
+	text-shadow: black 1px 1px 0px;
 }
 
 .sne-button {
@@ -27,7 +33,7 @@
 	cursor: pointer;
 }
 
-.sne-button-cancel {
+.sne-button-red {
 	background-color: var(--error-primary-color);
 }
 

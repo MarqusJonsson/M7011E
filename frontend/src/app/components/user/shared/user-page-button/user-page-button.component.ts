@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService, UserRole } from 'src/app/services/authentication/authentication.service';
 
 @Component({
-	selector: 'user-page-button',
+	selector: 'app-user-page-button',
 	templateUrl: './user-page-button.component.html',
 	styleUrls: ['./user-page-button.component.css', '../nav-bar/nav-bar.component.css']
 })
@@ -15,10 +15,10 @@ export class UserPageButtonComponent implements OnInit {
 	ngOnInit(): void {
 		switch (this.authenticationServie.getRole()) {
 			case UserRole.MANAGER:
-				this.userPageUrl = '/manager-page';
+				this.userPageUrl = '/manager';
 				break;
 			case UserRole.PROSUMER:
-				this.userPageUrl = '/prosumer-page';
+				this.userPageUrl = '/prosumer';
 			}
 	}
 }

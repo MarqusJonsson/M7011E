@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { AuthenticationService, UserRole } from 'src/app/services/authentication/authentication.service';
 import { AuthenticationError } from '../../../models/authentication/authenticationError';
@@ -62,6 +62,7 @@ export class LoginComponent implements OnInit {
 				}
 			},
 			(error) => {
+				this.loading = false;
 				if (error instanceof AuthenticationError) {
 					this.alertService.error(error.message, { autoClose: true });
 				} else {

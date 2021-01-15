@@ -5,17 +5,15 @@ import { AuthenticationService } from '../services/authentication/authentication
 @Injectable({
 	providedIn: 'root'
 })
-export class MainPageGuard implements CanActivate {
+export class SettingsPageGuard implements CanActivate {
 
 	constructor(private authService: AuthenticationService, private router: Router) {}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-		if (this.authService.authorizedProsumer()) {
-			return this.router.parseUrl('/prosumer');
-		} else if (this.authService.authorizedManager()) {
-			return this.router.parseUrl('/manager');
+		if (this.authService.authorizedProsumer() || this.authService.authorizedManager()) {
+			return this.router.parseUrl('/settings');
 		} else {
-			return this.router.parseUrl('/login');
+			return this.router.parseUrl('/');
 		}
 	}
 }

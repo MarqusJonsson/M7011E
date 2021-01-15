@@ -36,7 +36,7 @@ class PowerPlantResolver {
 					hasBlackout: powerPlant.hasBlackout,
 					totalDemand: powerPlant.totalDemand / simulator.deltaTimeS,
 					productionOutputRatio: powerPlant.productionOutputRatio,
-					delayTimeS: powerPlant.delayTimeS,
+					actionDelayTimeS: powerPlant.actionDelayTimeS,
 					productionFlag: powerPlant.productionFlag
 				};
 			}
@@ -69,7 +69,7 @@ class PowerPlantResolver {
 		}
 	}
 
-	stopProduction =  (simulator: Simulator, userIdentifier: Identifier) => {
+	stopProduction = (simulator: Simulator, userIdentifier: Identifier) => {
 		const manager: Manager | undefined = simulator.managers.uGet(userIdentifier);
 		if (manager === undefined) throw new GraphQLError(GraphQLErrorName.USER_NOT_FOUND);
 		manager.building.stop();
@@ -78,7 +78,7 @@ class PowerPlantResolver {
 		} 
 	}
 
-	startProduction =  (simulator: Simulator, userIdentifier: Identifier) => {
+	startProduction = (simulator: Simulator, userIdentifier: Identifier) => {
 		const manager: Manager | undefined = simulator.managers.uGet(userIdentifier);
 		if (manager === undefined) throw new GraphQLError(GraphQLErrorName.USER_NOT_FOUND);
 		manager.building.start();

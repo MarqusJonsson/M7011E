@@ -5,14 +5,14 @@ import { AuthenticationService } from '../services/authentication/authentication
 @Injectable({
 	providedIn: 'root'
 })
-export class ProsumerGuard implements CanActivate {
+export class ProsumerPageGuard implements CanActivate {
 	constructor(private authService: AuthenticationService, private router: Router){}
 
 	canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		if (this.authService.authorizedProsumer()) {
 			return true;
 		} else {
-			return this.router.parseUrl('/login');
+			return this.router.parseUrl('/');
 		}
 	}
 }

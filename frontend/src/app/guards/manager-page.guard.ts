@@ -5,14 +5,14 @@ import { AuthenticationService } from '../services/authentication/authentication
 @Injectable({
 	providedIn: 'root'
 })
-export class ManagerGuard implements CanActivate {
+export class ManagerPageGuard implements CanActivate {
 	constructor(private authService: AuthenticationService, private router: Router){}
 
 	canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		if (this.authService.authorizedManager()) {
 			return true;
 		} else {
-			return this.router.parseUrl('/login');
+			return this.router.parseUrl('/');
 		}
 	}
 }

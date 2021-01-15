@@ -8,6 +8,7 @@
 
 :host .cancel-button,
 :host .confirm-button {
+	padding: 5px;
 	min-width: 90px;
 }
 

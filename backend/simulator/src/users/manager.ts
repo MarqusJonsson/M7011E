@@ -11,7 +11,7 @@ export class Manager extends BaseUser<BasePowerPlant> {
 		super(Manager.name, currency, powerPlant, id);
 		this._prosumers = prosumers;
 	}
-	
+
 	// Buy price is the price to buy electricity from a manager's power plant
 	public setBuyPrice(price: number) {
 		this.building.electricityBuyPrice = price;
@@ -29,7 +29,7 @@ export class Manager extends BaseUser<BasePowerPlant> {
 	public get prosumers() : IMap<Prosumer> {
 		return this._prosumers;
 	}
-	
+
 	public set prosumers(value: IMap<Prosumer>) {
 		this._prosumers = value;
 	}

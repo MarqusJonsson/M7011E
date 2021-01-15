@@ -1,13 +1,10 @@
 import { typeName, PowerPlantType} from './types';
 import { powerPlantResolver } from '../../resolvers/powerPlant';
 import {
-	GraphQLBoolean,
 	GraphQLFloat,
 	GraphQLID
 } from 'graphql';
 import { GraphQLContext } from '../graphQLContext';
-import { resolve } from 'path';
-import { powerPlant } from './queries';
 
 const updateElectricityPrices = {
 	type: PowerPlantType,

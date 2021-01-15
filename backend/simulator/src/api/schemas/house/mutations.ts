@@ -1,4 +1,4 @@
-import { typeName, HouseType} from './types';
+import { typeName, HouseType } from './types';
 import { houseResolver } from '../../resolvers/house';
 import {
 	GraphQLFloat,

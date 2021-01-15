@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { of } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { config } from 'src/app/config';
 import { catchError, map } from 'rxjs/operators';
 import { deleteProsumerMutation } from 'src/app/models/graphql/prosumer';
@@ -20,11 +20,11 @@ export class DeleteProsumerService {
 				if (response.success === false) {
 					// throw new Error('Delete user failed');
 				}
-				this.graphqlService.mutate(deleteProsumerMutation, {id: id}).subscribe();
+				this.graphqlService.mutate(deleteProsumerMutation, {id}).subscribe();
 				return true;
 			}), catchError((error) => {
-				this.alertService.error('Failed to delete user');
-				return of(false);
+				this.alertService.error('Failed to delete user', { autoClose: true });
+				return EMPTY;
 			}));
 	}
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { AlertService } from '../../../services/alert/alert.service';
 import { AuthenticationError } from '../../../models/authentication/authenticationError';
 import { AuthenticationService } from '../../../services/authentication/authentication.service';
@@ -52,7 +52,7 @@ export class RegisterComponent implements OnInit {
 				this.loading = false;
 				if (success === true) {
 					this.alertService.success('Registration successful', { autoClose: true, keepAfterRouteChange: true });
-					this.router.navigateByUrl('/prosumer-page');
+					this.router.navigateByUrl('/prosumer');
 				} else {
 					throw new Error('Unknown error');
 				}
@@ -65,7 +65,7 @@ export class RegisterComponent implements OnInit {
 					this.alertService.error(error.message, { autoClose: true });
 					console.log(error.message);
 				}
-				return of(error);
+				return EMPTY;
 			}
 		);
 	}

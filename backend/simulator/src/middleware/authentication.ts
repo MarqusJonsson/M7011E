@@ -30,7 +30,10 @@ export function authenticateAccessToken(request: express.Request, response: expr
 	const accessToken = authHeader && authHeader.split(' ')[1];
 	if (accessToken === undefined) throw new BadRequest('The request contains a malformed required header: Authorization');
 	verifyAccessToken(accessToken, (error, payload) => {
-		if (error) next(new Unauthorized(error.message)); // TODO use error parser instead
+		if (error) {
+			next(new Unauthorized(error.message)); // TODO use error parser instead
+			return;
+		}
 		request.payload = payload;
 		next();
 	});

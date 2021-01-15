@@ -6,7 +6,6 @@
 
 :host .base-card {
 	width: var(--base-card-width);
-	text-shadow: black 1px 1px 0px;
 	display: inline-block;
 	vertical-align: top;
 	border-radius: 10px;
@@ -23,7 +22,6 @@
 	font-size: 20px;
 	line-height: 1em;
 	font-weight: 700;
-	text-shadow: black 1px 1px 0px;
 	border-bottom: var(--base-card-border-width) solid;
 	margin: 0;
 	padding: 10px;
@@ -53,6 +51,11 @@
 	padding: 2px 4px;
 	cursor: pointer;
 	margin: 5px auto;
+	outline: none;
+}
+
+:host .base-card .card-button:focus {
+	box-shadow: var(--box-shadow-focus);
 }
 
 :host .base-card .card-button:hover {
