@@ -50,7 +50,7 @@ pgAdmin or similar for setting up a PostgreSQL database: [https://www.pgadmin.or
 
 16. Open a command prompt and go to M7011E/backend/auth
 
-17. Run ``npm run start`` to start the authentication server
+17. Run ``npm run startts`` to start the authentication server
 
 18. Create a copy of the generated public key from step 16 located in M7011E/backend/auth and move it to M7011E/backend/simulator (TODO currently using private key instead of public key
 
