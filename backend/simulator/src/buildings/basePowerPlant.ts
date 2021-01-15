@@ -3,21 +3,35 @@ import {Battery} from './components/battery';
 import {GeoData} from './components/geoData';
 import {BaseGenerator} from '../generators/baseGenerator';
 import { Ws_per_kWh } from '../math/electricity';
-import { powerPlantActionDelayS } from '../math/time';
+import { powerPlantActionDelayTimeS } from '../math/time';
 
 export abstract class BasePowerPlant extends BaseBuilding {
 	private _modelledElectricityBuyPrice: number = 0;
 	private _modelledElectricitySellPrice: number = 0;
 	private _electricityBuyPrice: number = 1.5 / Ws_per_kWh;
 	private _electricitySellPrice: number = 1.5 / Ws_per_kWh;
-	private _delayTimeS: number = 0;
 	private _productionFlag: boolean = true;
 	private _totalDemand: number = 0;
 	private _productionOutputRatio = 1;
+	private _actionDelayTimeS: number = 0;
 	private _action: Function | undefined = undefined;
+	private _actionDescription: string = '';
 
 	constructor(type: string, battery: Battery, geoData: GeoData, generators: BaseGenerator[]) {
 		super(type, battery, geoData, generators);
+	}
+
+	public update(deltaTimeS: number, simulationTime: number) {
+		if (this._action !== undefined) {
+			this.actionDelayTimeS -= deltaTimeS;
+			if (this.actionDelayTimeS <= 0) {
+				// Execute action
+				this._action();
+				// Clear action
+				this._action = undefined;
+				this._actionDescription = '';
+			}
+		}
 	}
 
 	public calculateProduction(deltaTimeS: number): number {
@@ -61,8 +75,9 @@ export abstract class BasePowerPlant extends BaseBuilding {
 
 	public start() {
 		if (this._action === undefined) {
-			this.delayTimeS = powerPlantActionDelayS;
-			this._action = function(): void {
+			this._actionDescription = 'Starting';
+			this.actionDelayTimeS = powerPlantActionDelayTimeS;
+			this._action = () => {
 				this.productionFlag = true;
 			}
 		}
@@ -70,8 +85,9 @@ export abstract class BasePowerPlant extends BaseBuilding {
 
 	public stop() {
 		if (this._action === undefined) {
-			this.delayTimeS = powerPlantActionDelayS;
-			this._action = function(): void {
+			this._actionDescription = 'Stopping';
+			this.actionDelayTimeS = powerPlantActionDelayTimeS;
+			this._action = () => {
 				this.productionFlag = false;
 			}
 		}
@@ -109,12 +125,12 @@ export abstract class BasePowerPlant extends BaseBuilding {
 		this._modelledElectricitySellPrice = value;
 	}
 
-	public get delayTimeS(): number {
-		return this._delayTimeS;
+	public get actionDelayTimeS(): number {
+		return this._actionDelayTimeS;
 	}
 
-	public set delayTimeS(value: number) {
-		this._delayTimeS = value;
+	public set actionDelayTimeS(value: number) {
+		this._actionDelayTimeS = Math.max(value, 0);
 	}
 
 	public get productionFlag(): boolean {
@@ -141,16 +157,7 @@ export abstract class BasePowerPlant extends BaseBuilding {
 		this._productionOutputRatio = value;
 	}
 
-	public getAction(): Function | undefined {
-		return this._action;
+	public get actionDescription(): string {
+		return this._actionDescription;
 	}
-
-	public performAction() {
-		if (this._action !== undefined) this._action();
-	}
-
-	public clearAction() {
-		this._action = undefined;
-	}
-
 }

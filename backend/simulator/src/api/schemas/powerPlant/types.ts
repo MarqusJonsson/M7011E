@@ -4,7 +4,8 @@ import {
 	GraphQLFloat,
 	GraphQLBoolean,
 	GraphQLList,
-	GraphQLError
+	GraphQLError,
+	GraphQLString
 } from 'graphql';
 import { Manager } from '../../../users/manager';
 import { batteryResolver } from '../../resolvers/battery';
@@ -67,11 +68,14 @@ const PowerPlantType = new GraphQLObjectType({
 			description: `Flag indicating whether the ${typeName} is running or stopped.`
 		},
 
-		delayTimeS: {
+		actionDelayTimeS: {
 			type: GraphQLFloat,
-			description: `Delay for actions given to the ${typeName}.`
+			description: `Time remaining before the ${typeName}s currently running action finish executing.`
 		},
-
+		actionDescription: {
+			type: GraphQLString,
+			description: `Description for current running action given to the ${typeName}.`
+		},
 		battery: {
 			type: BatteryType,
 			description: `The battery of the ${typeName}.`,

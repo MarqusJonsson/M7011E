@@ -10,12 +10,15 @@ import { Simulator } from "../simulator";
 import { UserRole } from "../userRole";
 import { Manager } from "../users/manager";
 import { Prosumer } from "../users/prosumer";
+import { Forbidden } from "../utils/error";
 import { faker } from "../utils/faker";
 
 const schema = new GraphQLSchema({
 	query: rootQuery,
 	mutation: rootMutation
 });
+
+const unallowedProsumerIds: number[] = [];
 
 export function graphQLHTTP(simulator: Simulator) {
 	return graphqlHTTP((request) => ({
@@ -40,6 +43,10 @@ function setupGraphQLContext(request: IncomingMessage, simulator: Simulator): Gr
 		case UserRole.PROSUMER:
 			let prosumer = simulator.prosumers.uGet(new Identifier(Prosumer.name, user.id));
 			if (prosumer === undefined) {
+				if (unallowedProsumerIds.includes(user.id)) {
+					throw new Forbidden('This user has been removed');
+				}
+				unallowedProsumerIds.push(user.id);
 				// Prosumer whom sent the request does not exist in the simulator
 				prosumer = faker.createProsumer(user.id);
 				simulator.addProsumer(prosumer);

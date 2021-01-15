@@ -3,6 +3,11 @@ class GeneralError extends Error {
 		super();
 		this.message = message;
 	}
+
+	public get status() {
+		return this.getCode();
+	}
+
 	getCode() {
 		if (this instanceof BadRequest) {
 			return 400;

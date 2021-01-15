@@ -36,4 +36,4 @@ export function ms_to_YMDHMSM(ms: number): YMDHMSM {
 	);
 }
 
-export const powerPlantActionDelayS = 30;
+export const powerPlantActionDelayTimeS = 30;

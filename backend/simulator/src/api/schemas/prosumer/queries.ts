@@ -15,7 +15,7 @@ const prosumer = {
 	resolve(parent: any, args: any, context: GraphQLContext) {
 		switch (context.user.type) {
 			case Prosumer.name:
-				return prosumerResolver.findByUser(context.simulator, context.user);
+				return prosumerResolver.findByUser(context.simulator, context.user, true);
 			case Manager.name:
 				if (args === undefined) {
 					return prosumerResolver.findByUser(context.simulator, new Identifier(Prosumer.name, parent.id));

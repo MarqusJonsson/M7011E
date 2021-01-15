@@ -19,6 +19,8 @@ export abstract class BaseBuilding extends Identifiable {
 		this._generators = generators;
 	}
 
+	public update(deltaTimeS: number, simulationTime: number) {}
+
 	public calculateProduction(deltaTimeS: number): number {
 		if (this.hasBlackout) return 0;
 		this._electricityProduction = 0;

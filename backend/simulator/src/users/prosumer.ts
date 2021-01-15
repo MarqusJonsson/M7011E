@@ -3,9 +3,27 @@ import { House } from '../buildings/house';
 import { Manager } from './manager';
 
 export class Prosumer extends BaseUser<House> {
-	private _isBlocked : boolean = false;
+	private _isBlocked: boolean = false;
+	private _timeLeftBlockedS: number = 0;
+	private _timeLeftOnlineS: number = 0;
+	private _isOnline: boolean = false;
+	private static readonly ONLINE_TIME_AFTER_REQUEST = 5; // seconds
+
 	constructor(currency: number = 0, house: House, id?: number) {
 		super(Prosumer.name, currency, house, id);
+	}
+
+	public update(deltaTimeS: number, simulationTime: number) {
+		this._timeLeftOnlineS -= deltaTimeS;
+		if (this._timeLeftOnlineS <= 0) {
+			this._timeLeftOnlineS = 0;
+			this._isOnline = false;
+		}
+		this._timeLeftBlockedS -= deltaTimeS;
+		if (this._timeLeftBlockedS <= 0) {
+			this._timeLeftBlockedS = 0;
+			this._isBlocked = false;
+		}
 	}
 
 	public buyElectricity(manager: Manager): void {
@@ -69,9 +87,18 @@ export class Prosumer extends BaseUser<House> {
 		}
 	}
 
+	public requestReceived() {
+		this._timeLeftOnlineS = Prosumer.ONLINE_TIME_AFTER_REQUEST;
+		this._isOnline = true;
+	}
+
 	public blockSellElectricity(seconds: number) {
 		this._isBlocked = true;
-		setTimeout(() => {this._isBlocked = false}, seconds * 1000);
+		this._timeLeftBlockedS = seconds;
+	}
+
+	public get isOnline(): boolean {
+		return this._isOnline;
 	}
 
 	public get isBlocked(): boolean {

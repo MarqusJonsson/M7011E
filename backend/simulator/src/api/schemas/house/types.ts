@@ -104,6 +104,7 @@ const HouseType = new GraphQLObjectType({
 			resolve(parent: any, args: any, context: GraphQLContext) {
 				switch (context.user.type) {
 					case Prosumer.name:
+					case Manager.name:
 						return powerPlantResolver.findByUser(context.simulator, context.user);
 					default:
 						throw new GraphQLError(GraphQLErrorName.INVALID_USER_TYPE);

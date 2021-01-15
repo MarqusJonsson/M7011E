@@ -10,6 +10,10 @@ export abstract class BaseUser<Building extends BaseBuilding> extends Identifiab
 		this._currency = currency;
 		this._building = building;
 	}
+
+	public update(deltaTimeS: number, simulationTime: number) {
+		this.building.update(deltaTimeS, simulationTime);
+	}
 	
 	public get currency(): number {
 		return this._currency;

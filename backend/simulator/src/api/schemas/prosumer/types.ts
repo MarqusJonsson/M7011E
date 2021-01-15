@@ -27,6 +27,10 @@ const ProsumerType = new GraphQLObjectType({
 			type: GraphQLFloat,
 			description: `The amount of currency the ${typeName} has.`
 		},
+		isOnline: {
+			type: GraphQLBoolean,
+			description: `Indication if the ${typeName} is online or not.`
+		},
 		isBlocked: {
 			type: GraphQLBoolean,
 			description: `Indication if the ${typeName} is blocked or not.`

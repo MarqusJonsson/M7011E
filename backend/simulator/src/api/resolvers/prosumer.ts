@@ -6,9 +6,12 @@ import { Prosumer } from '../../users/prosumer';
 import { GraphQLErrorName } from '../schemas/graphQLErrors';
 
 class ProsumerResolver {
-	findByUser = (simulator: Simulator, userIdentifier: Identifier) => {
+	findByUser = (simulator: Simulator, userIdentifier: Identifier, selfFetch = false) => {
 		const prosumer: Prosumer | undefined = simulator.prosumers.uGet(userIdentifier);
 		if (prosumer === undefined) throw new GraphQLError(GraphQLErrorName.PROSUMER_NOT_FOUND);
+		if (selfFetch) {
+			prosumer.requestReceived();
+		}
 		return {
 			id: prosumer.id,
 			currency: prosumer.currency,
@@ -24,7 +27,8 @@ class ProsumerResolver {
 			prosumers.push({
 				id: prosumer.id,
 				currency: prosumer.currency,
-				isBlocked: prosumer.isBlocked
+				isBlocked: prosumer.isBlocked,
+				isOnline: prosumer.isOnline
 			})
 		});
 		return prosumers;
