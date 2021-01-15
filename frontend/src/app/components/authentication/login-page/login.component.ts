@@ -29,11 +29,11 @@ export class LoginComponent implements OnInit {
 		this.form = this.formBuilder.group({
 			email: new FormControl('', {
 				validators: [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/)],
-				updateOn: 'blur'
+				updateOn: 'change'
 			}),
 			password: new FormControl('', {
 				validators: [Validators.required],
-				updateOn: 'blur'
+				updateOn: 'change'
 			})
 		});
 	}
@@ -42,8 +42,6 @@ export class LoginComponent implements OnInit {
 
 	login() {
 		if (this.form.invalid) {
-			this.f.email.markAsTouched();
-			this.f.password.markAsTouched();
 			return;
 		}
 		this.loading = true;
