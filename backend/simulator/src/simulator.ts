@@ -115,7 +115,7 @@ export class Simulator {
 
 	private updateEnvironmentVariables() {
 		this._users.forEach((user) => {
-			user.building.geoData.sampleEnviornmentVariables(this.environment, this.simulationTime);
+			user.building.geoData.sampleEnvironmentVariables(this.environment, this.simulationTime);
 		});
 	}
 
