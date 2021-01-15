@@ -12,6 +12,7 @@ import { authentication as authenticationAPI } from './api/authentication';
 import { authentication } from './utils/authentication';
 import { StatusCode } from './utils/statusCode';
 import { users as usersAPI } from './api/users';
+import { authenticateRefreshToken as requireRefreshToken } from './middleware/authentication';
 dotenv.config();
 
 // Setup server
@@ -38,8 +39,8 @@ database.task((t) => {
 		return database.users.createTable(t).then(() => {
 			return database.refreshTokens.createTable(t).then(() => {
 				console.log('Finished creating database tables')
-				// Remove expired refresh tokens every hour
-				initiateDeleteExpiredRefreshTokensInterval(60 * 60 * 1000); // 60 * 60 * 1000ms
+				// Remove expired refresh tokens every 15 minutes
+				initiateDeleteExpiredRefreshTokensInterval(15 * 60 * 1000); // 15 * 60 * 1000ms
 				// Setup middleware
 				app.use(bodyParser.json());
 				app.use(bodyParser.urlencoded({extended:true}));
@@ -47,9 +48,9 @@ database.task((t) => {
 				// Setup API endpoints
 				POST	('/register', authenticationAPI.register);
 				POST	('/login', authenticationAPI.login);
-				POST	('/refresh-access-token', authenticationAPI.refreshAccessToken);
+				POST	('/refresh-access-token', authenticationAPI.refreshAccessToken, requireRefreshToken);
 				DELETE	('/logout', authenticationAPI.logout);
-				DELETE	('/users/:id', usersAPI.delete);
+				DELETE	('/users/:id', usersAPI.delete, requireRefreshToken);
 				// Setup error handler middleware
 				app.use(errorHandler);
 				// Start server
@@ -66,7 +67,17 @@ function initiateDeleteExpiredRefreshTokensInterval(ms: number) {
 }
 
 // Generic GET handler
-function GET(url: string, handler: (request: any, response: any) => Promise<GetResult>) {
+function GET(
+	url: string,
+	handler: (request: any, response: any) => Promise<GetResult>,
+	beforeHandler: (
+		request: express.Request,
+		response: express.Response,
+		next: express.NextFunction
+	) => void = (request: express.Request, response: express.Response, next: express.NextFunction) => {
+		next();
+	}
+) {
 	app.get(url, (request, response, next) => {
 		handler(request, response).then((result) => {
 			response.status(StatusCode.OK);
@@ -78,7 +89,17 @@ function GET(url: string, handler: (request: any, response: any) => Promise<GetR
 	});
 };
 // Generic POST handler
-function POST(url: string, handler: (request: any, response: any) => Promise<PostResult>) {
+function POST(
+	url: string,
+	handler: (request: any, response: any) => Promise<PostResult>,
+	beforeHandler: (
+		request: express.Request,
+		response: express.Response,
+		next: express.NextFunction
+	) => void = (request: express.Request, response: express.Response, next: express.NextFunction) => {
+		next();
+	}
+) {
 	app.post(url, (request, response, next) => {
 		handler(request, response).then((result) => {
 			response.status(StatusCode.CREATED);
@@ -91,7 +112,17 @@ function POST(url: string, handler: (request: any, response: any) => Promise<Pos
 	});
 };
 // Generic PUT handler
-function PUT(url: string, handler: (request: any, response: any) => Promise<PutResult>) {
+function PUT(
+	url: string,
+	handler: (request: any, response: any) => Promise<PutResult>,
+	beforeHandler: (
+		request: express.Request,
+		response: express.Response,
+		next: express.NextFunction
+	) => void = (request: express.Request, response: express.Response, next: express.NextFunction) => {
+		next();
+	}
+) {
 	app.put(url, (request, response, next) => {
 		handler(request, response).then((result) => {
 			const responseObject: any = {success: true};
@@ -106,8 +137,18 @@ function PUT(url: string, handler: (request: any, response: any) => Promise<PutR
 	});
 };
 // Generic DELETE handler
-function DELETE(url: string, handler: (request: any, response: any) => Promise<DeleteResult>) {
-	app.delete(url, (request, response, next) => {
+function DELETE(
+	url: string,
+	handler: (request: any, response: any) => Promise<DeleteResult>,
+	beforeHandler: (
+		request: express.Request,
+		response: express.Response,
+		next: express.NextFunction
+	) => void = (request: express.Request, response: express.Response, next: express.NextFunction) => {
+		next();
+	}
+) {
+	app.delete(url, beforeHandler, (request, response, next) => {
 		handler(request, response).then((result) => {
 			const responseObject: any = {success: true};
 			if (result.body === null) {

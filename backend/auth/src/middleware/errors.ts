@@ -1,6 +1,7 @@
+import express from 'express';
 import { ResponseError } from '../utils/error';
 
-export const errorHandler = (error: any, request: any, response: any, next: any) => {
+export const errorHandler = (error: any, request: express.Request, response: express.Response, next: express.NextFunction) => {
 	if (error instanceof ResponseError) {
 		return response.status(error.statusCode).json({
 			success: false,
