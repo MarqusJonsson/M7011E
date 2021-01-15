@@ -97,7 +97,7 @@ export class AuthenticationService {
 	}
 
 	public refreshAccessToken() {
-		return this.http.post<any>(config.URL_REFRESH_ACCESS_TOKEN, {}) // Refresh token is in Authorization header, see jwt interceptor
+		return this.http.get<any>(config.URL_REFRESH_ACCESS_TOKEN) // Refresh token is in Authorization header, see jwt interceptor
 			.pipe(tap((response) => {
 				AuthenticationService.setAccessToken(response.body.accessToken);
 			}));

@@ -48,7 +48,7 @@ database.task((t) => {
 				// Setup API endpoints
 				POST	('/register', authenticationAPI.register);
 				POST	('/login', authenticationAPI.login);
-				POST	('/refresh-access-token', authenticationAPI.refreshAccessToken, requireRefreshToken);
+				GET		('/refresh-access-token', authenticationAPI.refreshAccessToken, requireRefreshToken);
 				DELETE	('/logout', authenticationAPI.logout);
 				DELETE	('/users/:id', usersAPI.delete, requireRefreshToken);
 				// Setup error handler middleware
