@@ -46,16 +46,18 @@ export class LoginComponent implements OnInit {
 			this.f.password.markAsTouched();
 			return;
 		}
+		this.loading = true;
 		this.authService.login(this.form.value.email, this.form.value.password).subscribe(
 			(success) => {
 				if (success === true) {
+					this.loading = false;
 					this.alertService.success('Login successful', { autoClose: true, keepAfterRouteChange: true });
 					switch (this.authService.getRole()) {
 						case UserRole.MANAGER:
-							this.router.navigateByUrl('manager-page');
+							this.router.navigateByUrl('manager');
 							break;
 						case UserRole.PROSUMER:
-							this.router.navigateByUrl('prosumer-page');
+							this.router.navigateByUrl('prosumer');
 						}
 				} else {
 					throw new Error('Unknown error');
@@ -67,9 +69,8 @@ export class LoginComponent implements OnInit {
 					this.alertService.error(error.message, { autoClose: true });
 				} else {
 					this.alertService.error(error.message, { autoClose: true });
-					console.error(error);
 				}
-				return of(error);
+				return EMPTY;
 			});
 	}
 }
