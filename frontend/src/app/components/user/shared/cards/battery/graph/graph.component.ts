@@ -80,7 +80,8 @@ export class GraphComponent {
 				showticklabels: true,
 				showgrid: true,
 				gridcolor: `${hexColor}6f`,
-				zerolinecolor: `${hexColor}6f`
+				zerolinecolor: `${hexColor}6f`,
+				autorange: true
 			},
 			yaxis : {
 				showticklabels: true,
@@ -90,7 +91,8 @@ export class GraphComponent {
 				position: 1,
 				showgrid: true,
 				gridcolor: `${hexColor}6f`,
-				zerolinecolor: `${hexColor}6f`
+				zerolinecolor: `${hexColor}6f`,
+				autorange: true
 			}
 		};
 	}
