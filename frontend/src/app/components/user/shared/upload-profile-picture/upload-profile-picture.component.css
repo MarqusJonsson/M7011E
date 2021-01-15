@@ -74,9 +74,9 @@
 
 .profile-picture-preview {
 	display: block;
-	height: 200px;
-	width: var(--profile-picture-width);
-	border: none;
+	width: 280px;
+	height: calc((280px) * 9 / 16);
+	border: 1px dashed #ffffff;
 	object-fit: contain;
 	-o-object-fit: contain;
 	margin: 0 auto;
