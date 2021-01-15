@@ -31,8 +31,7 @@ export function graphQLHTTP(simulator: Simulator) {
 			} else {
 				return ({ message: error.message, errorCode: errorCode }); // For user experience purposes
 			}
-		},
-		graphiql: true
+		}
 	}));
 }
 

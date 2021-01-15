@@ -12,7 +12,7 @@ export const config = {
 	URL_DELETE_USER: `${URL_AUTH_SERVER}/users/`,
 	URL_REFRESH_ACCESS_TOKEN: `${URL_AUTH_SERVER}/refresh-access-token`,
 	// Simulator API URLs
-	URL_GRAPHQL: `${URL_SIMULATOR_SERVER}/graphiql`,
+	URL_GRAPHQL: `${URL_SIMULATOR_SERVER}/graphql`,
 	URL_PROFILE_PICTURE: (roleId: number, userId: number) => `${URL_SIMULATOR_SERVER}/profile-picture/${roleId}/${userId}`,
 	URL_AUTH_CHECK: `${URL_SIMULATOR_SERVER}/auth-check`,
 	URL_TEMP: `${URL_SIMULATOR_SERVER}/temp`

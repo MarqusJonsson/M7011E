@@ -26,7 +26,7 @@ export class Server {
 		// Setup middleware
 		this._app.use(bodyParser.json());
 		this._app.use(cors(['https://localhost:4200']));
-		this._app.use('/graphiql', accessTokenRequired, graphQLUpload(), graphQLHTTP(simulator));
+		this._app.use('/graphql', accessTokenRequired, graphQLUpload(), graphQLHTTP(simulator));
 		this._app.use(errorHandler);
 		// Profile picture endpoint
 		this._app.get('/profile-picture/:role/:userId', accessTokenRequired, profilePicture(simulator));
