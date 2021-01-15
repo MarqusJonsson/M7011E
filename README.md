@@ -48,7 +48,9 @@ pgAdmin or similar for setting up a PostgreSQL database: [https://www.pgadmin.or
 
 #### TLS/SSL 
 
-Each server will be running with TLS encrypted communication, therefore a certificate and key pair needs to be provided in a directory called ``ssl`` in the root directory of each server. Note: if you do not have access to a certificate and key pair a self signed one can be created using OpenSSL by running the command ``openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout ./server.key -out ./server.crt``.
+Each server will be running with TLS encrypted communication, therefore a certificate and key pair needs to be provided in a directory called ``ssl`` in the root directory of each server.
+
+Note: if you do not have access to a certificate and key pair a self signed one can be created using OpenSSL by running the command ``openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout ./server.key -out ./server.crt``.
 
 ## Running the system
 
