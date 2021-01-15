@@ -38,6 +38,7 @@ describe('users/prosumer.ts', function() {
 			testObject.pBattery.buffer = 500;
 			testObject.coalPowerPlant.electricityBuyPrice = 10;
 			testObject.house.electricityConsumption = 300;
+			testObject.house.underproductionRatio = 0;
 			testObject.house.calculateProduction(1);
 			testObject.prosumer.currency = 2000;
 			testObject.prosumer.buyElectricity(testObject.manager);
@@ -49,6 +50,7 @@ describe('users/prosumer.ts', function() {
 			testObject.coalPowerPlant.electricityBuyPrice = 10;
 			testObject.house.electricityConsumption = 300;
 			testObject.house.calculateProduction(1);
+			testObject.house.underproductionRatio = 0;
 			testObject.prosumer.currency = 2000;
 			testObject.prosumer.buyElectricity(testObject.manager);
 			expect(testObject.prosumer.currency).to.equal(1000);
@@ -60,6 +62,7 @@ describe('users/prosumer.ts', function() {
 			testObject.coalPowerPlant.electricityBuyPrice = 10;
 			testObject.house.electricityConsumption = 500;
 			testObject.house.calculateProduction(1);
+			testObject.house.underproductionRatio = 0;
 			testObject.prosumer.currency = 500;
 			testObject.prosumer.buyElectricity(testObject.manager);
 			expect(testObject.prosumer.currency).to.equal(0);
@@ -70,6 +73,7 @@ describe('users/prosumer.ts', function() {
 			testObject.pBattery.buffer = 38;
 			testObject.coalPowerPlant.electricityBuyPrice = 10;
 			testObject.house.electricityConsumption = 500;
+			testObject.house.underproductionRatio = 0;
 			testObject.house.calculateProduction(1);
 			testObject.prosumer.currency = 390;
 			testObject.prosumer.buyElectricity(testObject.manager);

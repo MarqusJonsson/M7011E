@@ -17,7 +17,7 @@ const GeneratorType = new GraphQLObjectType({
 		},
 		baseOutput: {
 			type: GraphQLFloat,
-			description: `The electricity output of the ${typeName} when working at 100% efficiency in watt seconds.`
+			description: `The electricity output of the ${typeName} when working at 100% efficiency in Ws..`
 		},
 		isBroken: {
 			type: GraphQLBoolean,

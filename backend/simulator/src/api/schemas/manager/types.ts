@@ -26,7 +26,7 @@ const ManagerType = new GraphQLObjectType({
 		},
 		powerPlant: {
 			type: PowerPlantType,
-			description: `The house owned by the ${typeName}.`,
+			description: `The power plant owned by the ${typeName}.`,
 			resolve(parent: any, args: any, context: GraphQLContext) {
 				return powerPlantResolver.findByUser(context.simulator, context.user);
 			}
