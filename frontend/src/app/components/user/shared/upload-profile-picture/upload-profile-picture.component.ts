@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UploadProfilePictureService } from 'src/app/services/picture/upload-profile-picture.service';
+import { UploadProfilePictureService } from 'src/app/services/user/upload-profile-picture.service';
 import { HttpEventType } from '@angular/common/http';
 import { AlertService } from 'src/app/services/alert/alert.service';
 

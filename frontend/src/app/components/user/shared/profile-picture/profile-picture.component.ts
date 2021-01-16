@@ -2,7 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { EMPTY } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { StatusCode } from 'src/app/models/statusCode';
+import { StatusCode } from 'src/app/models/status-code';
 import { AuthenticationService, UserRole } from 'src/app/services/authentication/authentication.service';
 import { config } from 'src/app/config';
 

@@ -3,7 +3,7 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse, HttpEvent
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
 import { config } from '../config';
-import { StatusCode } from '../models/statusCode';
+import { StatusCode } from '../models/status-code';
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { GraphqlService } from '../services/graphql/graphql.service';
