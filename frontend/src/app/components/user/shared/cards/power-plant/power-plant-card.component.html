@@ -28,13 +28,18 @@
 			<li>
 				Net production: <span class="right-align">{{data.netProduction}}</span>
 			</li>	
-			<li>
-				<button class="card-button" (click)="startProduction()">Start production</button>
-				<button class="card-button" (click)="stopProduction()">Stop production</button>
+			<li *ngIf="data.actionDescripton === ''">
+				<button *ngIf="!data.productionFlag" class="card-button" (click)="startProduction()">Start production</button>
+				<button *ngIf="data.productionFlag" class="card-button" (click)="stopProduction()">Stop production</button>
 			</li>
-			<li>
-				actionDelayTimeS: <span class="right-align">{{data.actionDelayTimeS}}</span>
-			</li>
+			<ng-container *ngIf="data.actionDescripton !== ''">
+				<li>
+					Running action: <span class="right-align">{{data.actionDescripton}}</span>
+				</li>
+				<li>
+					Time left: <span class="right-align">{{data.actionDelayTimeS}}</span>
+				</li>
+			</ng-container>
 			<li>
 				Total demand: <span class="right-align">{{data.totalDemand}}</span>
 			</li>

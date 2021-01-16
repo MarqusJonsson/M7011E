@@ -7,6 +7,7 @@ import {
 	updateElectricityPrices,
 	updateProductionOutputRatioMutation
 } from 'src/app/models/graphql/powerPlant';
+import { AnimationData } from 'src/app/models/user/animation';
 import { Ws_per_kWh } from 'src/app/models/user/electricity';
 import { CURRENCY_SYMBOL, DECIMALS } from 'src/app/models/user/page-constants';
 import { AlertService } from 'src/app/services/alert/alert.service';
@@ -33,8 +34,10 @@ export class PowerPlantCardComponent {
 		consumption: '',
 		netProduction: '',
 		totalDemand: '',
-		hasBlackout: '',
 		actionDelayTimeS: '',
+		actionDescripton: '',
+		hasBlackout: false,
+		productionFlag: true,
 		productionOutputRatioSliderValue: 0.5
 	};
 
@@ -59,8 +62,10 @@ export class PowerPlantCardComponent {
 			this.data.consumption = `${this.siFormatterService.format(powerPlant.electricityConsumption, DECIMALS)}Wh`;
 			this.data.netProduction = `${this.siFormatterService.format(powerPlant.electricityProduction - powerPlant.electricityConsumption, DECIMALS)}W`;
 			this.data.totalDemand = `${this.siFormatterService.format(powerPlant.totalDemand, DECIMALS)}Wh`;
-			this.data.hasBlackout = `${powerPlant.hasBlackout}`;
-			this.data.actionDelayTimeS = `${powerPlant.actionDelayTimeS}`;
+			this.data.actionDelayTimeS = `${powerPlant.actionDelayTimeS.toFixed(DECIMALS)} s`;
+			this.data.actionDescripton = `${powerPlant.actionDescription}`;
+			this.data.hasBlackout = powerPlant.hasBlackout;
+			this.data.productionFlag = powerPlant.productionFlag;
 		}
 	}
 

@@ -37,6 +37,7 @@ class PowerPlantResolver {
 					totalDemand: powerPlant.totalDemand / simulator.deltaTimeS,
 					productionOutputRatio: powerPlant.productionOutputRatio,
 					actionDelayTimeS: powerPlant.actionDelayTimeS,
+					actionDescription: powerPlant.actionDescription,
 					productionFlag: powerPlant.productionFlag
 				};
 			}
