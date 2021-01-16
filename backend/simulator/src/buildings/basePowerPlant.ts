@@ -74,7 +74,7 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	}
 
 	public start() {
-		if (this._action === undefined) {
+		if (this._action === undefined && !this.productionFlag) {
 			this._actionDescription = 'Starting';
 			this.actionDelayTimeS = powerPlantActionDelayTimeS;
 			this._action = () => {
@@ -84,7 +84,7 @@ export abstract class BasePowerPlant extends BaseBuilding {
 	}
 
 	public stop() {
-		if (this._action === undefined) {
+		if (this._action === undefined && this.productionFlag) {
 			this._actionDescription = 'Stopping';
 			this.actionDelayTimeS = powerPlantActionDelayTimeS;
 			this._action = () => {
