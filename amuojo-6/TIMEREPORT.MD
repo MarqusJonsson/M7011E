@@ -39,4 +39,4 @@
 | 2021-01-12 | 6 | <ul><li>Worked on the report.</li><li>Added online status for prosumers to be shown from the manager page.</li></ul> |
 | 2021-01-13 | 4 | <ul><li>Started working on updating the list of prosumers on the manager page.</li></ul> |
 | 2021-01-14 | 5 | <ul><li>Added the featue to show a prosumers view as a manager.</li></ul> |
-
+| 2021-01-15 | 5 | <ul><li>Finalized report & API documentation.</li></ul> |
