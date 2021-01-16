@@ -7,7 +7,15 @@
 <div class="column">
 	<app-house-card class="app row" #houseCard></app-house-card>
 </div>
-<div class="house-animation-card-container">
-	<app-house-animation-card #houseAnimationCard></app-house-animation-card>
+<div class="building-animation-card-container">
+	<app-building-animation-card #buildingAnimationCard
+		[config]="{
+			center: AssetPath.HOUSE,
+			north: AssetPath.BATTERY,
+			east: AssetPath.CONSUMPTION,
+			south: AssetPath.POWER_PLANT,
+			west: AssetPath.WIND_TURBINE
+		}"
+	></app-building-animation-card>
 </div>
 <app-nav-bar *ngIf="showNavBar"></app-nav-bar>

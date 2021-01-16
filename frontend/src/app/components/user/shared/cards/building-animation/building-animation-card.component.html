@@ -1,0 +1,13 @@
+<div class="animation-area">
+	<div class="output-north draw-path slide-north" #outputNorth></div>
+	<div class="input-north draw-path slide-south" #inputNorth></div>
+	<div class="output-east draw-path slide-east" #outputEast></div>
+	<div class="output-south draw-path slide-south" #outputSouth></div>
+	<div class="input-south draw-path slide-north" #inputSouth></div>
+	<div class="input-west draw-path slide-east" #inputWest></div>
+	<svg class="center"><use [attr.href]="config.center"></use></svg>
+	<svg class="north"><use [attr.href]="config.north"></use></svg>
+	<svg class="east"><use [attr.href]="config.east"></use></svg>
+	<svg class="south"><use [attr.href]="config.south"></use></svg>
+	<svg class="west"><use [attr.href]="config.west"></use></svg>
+</div>

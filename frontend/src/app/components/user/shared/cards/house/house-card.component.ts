@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
 import { setHouseOverproductionRatioMutation, setHouseUnderproductionRatioMutation } from 'src/app/models/graphql/house';
 import { Prosumer } from 'src/app/models/graphql/prosumer';
-import { HouseAnimationData } from 'src/app/models/user/animation';
+import { AnimationData, Particle, ParticleType } from 'src/app/models/user/animation';
 import { DECIMALS } from 'src/app/models/user/page-constants';
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
 import { SiFormatterService } from 'src/app/services/stiring-format/si-formatter.service';
@@ -42,7 +42,7 @@ export class HouseCardComponent {
 		this.overproductionRatioSlider = overproductionRatio;
 	}
 
-	public update = (prosumer: Prosumer, animate?: (animationData: HouseAnimationData) => void) => {
+	public update = (prosumer: Prosumer, animate?: (animationData: AnimationData) => void) => {
 		this.data.production = `${this.siFormatterService.format(prosumer.house.electricityProduction, DECIMALS)}W`;
 		this.data.consumption = `${this.siFormatterService.format(prosumer.house.electricityConsumption, DECIMALS)}W`;
 		const netProduction = prosumer.house.electricityProduction - prosumer.house.electricityConsumption;
@@ -85,15 +85,23 @@ export class HouseCardComponent {
 		if (animate !== undefined) {
 			const currencyToPowerPlant = electricityFromPowerPlant * prosumer.house.powerPlant.electricityBuyPrice;
 			const currencyFromPowerPlant = electricityToPowerPlant * prosumer.house.powerPlant.electricitySellPrice;
+			const inputSouth: Particle[] = [];
+			inputSouth.push({ value: electricityFromPowerPlant, type: ParticleType.ELECTRICITY });
+			inputSouth.push({ value: currencyFromPowerPlant, type: ParticleType.CURRENCY });
+			const outputSouth: Particle[] = [];
+			outputSouth.push({ value: electricityToPowerPlant, type: ParticleType.ELECTRICITY });
+			outputSouth.push({ value: currencyToPowerPlant, type: ParticleType.CURRENCY });
 			animate({
-				electricityProduction: prosumer.house.electricityProduction,
-				electricityConsumption: prosumer.house.electricityConsumption,
-				electricityToBattery,
-				electricityFromBattery,
-				electricityToPowerPlant,
-				electricityFromPowerPlant,
-				currencyToPowerPlant,
-				currencyFromPowerPlant
+				// North (Battery)
+				inputNorth: [{ value: electricityFromBattery, type: ParticleType.ELECTRICITY }],
+				outputNorth: [{ value: electricityToBattery, type: ParticleType.ELECTRICITY }],
+				// East (Consumption)
+				outputEast: [{ value: prosumer.house.electricityConsumption, type: ParticleType.ELECTRICITY }],
+				// South (Power plant)
+				inputSouth,
+				outputSouth,
+				// West (Production)
+				inputWest: [{ value: prosumer.house.electricityProduction, type: ParticleType.ELECTRICITY }]
 			});
 		}
 	}

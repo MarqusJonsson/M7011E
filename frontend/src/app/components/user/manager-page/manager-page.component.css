@@ -1,16 +1,3 @@
-:host {
-	/* Colors */
-	--house-color: #8fddf0;
-	--battery-color: #90f1a6;
-	--user-color: #edaaf6;
-	--power-plant-color: #ecdc82;
-	--consumption-color: #af6767;
-	--geo-data-color: #e4a78b;
-	--generator-color: #e7e7e7;
-	--house-animation-container-width: 480px;
-	--house-animation-container-height: var(--house-animation-container-width);
-}
-
 :host .column {
 	margin: 5px 5px 5px 10px;
 	width: 304px;

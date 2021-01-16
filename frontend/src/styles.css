@@ -13,6 +13,14 @@
 	--button-text-decoration: none;
 	--background-color: #1d1d1d;
 	--error-primary-color: #ff5c5c;
+
+	--house-color: #8fddf0;
+	--battery-color: #90f1a6;
+	--user-color: #edaaf6;
+	--power-plant-color: #ecdc82;
+	--consumption-color: #af6767;
+	--geo-data-color: #e4a78b;
+	--wind-turbine-color: #e7e7e7;
 }
 
 *:not(input) {

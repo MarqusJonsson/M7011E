@@ -3,13 +3,16 @@ export enum ParticleType {
 	CURRENCY = 1
 }
 
-export interface HouseAnimationData {
-	electricityProduction: number;
-	electricityToBattery: number;
-	electricityFromBattery: number;
-	electricityConsumption: number;
-	electricityToPowerPlant: number;
-	electricityFromPowerPlant: number;
-	currencyToPowerPlant: number;
-	currencyFromPowerPlant: number;
+export interface Particle {
+	value: number;
+	type: ParticleType;
+}
+
+export interface AnimationData {
+	inputNorth: Particle[];
+	outputNorth: Particle[];
+	outputEast: Particle[];
+	inputSouth: Particle[];
+	outputSouth: Particle[];
+	inputWest: Particle[];
 }

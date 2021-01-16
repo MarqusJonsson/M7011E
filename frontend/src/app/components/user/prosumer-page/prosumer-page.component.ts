@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, Input, OnDestroy, ViewChild } from '@angular/core';
+import { AssetPath } from 'src/app/models/asset-path';
 import { Prosumer, prosumerQuery, ProsumerQueryData } from 'src/app/models/graphql/prosumer';
 import { GraphqlService } from '../../../services/graphql/graphql.service';
+import { BuildingAnimationCardComponent } from '../shared/cards/building-animation/building-animation-card.component';
 import { BatteryCardComponent } from '../shared/cards/battery/battery-card.component';
 import { GeoDataCardComponent } from '../shared/cards/geo-data/geo-data-card.component';
 import { HouseCardComponent } from '../shared/cards/house/house-card.component';
 import { PowerPlantCardComponent } from '../shared/cards/power-plant/power-plant-card.component';
 import { UserCardComponent } from '../shared/cards/user/user-card.component';
-import { HouseAnimationCardComponent } from './cards/house-animation/house-animation-card.component';
 
 @Component({
 	selector: 'app-prosumer-page',
@@ -19,7 +20,7 @@ export class ProsumerPageComponent implements AfterViewInit, OnDestroy {
 	@ViewChild('userCard') userCard: UserCardComponent;
 	@ViewChild('powerPlantCard') powerPlantCard: PowerPlantCardComponent;
 	@ViewChild('houseCard') houseCard: HouseCardComponent;
-	@ViewChild('houseAnimationCard') houseAnimationCard: HouseAnimationCardComponent;
+	@ViewChild('buildingAnimationCard') buildingAnimationCard: BuildingAnimationCardComponent;
 	@Input() prosumer: Prosumer;
 	@Input() startQueryInterval = true;
 	@Input() profilePictureUserId: number;
@@ -27,6 +28,10 @@ export class ProsumerPageComponent implements AfterViewInit, OnDestroy {
 	private callbackId: number;
 
 	constructor(private graphqlService: GraphqlService) {}
+
+	get AssetPath() {
+		return AssetPath;
+	}
 
 	public ngAfterViewInit(): void {
 		if (this.prosumer !== undefined) {
@@ -67,6 +72,6 @@ export class ProsumerPageComponent implements AfterViewInit, OnDestroy {
 		this.geoDataCard.update(prosumer.house.geoData);
 		this.userCard.update(prosumer.currency, prosumer.isBlocked);
 		this.powerPlantCard.update(prosumer.house.powerPlant);
-		this.houseCard.update(prosumer, this.houseAnimationCard.animateData);
+		this.houseCard.update(prosumer, this.buildingAnimationCard.animate);
 	}
 }

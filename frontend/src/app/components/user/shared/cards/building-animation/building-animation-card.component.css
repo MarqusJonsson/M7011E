@@ -1,0 +1,308 @@
+:host {
+	--animation-area-width: 400px;
+	--animation-area-height: var(--animation-area-width);
+	/* Animation durations */
+	--particle-animation-duration: 3000ms;
+	--path-color: #000000;
+	/* Center */
+	--center-width: calc(0.25 * var(--animation-area-width));
+	--center-height: calc(0.25 * var(--animation-area-height));
+	--center-x: calc(100% / 2 - var(--center-width) / 2);
+	--center-y: calc(100% / 2 - var(--center-height) / 2);
+		/* North */
+	--north-width: calc(0.15 * var(--animation-area-width));
+	--north-height: calc(0.15 * var(--animation-area-height));
+	--north-x: calc(var(--center-x) + var(--center-width) /2 - var(--north-width) / 2);
+	--north-y: 0px;
+	/* West */
+	--west-width: calc(0.1 * var(--animation-area-width));
+	--west-height: calc(0.1 * var(--animation-area-height));
+	--west-x: 0px;
+	--west-y: calc(var(--center-y) + var(--center-height) / 2 - var(--west-height) / 2);
+	/* East */
+	--east-width: calc(0.1 * var(--animation-area-width));
+	--east-height: calc(0.1 * var(--animation-area-height));
+	--east-x: calc(100% - var(--east-width));
+	--east-y: calc(var(--center-y) + var(--center-height) / 2 - var(--east-height) / 2);
+	/* South */
+	--south-width: calc(0.15 * var(--animation-area-width));
+	--south-height: calc(0.15 * var(--animation-area-height));
+	--south-x: calc(var(--center-x) + var(--center-width) / 2 - var(--south-width) / 2);
+	--south-y: calc(var(--animation-area-height) - var(--south-height));
+	/* Particles */
+	--particle-width: calc(0.05 * var(--animation-area-width));
+	--particle-height: calc(0.05 * var(--animation-area-height));
+	/* Paths */
+	--path-thickness: calc(0.01 * min(var(--animation-area-width), var(--animation-area-height)));
+	--double-path-additional-length: calc(0.015 * min(var(--animation-area-width), var(--animation-area-height)));
+	/* West path */
+	--west-path-width: calc(var(--center-x) - var(--west-x) - var(--west-width));
+	--west-path-height: var(--path-thickness);
+	--west-path-x: calc(var(--west-x) + var(--west-width));
+	--west-path-y: calc(var(--west-y) + var(--west-height) / 2 - var(--west-path-height) / 2);
+	/* North path */
+	--north-path-width: var(--path-thickness);
+	--north-path-height: calc(var(--center-y) - var(--north-y) - var(--north-height) + var(--double-path-additional-length));
+	--north-path-x: calc(var(--north-x) + var(--north-width) / 2 - var(--path-thickness) / 2);
+	--north-path-y: calc(var(--north-y) + var(--north-height) - var(--double-path-additional-length) / 2);
+	/* East path */
+	--east-path-width: calc(var(--east-x) - var(--center-x) - var(--center-width));
+	--east-path-height: var(--path-thickness);
+	--east-path-x: calc(var(--east-x) - var(--east-path-width));
+	--east-path-y: calc(var(--center-y) + var(--center-height) / 2 - var(--east-path-height) / 2);
+	/* South path */
+	--south-path-width: var(--path-thickness);
+	--south-path-height: calc(var(--south-y) - var(--center-y) - var(--center-height) + var(--double-path-additional-length));
+	--south-path-x: calc(var(--south-x) + var(--south-width) / 2 - var(--path-thickness) / 2);
+	--south-path-y: calc(var(--center-y) + var(--center-height) - var(--double-path-additional-length) / 2);
+	/* Default colors */
+	/* Following colors are set in page containing a building animation card
+		(prosumer page and manager page) 
+	--center-color: ?;
+	--north-color: ?;
+	--east-color: ?;
+	--south-color: ?;
+	--west-color: ?;
+	*/
+}
+
+:host .animation-area {
+	position: relative;
+	width: var(--animation-area-width);
+	height: var(--animation-area-height);
+}
+
+:host .center {
+	position: absolute;
+	width: var(--center-width);
+	height: var(--center-height);
+	left: var(--center-x);
+	top: var(--center-y);
+	fill: var(--center-color);
+}
+
+:host .west {
+	position: absolute;
+	width: var(--west-width);
+	height: var(--west-height);
+	left: var(--west-x);
+	top: var(--west-y);
+	fill: var(--west-color);
+}
+
+:host .north {
+	position: absolute;
+	width: var(--north-width);
+	height: var(--north-height);
+	left: var(--north-x);
+	top: var(--north-y);
+	fill: var(--north-color);
+}
+
+:host .east {
+	position: absolute;
+	width: var(--east-width);
+	height: var(--east-height);
+	left: var(--east-x);
+	top: var(--east-y);
+	fill: var(--east-color);
+}
+
+:host .south {
+	position: absolute;
+	width: var(--south-width);
+	height: var(--south-height);
+	left: var(--south-x);
+	top: var(--south-y);
+	fill: var(--south-color);
+}
+
+:host .draw-path {
+	background-color: var(--path-color);
+	min-width: var(--path-thickness);
+	min-height: var(--path-thickness);
+}
+
+:host .input-west {
+	position: absolute;
+	width: var(--west-path-width);
+	height: var(--west-path-height);
+	left: var(--west-path-x);
+	top: var(--west-path-y);
+}
+
+:host .output-north {
+	position: absolute;
+	width: var(--north-path-width);
+	height: var(--north-path-height);
+	left: calc(var(--north-path-x) - var(--north-width) / 5);
+	top: var(--north-path-y);
+}
+
+:host .input-north {
+	position: absolute;
+	width: var(--north-path-width);
+	height: var(--north-path-height);
+	left: calc(var(--north-path-x) + var(--north-width) / 5);
+	top: var(--north-path-y);
+}
+
+:host .output-east {
+	position: absolute;
+	width: var(--east-path-width);
+	height: var(--east-path-height);
+	left: var(--east-path-x);
+	top: var(--east-path-y);
+}
+
+:host .output-south {
+	position: absolute;
+	width: var(--south-path-width);
+	height: var(--south-path-height);
+	left: calc(var(--south-path-x) - var(--south-width) / 5);
+	top: var(--south-path-y);
+}
+
+:host .input-south {
+	position: absolute;
+	width: var(--south-path-width);
+	height: var(--south-path-height);
+	left: calc(var(--south-path-x) + var(--south-width) / 5);
+	top: var(--south-path-y);
+}
+
+:host ::ng-deep .particle {
+	position: absolute;
+	width: var(--particle-width);
+	height: var(--particle-height);
+	border-radius: var(--particle-height) var(--particle-width);
+	margin-top: calc(var(--particle-height) / -2 + var(--path-thickness) / 2);
+	left: calc(var(--particle-width) / -2 + var(--path-thickness) / 2);
+}
+
+:host ::ng-deep .input-west > .particle {
+	fill: var(--west-color);
+}
+
+:host ::ng-deep .output-north > .particle {
+	fill: var(--center-color);
+}
+
+:host ::ng-deep .input-north > .particle {
+	fill: var(--north-color);
+}
+
+:host ::ng-deep .output-east > .particle {
+	fill: var(--center-color);
+}
+
+:host ::ng-deep .output-south > .particle {
+	fill: var(--center-color);
+}
+
+:host ::ng-deep .input-south > .particle {
+	fill: var(--south-color);
+}
+
+:host ::ng-deep .slide-north .particle-animation {
+	-webkit-animation: slide-south var(--particle-animation-duration) linear reverse;
+	animation: slide-south var(--particle-animation-duration) linear reverse;
+}
+
+:host ::ng-deep .slide-east .particle-animation {
+	-webkit-animation: slide-east var(--particle-animation-duration) linear;
+	animation: slide-east var(--particle-animation-duration) linear;
+}
+
+:host ::ng-deep .slide-south .particle-animation {
+	-webkit-animation: slide-south var(--particle-animation-duration) linear;
+	animation: slide-south var(--particle-animation-duration) linear;
+}
+
+:host ::ng-deep .hidden {
+	display: none;
+}
+
+@-webkit-keyframes slide-east {
+	0% {
+		-webkit-transform: scale(0);
+		transform: scale(0);
+		left: calc(var(--particle-width) / -2);
+	}
+	15% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+	85% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+	100% {
+		-webkit-transform: scale(0);
+		transform: scale(0);
+		left: calc(100% - var(--particle-width) / 2);
+	}
+}
+
+@keyframes slide-east {
+	0% {
+		-webkit-transform: scale(0);
+		transform: scale(0);
+		left: calc(var(--particle-width) / -2);
+	}
+	15% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+	85% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+	100% {
+		-webkit-transform: scale(0);
+		transform: scale(0);
+		left: calc(100% - var(--particle-width) / 2);
+	}
+}
+
+@-webkit-keyframes slide-south {
+	0% {
+		-webkit-transform: scale(0);
+		transform: scale(0);
+		top: 0%;
+	}
+	15% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+	85% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+	100% {
+		-webkit-transform: scale(0);
+		transform: scale(0);
+		top: 100%;
+	}
+}
+
+@keyframes slide-south {
+	0% {
+		-webkit-transform: scale(0);
+		transform: scale(0);
+		top: 0%;
+	}
+	15% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+	85% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+	100% {
+		-webkit-transform: scale(0);
+		transform: scale(0);
+		top: 100%;
+	}
+}

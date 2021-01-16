@@ -1,25 +1,15 @@
-:host {
-	/* Colors */
-	--house-color: #8fddf0;
-	--battery-color: #90f1a6;
-	--user-color: #edaaf6;
-	--power-plant-color: #ecdc82;
-	--consumption-color: #af6767;
-	--geo-data-color: #e4a78b;
-	--generator-color: #e7e7e7;
-	--house-animation-container-width: 480px;
-	--house-animation-container-height: var(--house-animation-container-width);
-}
-
-:host .house-animation-card-container {
+:host .building-animation-card-container {
 	display: inline-block;
 	vertical-align: top;
 	padding: 10px;
 	margin: 10px;
-	width: var(--house-animation-container-width);
-	height: var(--house-animation-container-height);
 	border-radius: 10px;
 	border: 2px solid #dbdbdb;
+	--center-color: var(--house-color);
+	--north-color: var(--battery-color);
+	--east-color: var(--consumption-color);
+	--south-color: var(--power-plant-color);
+	--west-color: var(--wind-turbine-color);
 }
 
 :host .column {

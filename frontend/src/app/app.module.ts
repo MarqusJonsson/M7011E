@@ -30,7 +30,7 @@ import { GeoDataCardComponent } from './components/user/shared/cards/geo-data/ge
 import { UserCardComponent } from './components/user/shared/cards/user/user-card.component';
 import { PowerPlantCardComponent } from './components/user/shared/cards/power-plant/power-plant-card.component';
 import { HouseCardComponent } from './components/user/shared/cards/house/house-card.component';
-import { HouseAnimationCardComponent } from './components/user/prosumer-page/cards/house-animation/house-animation-card.component';
+import { BuildingAnimationCardComponent } from './components/user/shared/cards/building-animation/building-animation-card.component';
 import { ProsumerListCardComponent } from './components/user/manager-page/cards/prosumer-list/prosumer-list-card.component';
 import { ProsumerListEntryComponent } from './components/user/manager-page/cards/prosumer-list/prosumer-list-entry/prosumer-list-entry.component';
 import { config } from './config';
@@ -57,7 +57,7 @@ import { config } from './config';
 		UserCardComponent,
 		PowerPlantCardComponent,
 		HouseCardComponent,
-		HouseAnimationCardComponent,
+		BuildingAnimationCardComponent,
 		ProsumerListCardComponent,
 		ProsumerListEntryComponent
 	],
