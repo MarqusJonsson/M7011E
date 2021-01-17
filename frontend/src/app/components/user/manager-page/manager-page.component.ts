@@ -18,7 +18,7 @@ export class ManagerPageComponent implements AfterViewInit {
 	@ViewChild('userCard') userCard: UserCardComponent;
 	@ViewChild('powerPlantCard') powerPlantCard: PowerPlantCardComponent;
 	@ViewChild('prosumerListCard') prosumerListCard: ProsumerListCardComponent;
-	
+
 	constructor(private graphqlService: GraphqlService) { }
 
 	public ngAfterViewInit() {
