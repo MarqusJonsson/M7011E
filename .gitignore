@@ -7,6 +7,9 @@ pictures/
 # Private/Public keys
 *.key
 
+# TLS/SSL certificates
+*.crt
+
 # Logs
 logs
 *.log
