@@ -67,3 +67,17 @@ Note: if you do not have access to a certificate and key pair, you can creeate a
 19. Open a command prompt and go to M7011E/backend/simulator
 
 20. Run ``npm run startts`` to start the simulator server (note to run the startts script and not start script)
+
+# Docker Deployment
+For a deployment on a VPS example, 3 docker images have been prepared containing code for the front-end server, authentication-server and simulator server respectively from [https://hub.docker.com/repository/docker/osksun/m7011e-images](https://hub.docker.com/repository/docker/osksun/m7011e-images) where the ssl keys, database and public keys have already been prepared.
+
+Assuming Docker (19.03.8+) has been installed, the following steps to setup the docker containers are:
+1. Clone the front-end server image ``docker pull osksun/m7011e-images:front-end-server``
+
+2. Clone the authentication server image ``docker pull osksun/m7011e-images:authentication-server``
+
+3. Clone the simulator server image ``docker pull osksun/m7011e-images:simulator-server``
+
+4. Create a copy of the startSystem.sh script in M7011E/startSystem.sh move it to where Docker can access it and make it executable with ``chmod u+x startSystem.sh``
+
+5. Run the startSystem.sh script ``./startSystem.sh`` to start 3 docker containers and the setup scripts for each container respectively.
