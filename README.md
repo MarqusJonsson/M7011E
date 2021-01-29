@@ -80,4 +80,4 @@ Assuming Docker (19.03.8+) has been installed, the following steps to setup the 
 
 4. Create a copy of the startSystem.sh script in M7011E/startSystem.sh move it to where Docker can access it and make it executable with ``chmod u+x startSystem.sh``
 
-5. Run the startSystem.sh script ``./startSystem.sh`` to start 3 docker containers and the setup scripts for each container respectively.
+5. Run the startSystem.sh script ``./startSystem.sh`` to start 3 docker containers and the setup scripts for each container respectively
