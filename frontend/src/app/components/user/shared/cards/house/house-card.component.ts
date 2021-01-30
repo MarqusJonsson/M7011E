@@ -58,8 +58,9 @@ export class HouseCardComponent {
 			electricityToBattery = 0;
 			electricityToPowerPlant = 0;
 			if (prosumer.currency > 0) {
-				electricityFromBattery = Math.min(Math.abs(netProduction) * prosumer.house.underproductionRatio, prosumer.house.battery.buffer);
+				electricityFromBattery = Math.abs(netProduction) * prosumer.house.underproductionRatio;
 				electricityFromPowerPlant = Math.abs(netProduction) - electricityFromBattery;
+				electricityFromBattery = Math.min(electricityFromBattery, prosumer.house.battery.buffer);
 			} else {
 				electricityFromBattery = Math.min(
 					prosumer.house.electricityConsumption - prosumer.house.electricityProduction, prosumer.house.battery.buffer
