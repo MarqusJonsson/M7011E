@@ -1,7 +1,7 @@
 import { database } from '../database/database'
 import { ResponseError } from '../utils/error';
 import { validation } from '../utils/validation';
-import { DeleteResult, GetResult, PostResult } from './result';
+import { DeleteResult, GetResult, PostResult, PutResult } from './result';
 import express from 'express';
 import { crypto } from '../utils/crypto';
 import { StatusCode } from '../utils/statusCode';
@@ -74,22 +74,50 @@ function empty(request: express.Request): Promise<DeleteResult> {
 	});
 }
 
-function updatePassword(request: express.Request): Promise<PostResult> {
+function updatePassword(request: express.Request): Promise<PutResult> {
 	return new Promise((resolve, reject) => {
-		const strId = request.params.id;
-		const id = parseInt(strId);
-		const { password } = request.body;
-		if (!validation.validateId(id) || !validation.validatePassword(password)) {
-			reject(new ResponseError('Malformed input', StatusCode.BAD_REQUEST));
+		if (request.payload.user.role !== UsersRepository.userRole.MANAGER) {
+			reject(new ResponseError('Access denied', StatusCode.FORBIDDEN))
 		} else {
-			crypto.hash(password).then((hash) => {
-				database.users.updatePassword(id, <string> hash).then((userId) => {
-					resolve(new PostResult({ user: { id: userId } }, `/users/${userId}`));
-				}).catch((error) => { reject(error); });;
-			}).catch((error) => {
-				console.error(error);
-				reject(new ResponseError());
-			});
+			const strId = request.params.id;
+			const id = parseInt(strId);
+			const { password } = request.body;
+			if (!validation.validateId(id) || !validation.validatePassword(password)) {
+				reject(new ResponseError('Malformed input', StatusCode.BAD_REQUEST));
+			} else {
+				crypto.hash(password).then((hash) => {
+					database.users.updatePassword(id, hash).then(() => {
+						resolve(new PutResult(undefined));
+					}).catch((error) => { reject(error); });
+				}).catch((error) => {
+					console.error(error);
+					reject(new ResponseError());
+				});
+			}
+		}
+	});
+}
+
+function updateEmail(request: express.Request): Promise<PutResult> {
+	return new Promise((resolve, reject) => {
+		if (request.payload.user.role !== UsersRepository.userRole.MANAGER) {
+			reject(new ResponseError('Access denied', StatusCode.FORBIDDEN))
+		} else {
+			const strId = request.params.id;
+			const id = parseInt(strId);
+			const { email } = request.body;
+			if (!validation.validateId(id) || !validation.validateEmail(email)) {
+				reject(new ResponseError('Malformed input', StatusCode.BAD_REQUEST));
+			} else {
+				database.users.updateEmail(id, email).then((user) => {
+					database.refreshTokens.deleteAllWithUserId(user.id).then(() => {
+						resolve(new PutResult(user));
+					}).catch((error) => { reject(error); });
+				}).catch((error) => { 
+					console.error(error);
+					reject(error);
+				});
+			}
 		}
 	});
 }
@@ -100,5 +128,6 @@ export const users = {
 	findByEmail: findByEmail,
 	delete: delete_,
 	empty: empty,
-	updatePassword: updatePassword
+	updatePassword: updatePassword,
+	updateEmail: updateEmail
 }

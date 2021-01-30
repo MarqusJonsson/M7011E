@@ -86,4 +86,17 @@ export class UsersRepository extends BaseWithHistoryRepository<User> {
 			});
 		});
 	}
+
+	public updateEmail(id: number, newEmail: string, t?: pgPromise.ITask<any>): Promise<User> {
+		return new Promise((resolve, reject) => {
+			const db = t || this.database;
+			return db.txIf((t_: pgPromise.ITask<any>) => {
+				return t_.one(`UPDATE ${this.tableName} SET email = $2 WHERE id = $1 RETURNING id, histories_id`, [id, newEmail]).then((updatedUser) => {
+					return this.historyRepository.update(updatedUser.histories_id, t_).then((updatedHistoryId) => {
+						resolve(updatedUser);
+					}).catch((error) => { reject(toResponseError(error)); });
+				}).catch((error) => { reject(toResponseError(error)); });
+			});
+		});
+	}
 }

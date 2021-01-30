@@ -3,7 +3,7 @@ import { Prosumer, prosumerQueryById, ProsumerQueryData, setProsumerSellTimeoutM
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { ConfirmDialogService } from 'src/app/services/dialog/confirm-dialog.service';
 import { GraphqlService } from 'src/app/services/graphql/graphql.service';
-import { DeleteProsumerService } from 'src/app/services/user/delete-prosumer.service';
+import { ProsumerService } from 'src/app/services/user/prosumer.service';
 
 @Component({
 	selector: 'app-prosumer-list-entry',
@@ -27,7 +27,7 @@ export class ProsumerListEntryComponent {
 		private graphqlService: GraphqlService,
 		private dialogService: ConfirmDialogService,
 		private alertService: AlertService,
-		private deleteProsumerService: DeleteProsumerService,
+		private prosumerService: ProsumerService,
 		private hostElement: ElementRef
 	) {}
 
@@ -86,7 +86,7 @@ export class ProsumerListEntryComponent {
 
 	private deleteProsumer() {
 		this.hostElement.nativeElement.classList.add('hidden');
-		this.deleteProsumerService.deleteProsumer(this.id).subscribe();
+		this.prosumerService.delete(this.id).subscribe();
 	}
 
 	public openBlockProsumerDialog() {
@@ -108,7 +108,7 @@ export class ProsumerListEntryComponent {
 				if (!isNaN(input) && input > 0) {
 					this.blockProsumer(input);
 				} else {
-					this.alertService.error('Invalid input, prosumer block aborted', {autoClose: true});
+					this.alertService.error('Invalid input, prosumer block aborted', { autoClose: true });
 				}
 			}
 		});
@@ -118,5 +118,35 @@ export class ProsumerListEntryComponent {
 		this.graphqlService.mutate(setProsumerSellTimeoutMutation, { id: this.id, seconds }).subscribe(() => {
 			this.data.isBlocked = true;
 		});
+	}
+
+	public openUpdateProsumerEmailDialog() {
+		const inputFieldContainer = document.createElement('div');
+		const inputField = document.createElement('input');
+		inputField.placeholder = 'New email';
+		inputFieldContainer.appendChild(inputField);
+		const dialogData = {
+			title: `Update email of prosumer ${this.id}`,
+			message: '',
+			cancelText: 'Cancel',
+			confirmText: 'Confirm',
+			extraField: inputFieldContainer
+		};
+		this.dialogService.open(dialogData);
+		this.dialogService.confirmed().subscribe(confirmed => {
+			if (confirmed) {
+				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+				const email = inputField.value;
+				if (emailRegex.test(email)) {
+					this.updateProsumerEmail(email);
+				} else {
+					this.alertService.error('Invalid input, update prosumer email aborted', { autoClose: true });
+				}
+			}
+		});
+	}
+
+	private updateProsumerEmail(email: string) {
+		this.prosumerService.updateEmail(this.id, email).subscribe();
 	}
 }

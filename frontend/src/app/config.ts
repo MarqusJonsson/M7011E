@@ -9,8 +9,9 @@ export const config = {
 	URL_LOGIN: `${URL_AUTH_SERVER}/login`,
 	URL_LOGOUT: `${URL_AUTH_SERVER}/logout`,
 	URL_REGISTER: `${URL_AUTH_SERVER}/register`,
-	URL_DELETE_USER: `${URL_AUTH_SERVER}/users/`,
+	URL_USERS: `${URL_AUTH_SERVER}/users/`,
 	URL_REFRESH_ACCESS_TOKEN: `${URL_AUTH_SERVER}/refresh-access-token`,
+	URL_UPDATE_EMAIL: (userId: number) => `${config.URL_USERS}${userId}/email`,
 	// Simulator API URLs
 	URL_GRAPHQL: `${URL_SIMULATOR_SERVER}/graphql`,
 	URL_PROFILE_PICTURE: (roleId: number, userId: number) => `${URL_SIMULATOR_SERVER}/profile-picture/${roleId}/${userId}`,

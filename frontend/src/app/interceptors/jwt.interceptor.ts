@@ -28,7 +28,7 @@ export default class JwtInterceptor implements HttpInterceptor {
 			return next.handle(request);
 		} else if (request.url === config.URL_LOGOUT
 			|| request.url === config.URL_REFRESH_ACCESS_TOKEN
-			|| request.url.startsWith(config.URL_DELETE_USER)) {
+			|| request.url.startsWith(config.URL_USERS)) {
 			// Add Authorization header with refresh token
 			request = this.addToken(request, AuthenticationService.getRefreshToken());
 			return next.handle(request).pipe(
@@ -38,6 +38,7 @@ export default class JwtInterceptor implements HttpInterceptor {
 							case StatusCode.FORBIDDEN:
 								return this.handleForbiddenError(request, next);
 						}
+						return throwError(error);
 					}
 				})
 			);
@@ -54,6 +55,7 @@ export default class JwtInterceptor implements HttpInterceptor {
 						case StatusCode.FORBIDDEN:
 							return this.handleForbiddenError(request, next);
 					}
+					return throwError(error);
 				}
 			})
 		);

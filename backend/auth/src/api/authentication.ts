@@ -96,12 +96,12 @@ function logout(request: express.Request): Promise<DeleteResult> {
 			auth.verifyRefreshToken(refreshToken, (error, payload) => {
 				if (error) {
 					reject(new ResponseError('Invalid refresh token', StatusCode.FORBIDDEN));
-					return;
+				} else {
+					const refreshTokenPayload: RefreshTokenPayload = <RefreshTokenPayload><unknown>payload;
+					return database.refreshTokens.delete(refreshTokenPayload.refreshToken.id).then((deletedRefreshTokenId) => {
+						resolve(new DeleteResult(null));
+					}).catch((error) => { reject(error); });
 				}
-				const refreshTokenPayload: RefreshTokenPayload = <RefreshTokenPayload><unknown>payload;
-				return database.refreshTokens.delete(refreshTokenPayload.refreshToken.id).then((deletedRefreshTokenId) => {
-					resolve(new DeleteResult(null));
-				}).catch((error) => { reject(error); });
 			}, { ignoreExpiration: true });
 		}
 	});
@@ -115,15 +115,22 @@ function refreshAccessToken(request: express.Request): Promise<PostResult> {
 			reject(new ResponseError('The request is missing or contains a malformed required header: Authorization', StatusCode.BAD_REQUEST));
 		} else {
 			auth.verifyRefreshToken(refreshToken, (error, payload) => {
-				if (error) reject(new ResponseError('Invalid refresh token', StatusCode.FORBIDDEN));
-				const refreshTokenPayload = <RefreshTokenPayload><unknown> payload;
-				const accessToken = auth.generateAccessToken({
-					user: refreshTokenPayload.user
-				});
-				resolve(new PostResult({
-					accessToken: accessToken,
-					refreshToken: refreshToken
-				}, `/users/${refreshTokenPayload.user.id}`));
+				if (error) {
+					reject(new ResponseError('Invalid refresh token', StatusCode.FORBIDDEN));
+				} else {
+					const refreshTokenPayload = <RefreshTokenPayload><unknown> payload;
+					database.refreshTokens.find(refreshTokenPayload.refreshToken.id).then((foundToken) => {
+						const accessToken = auth.generateAccessToken({
+							user: refreshTokenPayload.user
+						});
+						resolve(new PostResult({
+							accessToken: accessToken,
+							refreshToken: refreshToken
+						}, `/users/${refreshTokenPayload.user.id}`));
+					}).catch((error) => {
+						reject(new ResponseError('Invalid refresh token', StatusCode.FORBIDDEN));
+					});
+				}
 			});
 		}
 	});

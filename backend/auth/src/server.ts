@@ -51,6 +51,7 @@ database.task((t) => {
 				GET		('/refresh-access-token', authenticationAPI.refreshAccessToken, requireRefreshToken);
 				DELETE	('/logout', authenticationAPI.logout);
 				DELETE	('/users/:id', usersAPI.delete, requireRefreshToken);
+				PUT		('/users/:id/email', usersAPI.updateEmail, requireRefreshToken);
 				// Setup error handler middleware
 				app.use(errorHandler);
 				// Start server
@@ -78,7 +79,7 @@ function GET(
 		next();
 	}
 ) {
-	app.get(url, (request, response, next) => {
+	app.get(url, beforeHandler, (request, response, next) => {
 		handler(request, response).then((result) => {
 			response.status(StatusCode.OK);
 			response.json({
@@ -100,7 +101,7 @@ function POST(
 		next();
 	}
 ) {
-	app.post(url, (request, response, next) => {
+	app.post(url, beforeHandler, (request, response, next) => {
 		handler(request, response).then((result) => {
 			response.status(StatusCode.CREATED);
 			response.setHeader('Location', result.location);
@@ -123,7 +124,7 @@ function PUT(
 		next();
 	}
 ) {
-	app.put(url, (request, response, next) => {
+	app.put(url, beforeHandler, (request, response, next) => {
 		handler(request, response).then((result) => {
 			const responseObject: any = {success: true};
 			if (result.body === null) {

@@ -59,6 +59,11 @@
 	color: #e78888;
 }
 
+:host .box-blue {
+	border-color: var(--house-color);
+	color: var(--house-color);
+}
+
 :host .prosumer-view-overlay {
 	position: fixed;
 	width: 100%;
