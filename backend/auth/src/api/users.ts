@@ -86,8 +86,10 @@ function updatePassword(request: express.Request): Promise<PutResult> {
 				reject(new ResponseError('Malformed input', StatusCode.BAD_REQUEST));
 			} else {
 				crypto.hash(password).then((hash) => {
-					database.users.updatePassword(id, hash).then(() => {
-						resolve(new PutResult(undefined));
+					database.users.updatePassword(id, hash).then((user) => {
+						database.refreshTokens.deleteAllWithUserId(user.id).then(() => {
+							resolve(new PutResult(user));
+						}).catch((error) => { reject(error); });
 					}).catch((error) => { reject(error); });
 				}).catch((error) => {
 					console.error(error);

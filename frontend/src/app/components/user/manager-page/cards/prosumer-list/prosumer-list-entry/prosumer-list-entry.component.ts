@@ -70,11 +70,16 @@ export class ProsumerListEntryComponent {
 	}
 
 	public openDeleteProsumerDialog() {
+		const inputFieldContainer = document.createElement('div');
+		const info = document.createElement('p');
+		info.textContent = 'Note: This action will terminate all active sessions related to the updated prosumer as soon as possible.';
+		inputFieldContainer.appendChild(info);
 		const dialogData = {
 			title: `Delete prosumer ${this.id}`,
 			message: '',
 			cancelText: 'Cancel',
 			confirmText: 'Confirm',
+			extraField: inputFieldContainer
 		};
 		this.dialogService.open(dialogData);
 		this.dialogService.confirmed().subscribe(confirmed => {
@@ -125,6 +130,9 @@ export class ProsumerListEntryComponent {
 		const inputField = document.createElement('input');
 		inputField.placeholder = 'New email';
 		inputFieldContainer.appendChild(inputField);
+		const info = document.createElement('p');
+		info.textContent = 'Note: This action will terminate all active sessions related to the updated prosumer within 5 minutes.';
+		inputFieldContainer.appendChild(info);
 		const dialogData = {
 			title: `Update email of prosumer ${this.id}`,
 			message: '',
@@ -148,5 +156,38 @@ export class ProsumerListEntryComponent {
 
 	private updateProsumerEmail(email: string) {
 		this.prosumerService.updateEmail(this.id, email).subscribe();
+	}
+
+	public openUpdateProsumerPasswordDialog() {
+		const inputFieldContainer = document.createElement('div');
+		const inputField = document.createElement('input');
+		inputField.placeholder = 'New password';
+		inputField.setAttribute('type', 'password');
+		inputFieldContainer.appendChild(inputField);
+		const info = document.createElement('p');
+		info.textContent = 'Note: This action will terminate all active sessions related to the updated prosumer within 5 minutes.';
+		inputFieldContainer.appendChild(info);
+		const dialogData = {
+			title: `Update password of prosumer ${this.id}`,
+			message: '',
+			cancelText: 'Cancel',
+			confirmText: 'Confirm',
+			extraField: inputFieldContainer
+		};
+		this.dialogService.open(dialogData);
+		this.dialogService.confirmed().subscribe(confirmed => {
+			if (confirmed) {
+				const password = inputField.value;
+				if (password.length > 0) {
+					this.updateProsumerPassword(password);
+				} else {
+					this.alertService.error('Invalid input, update prosumer password aborted', { autoClose: true });
+				}
+			}
+		});
+	}
+
+	private updateProsumerPassword(password: string) {
+		this.prosumerService.updatePassword(this.id, password).subscribe();
 	}
 }

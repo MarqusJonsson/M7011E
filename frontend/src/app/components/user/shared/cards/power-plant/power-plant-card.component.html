@@ -1,15 +1,15 @@
 <div class="power-plant-card base-card">
 	<h2>Power plant</h2>
 	<ul>
-		<div *ngIf="isProsumer || isManager">
+		<ng-container *ngIf="isProsumer || isManager">
 			<li>
 				Buy price: <span class="right-align">{{data.buyPrice}}</span>
 			</li>
 			<li>
 				Sell price: <span class="right-align">{{data.sellPrice}}</span>
 			</li>
-		</div>
-		<div *ngIf="isManager">
+		</ng-container>
+		<ng-container *ngIf="isManager">
 			<li>
 				<button class="card-button" (click)="openUpdatePricesDialog()">Update prices</button>
 			</li>
@@ -55,6 +55,6 @@
 			<li>
 				0% <span class="right-align">100%</span>
 			</li>
-		</div>
+		</ng-container>
 	</ul>
 </div>

@@ -12,6 +12,7 @@ export const config = {
 	URL_USERS: `${URL_AUTH_SERVER}/users/`,
 	URL_REFRESH_ACCESS_TOKEN: `${URL_AUTH_SERVER}/refresh-access-token`,
 	URL_UPDATE_EMAIL: (userId: number) => `${config.URL_USERS}${userId}/email`,
+	URL_UPDATE_PASSWORD: (userId: number) => `${config.URL_USERS}${userId}/password`,
 	// Simulator API URLs
 	URL_GRAPHQL: `${URL_SIMULATOR_SERVER}/graphql`,
 	URL_PROFILE_PICTURE: (roleId: number, userId: number) => `${URL_SIMULATOR_SERVER}/profile-picture/${roleId}/${userId}`,

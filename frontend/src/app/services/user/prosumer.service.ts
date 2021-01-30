@@ -33,7 +33,7 @@ export class ProsumerService {
 	public updateEmail(id: number, email: string) {
 		return this.http.put<any>(config.URL_UPDATE_EMAIL(id), { email }).pipe(
 			map(() => {
-				this.alertService.success(`Email updated successfully for prosumer ${id}`, { autoClose: true });
+				this.alertService.success(`Email updated to ${email} for prosumer ${id}`, { autoClose: true });
 				return true;
 			}), catchError((error) => {
 				if (error.status === StatusCode.CONFLICT) {
@@ -47,8 +47,9 @@ export class ProsumerService {
 	}
 
 	public updatePassword(id: number, password: string) {
-		return this.http.put<any>(config.URL_UPDATE_EMAIL(id), { password }).pipe(
+		return this.http.put<any>(config.URL_UPDATE_PASSWORD(id), { password }).pipe(
 			map((response) => {
+				this.alertService.success(`Password updated successfully for prosumer ${id}`, { autoClose: true });
 				return true;
 			}), catchError((error) => {
 				this.alertService.error('Failed to update password', { autoClose: true });
