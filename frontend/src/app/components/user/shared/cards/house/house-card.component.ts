@@ -96,7 +96,7 @@ export class HouseCardComponent {
 				inputNorth: [{ value: electricityFromBattery, type: ParticleType.ELECTRICITY }],
 				outputNorth: [{ value: electricityToBattery, type: ParticleType.ELECTRICITY }],
 				// East (Consumption)
-				outputEast: [{ value: prosumer.house.electricityConsumption, type: ParticleType.ELECTRICITY }],
+				outputEast: [{ value: prosumer.house.electricityConsumption * +prosumer.house.hasBlackout, type: ParticleType.ELECTRICITY }],
 				// South (Power plant)
 				inputSouth,
 				outputSouth,
