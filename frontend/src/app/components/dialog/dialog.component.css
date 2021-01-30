@@ -16,3 +16,11 @@
 	padding: 0;
 	margin: 0;
 }
+
+:host ::ng-deep p, :host ::ng-deep h2 {
+	text-shadow: none;
+}
+
+:host ::ng-deep input {
+	width: calc(100% - 8px);
+}

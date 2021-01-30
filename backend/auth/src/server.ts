@@ -51,6 +51,7 @@ database.task((t) => {
 				GET		('/refresh-access-token', authenticationAPI.refreshAccessToken, requireRefreshToken);
 				DELETE	('/logout', authenticationAPI.logout);
 				DELETE	('/users/:id', usersAPI.delete, requireRefreshToken);
+				PUT		('/users/:id/password', usersAPI.updatePassword, requireRefreshToken);
 				PUT		('/users/:id/email', usersAPI.updateEmail, requireRefreshToken);
 				// Setup error handler middleware
 				app.use(errorHandler);
