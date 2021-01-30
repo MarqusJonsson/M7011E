@@ -17,7 +17,7 @@
 	margin: 0;
 }
 
-:host ::ng-deep p, :host ::ng-deep h2 {
+:host ::ng-deep p, :host ::ng-deep h2, :host ::ng-deep span {
 	text-shadow: none;
 }
 
